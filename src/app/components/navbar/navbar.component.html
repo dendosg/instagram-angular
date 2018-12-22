@@ -44,16 +44,27 @@
         <a class="nav-link" routerLink="/user-info">Get User Info</a>
       </li>
     </ul>
-    <form class="form-inline my-2 my-lg-0">
-      <input
-        class="form-control mr-sm-2"
-        type="search"
-        placeholder="Search"
-        aria-label="Search"
-      />
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
-        Search
-      </button>
-    </form>
+    <button class="btn btn-outline-success my-2 my-sm-0" (click)="showAddAccountModal()">
+      Add Account
+    </button>
+    <button class="btn btn-outline-success my-2 my-sm-0" (click)="showSelectAccountModal()">
+      Select Account
+    </button>
+    <!-- Add Account Modal -->
+    <nz-modal [(nzVisible)]="isShowAddAccountModal" nzTitle="The first Modal" (nzOnCancel)="handleCancel()" (nzOnOk)="addAccount()">
+      <textarea
+        rows="4"
+        nz-input
+        [(ngModel)]="cookies"
+        placeholder="Enter cookies"
+      ></textarea>
+    </nz-modal>
+    <!-- Select Account Modal -->
+    <nz-modal [(nzVisible)]="isShowSelectAccountModal" nzTitle="The first Modal" (nzOnCancel)="handleCancel()" (nzOnOk)="selectAccount()">
+        <nz-select nzMode="tags" style="width: 100%;" nzPlaceHolder="Tag Mode" [(ngModel)]="selectedAccountIds">
+          <nz-option *ngFor="let account of accounts" [nzLabel]="account.name" [nzValue]="account.id">
+          </nz-option>
+        </nz-select>
+    </nz-modal>
   </div>
 </nav>

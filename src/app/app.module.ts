@@ -1,17 +1,27 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { BrowserModule } from "@angular/platform-browser";
+import { NgModule } from "@angular/core";
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { SearchComponent } from './search/search.component';
-import { GetMediaComponent } from './get-media/get-media.component';
-import { GetLikeComponent } from './get-like/get-like.component';
-import { GetCommentComponent } from './get-comment/get-comment.component';
-import { GetUserInfoComponent } from './get-user-info/get-user-info.component';
-import { GetMediaInfoComponent } from './get-media-info/get-media-info.component';
-import { GetFollowingComponent } from './get-following/get-following.component';
-import { GetFollowerComponent } from './get-follower/get-follower.component';
-import { NavbarComponent } from './components/navbar/navbar.component';
+import { AppRoutingModule } from "./app-routing.module";
+import { AppComponent } from "./app.component";
+import { SearchComponent } from "./search/search.component";
+import { GetMediaComponent } from "./get-media/get-media.component";
+import { GetLikeComponent } from "./get-like/get-like.component";
+import { GetCommentComponent } from "./get-comment/get-comment.component";
+import { GetUserInfoComponent } from "./get-user-info/get-user-info.component";
+import { GetMediaInfoComponent } from "./get-media-info/get-media-info.component";
+import { GetFollowingComponent } from "./get-following/get-following.component";
+import { GetFollowerComponent } from "./get-follower/get-follower.component";
+import { NavbarComponent } from "./components/navbar/navbar.component";
+
+import { ModalModule } from "ngx-modal";
+import { NgZorroAntdModule, NZ_I18N, en_US } from 'ng-zorro-antd';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { registerLocaleData } from '@angular/common';
+import en from '@angular/common/locales/en';
+
+registerLocaleData(en);
 
 @NgModule({
   declarations: [
@@ -26,11 +36,8 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     GetFollowerComponent,
     NavbarComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule
-  ],
-  providers: [],
+  imports: [BrowserModule, AppRoutingModule, ModalModule, NgZorroAntdModule, FormsModule, HttpClientModule, BrowserAnimationsModule],
+  providers: [{ provide: NZ_I18N, useValue: en_US }],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

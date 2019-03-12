@@ -1,1 +1,16 @@
 <p style="border:1px solid blue">option works!</p>
+
+<!-- Select Account Modal -->
+<nz-select
+  nzMode="tags"
+  style="width: 100%;"
+  nzPlaceHolder="Select Accounts"
+  [(ngModel)]="selectedAccountIds"
+>
+  <nz-option
+    *ngFor="let account of accounts"
+    [nzLabel]="account.user.full_name"
+    [nzValue]="account._id"
+  >
+  </nz-option>
+</nz-select>

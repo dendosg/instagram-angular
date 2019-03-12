@@ -9,19 +9,17 @@ import { AccountModel } from "src/model/account.model";
 })
 export class NavbarComponent implements OnInit {
   isShowAddAccountModal = false;
-  isShowSelectAccountModal = false;
-
-  selectedAccountIds = [];
   accounts: AccountModel[];
   cookies: string;
-  constructor(private accountService: AccountService) {
+  constructor(private accountService: AccountService) {}
+
+  ngOnInit() {
     this.accountService.getAccounts().then(accounts => {
       if (!accounts) return;
       this.accounts = accounts;
+      console.log(this.accounts)
     });
   }
-
-  ngOnInit() {}
   showAddAccountModal() {
     this.isShowAddAccountModal = true;
   }
@@ -35,15 +33,6 @@ export class NavbarComponent implements OnInit {
   }
   handleCancel() {
     this.isShowAddAccountModal = false;
-    this.isShowSelectAccountModal = false;
   }
 
-  // SELECT ACCOUNT
-  showSelectAccountModal() {
-    this.isShowSelectAccountModal = true;
-  }
-  selectAccount() {
-    console.log(this.selectedAccountIds);
-    this.isShowSelectAccountModal = false;
-  }
 }

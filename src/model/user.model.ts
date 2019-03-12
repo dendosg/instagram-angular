@@ -1,6 +1,6 @@
 export interface UserModel {
   _id: string;
-  fullName: string;
+  full_name: string;
   username: string;
   biography: string;
   postsCount: number;

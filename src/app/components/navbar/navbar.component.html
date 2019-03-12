@@ -1,23 +1,14 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" routerLink="/">Instagram tool by @xuanhuyjs</a>
-  <button
-    class="navbar-toggler"
-    type="button"
-    data-toggle="collapse"
-    data-target="#navbarSupportedContent"
-    aria-controls="navbarSupportedContent"
-    aria-expanded="false"
-    aria-label="Toggle navigation"
-  >
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" routerLink="/"
-          >Home <span class="sr-only">(current)</span></a
-        >
+        <a class="nav-link" routerLink="/">Home <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
         <a class="nav-link" routerLink="/search">Search</a>
@@ -44,52 +35,14 @@
         <a class="nav-link" routerLink="/user-info">Get User Info</a>
       </li>
     </ul>
-    <button
-      class="btn btn-outline-success my-2 my-sm-0"
-      (click)="showAddAccountModal()"
-    >
+    <button class="btn btn-outline-success my-2 my-sm-0" (click)="showAddAccountModal()">
       Add Account
     </button>
-    <button
-      class="btn btn-outline-success my-2 my-sm-0"
-      (click)="showSelectAccountModal()"
-    >
-      Select Account
-    </button>
+    
     <!-- Add Account Modal -->
-    <nz-modal
-      [(nzVisible)]="isShowAddAccountModal"
-      nzTitle="The first Modal"
-      (nzOnCancel)="handleCancel()"
-      (nzOnOk)="addAccount()"
-    >
-      <textarea
-        rows="4"
-        nz-input
-        [(ngModel)]="cookies"
-        placeholder="Enter cookies"
-      ></textarea>
+    <nz-modal [(nzVisible)]="isShowAddAccountModal" nzTitle="The first Modal" (nzOnCancel)="handleCancel()" (nzOnOk)="addAccount()">
+      <textarea rows="4" nz-input [(ngModel)]="cookies" placeholder="Enter cookies"></textarea>
     </nz-modal>
-    <!-- Select Account Modal -->
-    <nz-modal
-      [(nzVisible)]="isShowSelectAccountModal"
-      nzTitle="The first Modal"
-      (nzOnCancel)="handleCancel()"
-      (nzOnOk)="selectAccount()"
-    >
-      <nz-select
-        nzMode="tags"
-        style="width: 100%;"
-        nzPlaceHolder="Tag Mode"
-        [(ngModel)]="selectedAccountIds"
-      >
-        <nz-option
-          *ngFor="let account of accounts"
-          [nzLabel]="account.user.fullName"
-          [nzValue]="account._id"
-        >
-        </nz-option>
-      </nz-select>
-    </nz-modal>
+
   </div>
 </nav>

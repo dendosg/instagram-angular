@@ -20,6 +20,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
+import { LayoutComponent } from './components/layout/layout.component';
+import { InputComponent } from './components/input/input.component';
+import { OptionComponent } from './components/option/option.component';
+import { ButtonsComponent } from './components/buttons/buttons.component';
+import { ResultComponent } from './components/result/result.component';
 
 registerLocaleData(en);
 
@@ -34,7 +39,12 @@ registerLocaleData(en);
     GetMediaInfoComponent,
     GetFollowingComponent,
     GetFollowerComponent,
-    NavbarComponent
+    NavbarComponent,
+    LayoutComponent,
+    InputComponent,
+    OptionComponent,
+    ButtonsComponent,
+    ResultComponent
   ],
   imports: [BrowserModule, AppRoutingModule, ModalModule, NgZorroAntdModule, FormsModule, HttpClientModule, BrowserAnimationsModule],
   providers: [{ provide: NZ_I18N, useValue: en_US }],

@@ -1,4 +1,6 @@
 import { Component, OnInit } from "@angular/core";
+import { AccountService } from "src/app/_service/account.service";
+import { AccountModel } from "src/model/account.model";
 
 @Component({
   selector: "app-navbar",
@@ -10,16 +12,25 @@ export class NavbarComponent implements OnInit {
   isShowSelectAccountModal = false;
 
   selectedAccountIds = [];
-  accounts = [{ name: "Huy", id: 19 }, { name: "Van", id: 20 }];
+  accounts: AccountModel[];
   cookies: string;
-  constructor() {}
+  constructor(private accountService: AccountService) {
+    this.accountService.getAccounts().then(accounts => {
+      if (!accounts) return;
+      this.accounts = accounts;
+    });
+  }
 
   ngOnInit() {}
   showAddAccountModal() {
     this.isShowAddAccountModal = true;
   }
-  addAccount() {
-    console.log(this.cookies);
+  async addAccount() {
+    const cookie = this.cookies;
+    if (!this.accountService.verifyCookie({ cookie }))
+      return alert("Check cookie again");
+    const user = await this.accountService.getUserByCookie({ cookie });
+    const addedUser = await this.accountService.addAccount({ cookie, user });
     this.isShowAddAccountModal = false;
   }
   handleCancel() {
@@ -32,6 +43,7 @@ export class NavbarComponent implements OnInit {
     this.isShowSelectAccountModal = true;
   }
   selectAccount() {
+    console.log(this.selectedAccountIds);
     this.isShowSelectAccountModal = false;
   }
 }

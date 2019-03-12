@@ -6,7 +6,8 @@ export interface UserModel {
   postsCount: number;
   followingCount: number;
   followerCount: number;
-  privacy: boolean;
+  isPrivate: boolean;
   verified: boolean;
   website: string;
+  highlight_reel_count: number;
 }

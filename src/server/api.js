@@ -16,9 +16,9 @@ router.post("/", async (req, res) => {
     contextSearch
   } = req.body;
 
-  if (!input) return res.json({ msg: "Vui long cung cap input" });
-  if (!cookie) return res.json({ msg: "Vui long cung cap cookie" });
   if (!type) return res.json({ msg: "Vui long cung cap type" });
+  if (!input && type !== 'GET_MY_PROFILE' && type !== 'GET_STORIES') return res.json({ msg: "Vui long cung cap input" });
+  if (!cookie) return res.json({ msg: "Vui long cung cap cookie" });
   const client = new Instagram({ cookie });
   let data = [];
   switch (type) {

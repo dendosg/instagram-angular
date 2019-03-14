@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Constants } from '../utils/Constants';
 
 @Component({
   selector: 'app-get-like',
@@ -6,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./get-like.component.css']
 })
 export class GetLikeComponent implements OnInit {
+  public type = Constants.typeComponent.GET_LIKE_COMPONENT
 
   constructor() { }
 

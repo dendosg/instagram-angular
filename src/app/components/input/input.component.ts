@@ -6,10 +6,14 @@ import { Component, OnInit, Output, Input } from "@angular/core";
   styleUrls: ["./input.component.css"]
 })
 export class InputComponent implements OnInit {
-  public inputValue;
-  @Input() name;
   @Input() public type: string;
-  constructor() {}
+  public inputValue: string;
+  constructor() { }
 
-  ngOnInit() {}
+  public get inputValues(): string[] {
+    if (!this.inputValue) return [];
+    return this.inputValue.split("\n").filter(item => item);
+  }
+
+  ngOnInit() { }
 }

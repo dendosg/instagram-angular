@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { InstagramService } from "../_service/instagram.service";
+import { Constants } from "../utils/Constants";
 
 @Component({
   selector: "app-get-comment",
@@ -7,6 +8,7 @@ import { InstagramService } from "../_service/instagram.service";
   styleUrls: ["./get-comment.component.css"]
 })
 export class GetCommentComponent implements OnInit {
+  public type = Constants.typeComponent.GET_COMMENT_COMPONENT
   constructor(
     private instagramService: InstagramService
   ) {

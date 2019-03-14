@@ -9,9 +9,9 @@ import { AccountModel } from 'src/model/account.model';
 })
 export class OptionComponent implements OnInit {
   @Input() public type: string;
+  public optionValue: object;
   public selectedAccountIds: string[] = [];
   public accounts: AccountModel[] = [];
-  
   constructor(private accountService: AccountService) { }
 
   public get selectedAccounts(): AccountModel[] {
@@ -24,6 +24,7 @@ export class OptionComponent implements OnInit {
     this.accountService.getAccounts().then(accounts => {
       if (!accounts) return;
       this.accounts = accounts;
+      this.selectedAccountIds = this.accounts.map(account => account._id)
       console.log(this.accounts);
     });
   }

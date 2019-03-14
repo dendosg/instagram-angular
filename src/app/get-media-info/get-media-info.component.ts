@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Constants } from '../utils/Constants';
 
 @Component({
   selector: 'app-get-media-info',
@@ -6,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./get-media-info.component.css']
 })
 export class GetMediaInfoComponent implements OnInit {
+  public type = Constants.typeComponent.GET_MEDIA_INFO_COMPONENT
 
   constructor() { }
 

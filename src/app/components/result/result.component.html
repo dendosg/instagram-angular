@@ -1,10 +1,5 @@
-<nz-table #basicTable [nzData]="results">
+<nz-table #basicTable [nzData]="fakeResults">
   <thead>
-    <tr *ngIf="type === 'GET_LIKE_COMPONENT'">
-      <th>Id</th>
-      <th>Full Name</th>
-      <th>Username</th>
-    </tr>
 
     <tr *ngIf="type === 'GET_COMMENT_COMPONENT'">
       <th>Id</th>
@@ -14,14 +9,14 @@
       <th>Owner Username</th>
     </tr>
 
-    <tr *ngIf="type === 'GET_FOLLOWER_COMPONENT' || type === 'GET_FOLLOWING_COMPONENT'">
+    <tr *ngIf="type === 'GET_FOLLOWER_COMPONENT' || type === 'GET_FOLLOWING_COMPONENT' || type === 'GET_LIKE_COMPONENT' ">
       <td>Id</td>
       <td>Username</td>
       <td>Full Name</td>
       <td>Is Verified</td>
     </tr>
 
-    <tr *ngIf="type === 'GET_MEDIA_COMPONENT'">
+    <tr *ngIf="type === 'GET_MEDIA_COMPONENT' || type === 'GET_MEDIA_INFO_COMPONENT'">
       <td>Id</td>
       <td>Owner Id</td>
       <td>Thumbnail</td>
@@ -31,36 +26,42 @@
       <td>Comment</td>
       <td>Like</td>
       <td>Taken at</td>
+      <td>Location</td>
     </tr>
   </thead>
 
-  <tbody *ngIf="type === 'GET_MEDIA_COMPONENT'">
+  <tbody *ngIf="type === 'GET_MEDIA_COMPONENT' || type === 'GET_MEDIA_INFO_COMPONENT'">
     <tr *ngFor="let data of basicTable.data">
-      <td>{{data.id}}</td>
-      <td>{{data.owner.id}}</td>
+      <td>{{data['id']}}</td>
+      <td>{{data['owner'].id}}</td>
       <td>
         <!-- <img [src]="data.thumbnail_resources[0].src" /> -->
-        <img [src]="data.display_url" height="150" />
+        <img [src]="data['display_url']" height="150" />
       </td>
-      <td>{{data.is_video}}</td>
+      <td>{{data['is_video']}}</td>
       <td>
-        <span nz-tooltip [nzTitle]="data.edge_media_to_caption.edges[0]?.node?.text">
-          {{data.edge_media_to_caption.edges[0]?.node?.text | slice:0:20}}
+        <span nz-tooltip [nzTitle]="data['edge_media_to_caption'].edges[0]?.node?.text">
+          {{data['edge_media_to_caption'].edges[0]?.node?.text | slice:0:20}}
         </span>
       </td>
       <td>
-        <span nz-tooltip [nzTitle]="data.shortcode">
-          <a href="https://www.instagram.com/p/{{data.shortcode}}" target="_blank">{{data.shortcode}}</a>
+        <span nz-tooltip [nzTitle]="data['shortcode']">
+          <a href="https://www.instagram.com/p/{{data['shortcode']}}" target="_blank">{{data['shortcode']}}</a>
         </span>
       </td>
-      <td>{{data.edge_media_to_comment.count}}</td>
-      <td>{{data.edge_media_preview_like.count}}</td>
-      <td>{{data.taken_at_timestamp}}</td>
+      <td>{{data['edge_media_to_comment'].count}}</td>
+      <td>{{data['edge_media_preview_like'].count}}</td>
+      <td>{{getFormatDate(data['taken_at_timestamp'])}}</td>
+      <td *ngIf="data['location']">
+        <span nz-tooltip [nzTitle]="data['location'].id">
+          <a href="https://www.instagram.com/explore/locations/{{data['location'].id}}/{{data['location'].slug}}/"
+            target="_blank">{{data['location'].name}}</a>
+        </span>
+      </td>
     </tr>
   </tbody>
 
-
-  <tbody *ngIf="type === 'GET_FOLLOWER_COMPONENT' || type === 'GET_FOLLOWING_COMPONENT'">
+  <tbody *ngIf="type === 'GET_FOLLOWER_COMPONENT' || type === 'GET_FOLLOWING_COMPONENT' || type === 'GET_LIKE_COMPONENT' ">
     <tr *ngFor="let data of basicTable.data">
       <td>{{data.id}}</td>
       <td>
@@ -69,14 +70,6 @@
       </td>
       <td>{{data.full_name}}</td>
       <td>{{data.is_verified}}</td>
-    </tr>
-  </tbody>
-
-  <tbody *ngIf="type === 'GET_LIKE_COMPONENT'">
-    <tr *ngFor="let data of basicTable.data">
-      <td>{{data.id}}</td>
-      <td>{{data.full_name}}</td>
-      <td><a href="https://www.instagram.com/{{data.username}}" target="_blank">{{data.username}}</a></td>
     </tr>
   </tbody>
 
@@ -96,4 +89,4 @@
 </nz-table>
 
 
-<span>From result:{{results[2] | json}}</span>
+<span>From result:{{results[0] | json}}</span>

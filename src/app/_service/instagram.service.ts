@@ -57,7 +57,7 @@ export class InstagramService {
     });
   }
 
-  public getMedia({ cookie, shortcode }) {
+  public getMediaInfo({ cookie, shortcode }) {
     return this.commonRequest({
       cookie,
       input: shortcode,

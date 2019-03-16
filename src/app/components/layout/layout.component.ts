@@ -21,14 +21,14 @@ export class LayoutComponent implements OnInit {
   public working: Task[] = [];
   public done: Task[] = [];
 
-  public count: { [key: string]: number } = {}
+  public count: { [key: string]: number } = {};
   public total: { [key: string]: number } = {};
   public loading: { [key: string]: boolean } = {};
 
   // Data of app
-  constructor(private instagramService: InstagramService) { }
+  constructor(private instagramService: InstagramService) {}
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   public getPercentResult(input) {
     return Math.ceil((this.count[input] / this.total[input]) * 100) || 0;
@@ -132,6 +132,18 @@ export class LayoutComponent implements OnInit {
             break;
         }
         break;
+      case Constants.typeComponent.GET_MEDIA_INFO_COMPONENT:
+        query = this.instagramService.getMediaInfo({
+          cookie,
+          shortcode: input
+        });
+        break;
+      case Constants.typeComponent.GET_USER_INFO_COMPONENT:
+        query = this.instagramService.getUserByUsername({
+          cookie,
+          username: input
+        });
+        break;
       default:
         break;
     }
@@ -140,16 +152,21 @@ export class LayoutComponent implements OnInit {
       if (statusCode !== 200 && !data)
         return Promise.reject("getResultForOneInput error");
       if (!data) return Promise.resolve({ cookie, input });
-
-      if (!data.data) return this.results.push(data);
-
+      console.log(data);
+      if (!data.data) {
+        this.results = this.results.concat([data]);
+        return Promise.resolve({ cookie, input });
+      }
       const result = data.data;
       this.count[input] += result.length;
       this.results = this.results.concat(result);
 
       if (!data.page_info) return Promise.resolve({ cookie, input });
 
-      const { count, page_info: { end_cursor, has_next_page } } = data;
+      const {
+        count,
+        page_info: { end_cursor, has_next_page }
+      } = data;
       this.total[input] = count;
       if (!has_next_page) return Promise.resolve({ cookie, input });
       return this.getResultForOneInput({ input, cookie, after: end_cursor });

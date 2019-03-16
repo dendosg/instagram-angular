@@ -69,7 +69,8 @@ export class InstagramService {
     return this.commonRequest({
       cookie,
       input: shortcode,
-      type: Constants.typeRequest.GET_LIKE
+      type: Constants.typeRequest.GET_LIKE,
+      after
     });
   }
 

@@ -158,7 +158,7 @@ export class InstagramService {
 
   public search({ cookie, query, context }) {
     return Axios({
-      method: 'post',
+      method: "post",
       url: Constants.baseApiUrl,
       data: {
         type: Constants.typeRequest.SEARCH,
@@ -166,11 +166,21 @@ export class InstagramService {
         context,
         cookie
       }
-    })
+    });
   }
 
-  public getMyStories({ cookie }) {
-    return this.commonRequest({ cookie, type: Constants.typeRequest.GET_STORIES })
+  public async getMyStories({ cookie }) {
+    const listStoriesData = (await this.commonRequest({
+      cookie,
+      type: Constants.typeRequest.GET_STORIES
+    })).data;
+    const { statusCode, data } = listStoriesData
+    const storyIds = data.map(story => story.id);
+    return this.commonRequest({
+      cookie,
+      input: storyIds,
+      type: "GET_STORIES_BY_IDS"
+    });
   }
 
   public commonRequest({ cookie, input = null, type, after = null }) {

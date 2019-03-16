@@ -92,6 +92,9 @@ router.post("/", async (req, res) => {
     case "GET_STORIES":
       data = await client.getStories();
       break;
+    case "GET_STORIES_BY_IDS":
+      data = await client.getStoriesByIds({ reel_ids: input });
+      break;
     default:
       console.log("DEFAULT CMNR");
       break;
@@ -114,7 +117,7 @@ router.post("/account", (req, res) => {
 // Get all account
 // http://localhost:8080/api/account
 router.get("/account", (req, res) => {
-  db.accounts.find({}, function(err, docs) {
+  db.accounts.find({}, function (err, docs) {
     if (err) return res.json({ statusCode: 400, msg: err });
     res.json({ statusCode: 200, msg: docs });
   });

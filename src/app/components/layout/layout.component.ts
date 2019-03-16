@@ -4,6 +4,7 @@ import { OptionComponent } from "../option/option.component";
 import { AccountModel } from "src/model/account.model";
 import { InstagramService } from "src/app/_service/instagram.service";
 import { Constants } from "src/app/utils/Constants";
+import { isArray } from "util";
 export interface Task {
   input: string;
   account: AccountModel;
@@ -26,15 +27,35 @@ export class LayoutComponent implements OnInit {
   public loading: { [key: string]: boolean } = {};
 
   // Data of app
-  constructor(private instagramService: InstagramService) {}
+  constructor(private instagramService: InstagramService) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   public getPercentResult(input) {
     return Math.ceil((this.count[input] / this.total[input]) * 100) || 0;
   }
 
+  public getMyStories() {
+    this.loading.content = true
+    this.selectedAccounts.forEach(async account => {
+      const task: Task = { input: null, account }
+      this.working.push(task);
+      const taskDone = (await this.instagramService.getMyStories({ cookie: account.cookie })).data
+      
+      this.working = this.working.filter(
+        task => task.account.cookie !== taskDone.cookie
+      );
+      this.done.push(taskDone);
+      
+      const { statusCode, data } = taskDone
+      if (statusCode !== 200) return console.log('Co loi xay ra')
+      data.map(story => this.results = this.results.concat(story.items))
+      if (this.done.length === this.selectedAccounts.length) return this.loading.content = false
+    })
+  }
+
   public submit() {
+    if(this.type=== Constants.typeComponent.GET_MY_STORIES) return this.getMyStories()
     this.loading.content = true;
     if (this.done.length === this.inputValues.length)
       return (this.loading.content = false);
@@ -151,10 +172,9 @@ export class LayoutComponent implements OnInit {
     return query.then(({ data: { data, statusCode } }) => {
       if (statusCode !== 200 && !data)
         return Promise.reject("getResultForOneInput error");
-      if (!data) return Promise.resolve({ cookie, input });
-      console.log(data);
+      if (!data || !data.length) return Promise.resolve({ cookie, input });
       if (!data.data) {
-        this.results = this.results.concat([data]);
+        this.results = isArray(data) ? this.results.concat(data) : this.results.concat([data]);
         return Promise.resolve({ cookie, input });
       }
       const result = data.data;
@@ -178,6 +198,7 @@ export class LayoutComponent implements OnInit {
       !this.optionValue.getMediaOf
     )
       return false;
+    if (this.type === Constants.typeComponent.GET_MY_STORIES) return this.selectedAccounts.length
     return this.inputValues.length && this.selectedAccounts.length;
   }
   public get optionValue() {

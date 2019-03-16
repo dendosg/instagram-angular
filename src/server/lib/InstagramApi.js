@@ -15,9 +15,10 @@ class Instagram {
       cookie
     };
     const user_id =
-      cookie.match(/user_id=\d+/gm) &&
-      cookie.match(/user_id=\d+/gm)[0].slice(8) || 0;
-      
+      (cookie.match(/user_id=\d+/gm) &&
+        cookie.match(/user_id=\d+/gm)[0].slice(8)) ||
+      0;
+
     const userAgent = useragentFromSeed(user_id);
     this.request = request.defaults({
       baseUrl,
@@ -155,7 +156,7 @@ class Instagram {
     });
   }
   getStories() {
-    const query_hash = "60b755363b5c230111347a7a4e242001";
+    const query_hash = "802af4ef297b39666fd5817cb99f1092";
     const variables = { only_stories: true };
     return this.request("/graphql/query/", { qs: { query_hash, variables } })
       .then(res =>
@@ -166,6 +167,25 @@ class Instagram {
       .then(stories => ({ statusCode: 200, data: stories }))
       .catch(e => ({ statusCode: 400, data: [] }));
   }
+
+  getStoriesByIds({ reel_ids }) {
+    const query_hash = "de8017ee0a7c9c45ec4260733d81ea31";
+    const variables = {
+      reel_ids,
+      tag_names: [],
+      location_ids: [],
+      highlight_reel_ids: [],
+      precomposed_overlay: false,
+      show_story_viewer_list: true,
+      story_viewer_fetch_count: 50,
+      story_viewer_cursor: ''
+    };
+    return this.request(`graphql/query?query_hash=${query_hash}&variables=${JSON.stringify(variables)}`)
+      .then(res => res.data.reels_media)
+      .then(stories => ({ statusCode: 200, data: stories }))
+      .catch(e => ({ statusCode: 400, data: [] }))
+  }
+
   get_media_by_location({ locationId, first = 8, after }) {
     return this._getData({
       fieldName: "edge_location_to_media",
@@ -340,8 +360,8 @@ class Instagram {
   getMediaByShortcode({ shortcode }) {
     return this.request(`/p/${shortcode}/?__a=1`)
       .then(res => {
-        console.log('res',res)
-        return { statusCode: 200, data: res.graphql.shortcode_media }
+        console.log("res", res);
+        return { statusCode: 200, data: res.graphql.shortcode_media };
       })
       .catch(e => ({ statusCode: e.statusCode, data: null }));
   }

@@ -10,6 +10,7 @@ import { GetMediaComponent } from "./get-media/get-media.component";
 import { GetMediaInfoComponent } from "./get-media-info/get-media-info.component";
 import { GetUserInfoComponent } from "./get-user-info/get-user-info.component";
 import { SearchComponent } from "./search/search.component";
+import { GetMyStoriesComponent } from "./get-my-stories/get-my-stories.component";
 
 const routes: Routes = [
   { path: "comment", component: GetCommentComponent },
@@ -20,6 +21,7 @@ const routes: Routes = [
   { path: "media-info", component: GetMediaInfoComponent },
   { path: "user-info", component: GetUserInfoComponent },
   { path: "search", component: SearchComponent },
+  { path: "get-my-stories", component: GetMyStoriesComponent },
   { path: "", component: SearchComponent },
 ];
 

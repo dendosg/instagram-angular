@@ -25,6 +25,7 @@ import { InputComponent } from './components/input/input.component';
 import { OptionComponent } from './components/option/option.component';
 import { ButtonsComponent } from './components/buttons/buttons.component';
 import { ResultComponent } from './components/result/result.component';
+import { GetMyStoriesComponent } from './get-my-stories/get-my-stories.component';
 
 registerLocaleData(en);
 
@@ -44,7 +45,8 @@ registerLocaleData(en);
     InputComponent,
     OptionComponent,
     ButtonsComponent,
-    ResultComponent
+    ResultComponent,
+    GetMyStoriesComponent
   ],
   imports: [BrowserModule, AppRoutingModule, ModalModule, NgZorroAntdModule, FormsModule, HttpClientModule, BrowserAnimationsModule],
   providers: [{ provide: NZ_I18N, useValue: en_US }],

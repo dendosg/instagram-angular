@@ -34,11 +34,14 @@
       <li class="nav-item">
         <a class="nav-link" routerLink="/user-info">Get User Info</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/get-my-stories">Get My Stories</a>
+      </li>
     </ul>
     <button class="btn btn-outline-success my-2 my-sm-0" (click)="showAddAccountModal()">
       Add Account
     </button>
-    
+
     <!-- Add Account Modal -->
     <nz-modal [(nzVisible)]="isShowAddAccountModal" nzTitle="The first Modal" (nzOnCancel)="handleCancel()" (nzOnOk)="addAccount()">
       <textarea rows="4" nz-input [(ngModel)]="cookies" placeholder="Enter cookies"></textarea>

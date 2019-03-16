@@ -16,7 +16,9 @@ export class ResultComponent implements OnInit {
   public getFormatDate(timestamp) {
     return moment(timestamp * 1000).fromNow();
   }
-
+  public get isViderere(){
+    return this.results.filter(item => item['is_video'])[0]
+  }
   public sort(type: string) {
     if (type === "comment") {
       this.results = this.results.sort((a, b) =>

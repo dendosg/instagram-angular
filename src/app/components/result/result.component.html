@@ -40,7 +40,40 @@
       <td>Is Verified</td>
       <td>Is Private</td>
     </tr>
+
+
+    <tr *ngIf="type === 'GET_MY_STORIES' ">
+      <td>Id</td>
+      <td>Thumbnail</td>
+      <td>Video</td>
+      <td>Taken At</td>
+      <td>Expiring At</td>
+      <td>Owner Id</td>
+      <td>Owner Username</td>
+    </tr>
   </thead>
+
+
+  <tbody *ngIf="type === 'GET_MY_STORIES'">
+    <tr *ngFor="let data of basicTable.data">
+      <td>{{data.id}}</td>
+      <td>
+        <img [src]="data.display_url" height="150" />
+      </td>
+      <td>
+        <a *ngIf="data.is_video" [href]="data.video_resources[data.video_resources.length-1].src" target="_blank">VIDEO</a>
+      </td>
+      <td>{{getFormatDate(data.taken_at_timestamp)}}</td>
+      <td>{{getFormatDate(data.expiring_at_timestamp)}}</td>
+      <td>{{data.owner.id}}</td>
+      <td>
+        <nz-avatar nzIcon="user" [nzSrc]="data.owner.profile_pic_url"></nz-avatar>
+        <a href="https://www.instagram.com/{{data.owner.username}}" target="_blank">{{data.owner.username}}</a>
+      </td>
+    </tr>
+  </tbody>
+
+
 
   <tbody *ngIf="type === 'GET_USER_INFO_COMPONENT'">
     <tr *ngFor="let data of basicTable.data">
@@ -64,9 +97,6 @@
       <td>{{data.is_private}}</td>
     </tr>
   </tbody>
-
-
-
 
   <tbody *ngIf="type === 'GET_MEDIA_COMPONENT' || type === 'GET_MEDIA_INFO_COMPONENT'">
     <tr *ngFor="let data of basicTable.data">

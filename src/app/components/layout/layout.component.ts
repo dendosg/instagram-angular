@@ -43,9 +43,9 @@ export class LayoutComponent implements OnInit {
       const taskDone = (await this.instagramService.getMyStories({ cookie: account.cookie })).data
       
       this.working = this.working.filter(
-        task => task.account.cookie !== taskDone.cookie
+        task => task.account.cookie !== account.cookie
       );
-      this.done.push(taskDone);
+      this.done.push(task);
       
       const { statusCode, data } = taskDone
       if (statusCode !== 200) return console.log('Co loi xay ra')

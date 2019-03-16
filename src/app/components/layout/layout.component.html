@@ -3,12 +3,12 @@
     <app-input [type]="type" [optionValue]="optionValue"></app-input>
     <p>results: {{results?.length}}</p>
     <p *ngFor="let taskWorking of working">
-      WORKING: <nz-tag [nzColor]="'volcano'">{{taskWorking.input}}</nz-tag>
+      WORKING: <nz-tag [nzColor]="'volcano'">{{taskWorking.input || taskWorking.account.user.full_name}}</nz-tag>
       <nz-tag [nzColor]="'green'">Total: {{total[taskWorking.input] || 0}}</nz-tag>
       <nz-progress [nzPercent]="getPercentResult(taskWorking.input)" nzStatus="active"></nz-progress>
     </p>
     <p *ngFor="let taskDone of done">
-      DONE: <nz-tag [nzColor]="'green'">{{taskDone.input}}</nz-tag>
+      DONE: <nz-tag [nzColor]="'green'">{{taskDone.input || taskDone.account.user.full_name}}</nz-tag>
     </p>
   </div>
   <div nz-col class="gutter-row" nzSpan="8">

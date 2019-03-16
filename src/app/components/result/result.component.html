@@ -84,7 +84,7 @@
     <tr *ngFor="let data of basicTable.data">
       <td>{{data.id}}</td>
       <td> <span nz-tooltip [nzTitle]="data.text">{{data.text | slice:0:20}}</span></td>
-      <td>{{data.created_at}}</td>
+      <td>{{getFormatDate(data.created_at)}}</td>
       <td>{{data.owner.id}}</td>
       <td>
         <nz-avatar nzIcon="user" [nzSrc]="data.owner.profile_pic_url"></nz-avatar>

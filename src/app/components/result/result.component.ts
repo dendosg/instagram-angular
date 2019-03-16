@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { Constants } from "src/app/utils/Constants";
+import * as moment from 'moment';
 
 @Component({
   selector: "app-result",
@@ -11,5 +12,8 @@ export class ResultComponent implements OnInit {
   @Input() public results: object[];
   constructor() {}
 
+  public getFormatDate(timestamp){
+    return moment(timestamp*1000).fromNow()
+  }
   ngOnInit() {}
 }

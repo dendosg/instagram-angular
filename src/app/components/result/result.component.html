@@ -1,4 +1,4 @@
-<nz-table #basicTable [nzData]="fakeResults">
+<nz-table #basicTable [nzData]="results">
   <thead>
 
     <tr *ngIf="type === 'GET_COMMENT_COMPONENT'">
@@ -28,34 +28,71 @@
       <td>Taken at</td>
       <td>Location</td>
     </tr>
+
+    <tr *ngIf="type === 'GET_USER_INFO_COMPONENT' ">
+      <td>Id</td>
+      <td>Bio</td>
+      <td>Website</td>
+      <td>Follower</td>
+      <td>Following</td>
+      <td>Full Name</td>
+      <td>Username</td>
+      <td>Is Verified</td>
+      <td>Is Private</td>
+    </tr>
   </thead>
+
+  <tbody *ngIf="type === 'GET_USER_INFO_COMPONENT'">
+    <tr *ngFor="let data of basicTable.data">
+      <td>{{data.id}}</td>
+      <td>
+        <span nz-tooltip [nzTitle]="data.biography">
+          {{data.biography | slice:0:20}}
+        </span>
+      </td>
+      <td>
+        <a [href]="data.external_url" target="_blank">{{data.external_url}}</a>
+      </td>
+      <td>{{data.edge_followed_by.count}}</td>
+      <td>{{data.edge_follow.count}}</td>
+      <td>{{data.full_name}}</td>
+      <td>
+        <nz-avatar nzIcon="user" [nzSrc]="data.profile_pic_url"></nz-avatar>
+        <a href="https://www.instagram.com/{{data.username}}" target="_blank">{{data.username}}</a>
+      </td>
+      <td>{{data.is_verified}}</td>
+      <td>{{data.is_private}}</td>
+    </tr>
+  </tbody>
+
+
+
 
   <tbody *ngIf="type === 'GET_MEDIA_COMPONENT' || type === 'GET_MEDIA_INFO_COMPONENT'">
     <tr *ngFor="let data of basicTable.data">
-      <td>{{data['id']}}</td>
-      <td>{{data['owner'].id}}</td>
+      <td>{{data.id}}</td>
+      <td>{{data.owner.id}}</td>
       <td>
         <!-- <img [src]="data.thumbnail_resources[0].src" /> -->
-        <img [src]="data['display_url']" height="150" />
+        <img [src]="data.display_url" height="150" />
       </td>
-      <td>{{data['is_video']}}</td>
+      <td>{{data.is_video}}</td>
       <td>
-        <span nz-tooltip [nzTitle]="data['edge_media_to_caption'].edges[0]?.node?.text">
-          {{data['edge_media_to_caption'].edges[0]?.node?.text | slice:0:20}}
+        <span nz-tooltip [nzTitle]="data.edge_media_to_caption.edges[0]?.node?.text">
+          {{data.edge_media_to_caption.edges[0]?.node?.text | slice:0:20}}
         </span>
       </td>
       <td>
-        <span nz-tooltip [nzTitle]="data['shortcode']">
-          <a href="https://www.instagram.com/p/{{data['shortcode']}}" target="_blank">{{data['shortcode']}}</a>
+        <span nz-tooltip [nzTitle]="data.shortcode">
+          <a href="https://www.instagram.com/p/{{data.shortcode}}" target="_blank">{{data.shortcode}}</a>
         </span>
       </td>
-      <td>{{data['edge_media_to_comment'].count}}</td>
-      <td>{{data['edge_media_preview_like'].count}}</td>
-      <td>{{getFormatDate(data['taken_at_timestamp'])}}</td>
-      <td *ngIf="data['location']">
-        <span nz-tooltip [nzTitle]="data['location'].id">
-          <a href="https://www.instagram.com/explore/locations/{{data['location'].id}}/{{data['location'].slug}}/"
-            target="_blank">{{data['location'].name}}</a>
+      <td>{{data.edge_media_to_comment.count}}</td>
+      <td>{{data.edge_media_preview_like.count}}</td>
+      <td>{{getFormatDate(data.taken_at_timestamp)}}</td>
+      <td *ngIf="data.location">
+        <span nz-tooltip [nzTitle]="data.location.id">
+          <a href="https://www.instagram.com/explore/locations/{{data.location.id}}/{{data.location.slug}}/" target="_blank">{{data.location.name}}</a>
         </span>
       </td>
     </tr>

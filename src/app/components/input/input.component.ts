@@ -1,4 +1,5 @@
 import { Component, OnInit, Output, Input } from "@angular/core";
+import { Constants } from "src/app/utils/Constants";
 
 @Component({
   selector: "app-input",
@@ -7,12 +8,32 @@ import { Component, OnInit, Output, Input } from "@angular/core";
 })
 export class InputComponent implements OnInit {
   @Input() public type: string;
+  @Input() public optionValue;
   public inputValue: string;
+
   constructor() { }
 
   public get inputValues(): string[] {
     if (!this.inputValue) return [];
     return this.inputValue.split("\n").filter(item => item);
+  }
+
+  public get placeholder() {
+    switch (this.type) {
+      case Constants.typeComponent.GET_FOLLOWER_COMPONENT:
+      case Constants.typeComponent.GET_FOLLOWING_COMPONENT:
+        return "Enter userId";
+      case Constants.typeComponent.GET_COMMENT_COMPONENT:
+      case Constants.typeComponent.GET_LIKE_COMPONENT:
+      case Constants.typeComponent.GET_MEDIA_COMPONENT:
+        switch (this.optionValue.getMediaOf) {
+          case 'user': return 'Enter userid'
+          case 'hashtag': return 'Enter hashtag name'
+          case 'location': return 'Enter locationId'
+          default: return ''
+        }
+      default: return '';
+    }
   }
 
   ngOnInit() { }

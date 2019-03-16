@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from "@angular/core";
+import { Constants } from "src/app/utils/Constants";
 
 @Component({
   selector: "app-result",
@@ -7,27 +8,7 @@ import { Component, OnInit, Input } from "@angular/core";
 })
 export class ResultComponent implements OnInit {
   @Input() public type: string;
-
-  public dataSet = [
-    {
-      key: "1",
-      name: "John Brown",
-      age: 32,
-      address: "New York No. 1 Lake Park"
-    },
-    {
-      key: "2",
-      name: "Jim Green",
-      age: 42,
-      address: "London No. 1 Lake Park"
-    },
-    {
-      key: "3",
-      name: "Joe Black",
-      age: 32,
-      address: "Sidney No. 1 Lake Park"
-    }
-  ];
+  @Input() public results: object[];
   constructor() {}
 
   ngOnInit() {}

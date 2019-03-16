@@ -116,10 +116,8 @@ class Instagram {
     })
       .then(data => {
         if (typeof data != "object") {
-          console.log(data);
           throw new Error("data is not an object");
         }
-        console.log(data.data[type][fieldName]);
         return data.data[type][fieldName];
       })
       .then(({ count, page_info, edges }) => ({
@@ -140,7 +138,7 @@ class Instagram {
         return { statusCode: e.statusCode, data: [] };
       });
   }
-  getComment({ shortcode, first = 2, after }) {
+  getComment({ shortcode, first = 30, after }) {
     return this._getData({
       fieldName: "edge_media_to_comment",
       type: "shortcode_media",
@@ -148,7 +146,7 @@ class Instagram {
       variables: { shortcode, first, after }
     });
   }
-  getLiker({ shortcode, first = 2, after }) {
+  getLiker({ shortcode, first = 50, after }) {
     return this._getData({
       fieldName: "edge_liked_by",
       type: "shortcode_media",

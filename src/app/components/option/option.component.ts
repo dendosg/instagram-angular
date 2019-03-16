@@ -9,7 +9,11 @@ import { AccountModel } from 'src/model/account.model';
 })
 export class OptionComponent implements OnInit {
   @Input() public type: string;
-  public optionValue: object;
+
+  public optionValue : {getMediaOf: string} = {
+    getMediaOf: ''
+  }
+
   public selectedAccountIds: string[] = [];
   public accounts: AccountModel[] = [];
   constructor(private accountService: AccountService) { }
@@ -19,7 +23,9 @@ export class OptionComponent implements OnInit {
       this.selectedAccountIds.includes(account._id)
     );
   }
-
+  public ngModelChangeXX(){
+    console.log('ngModelChangeXX')
+  }
   ngOnInit() {
     this.accountService.getAccounts().then(accounts => {
       if (!accounts) return;

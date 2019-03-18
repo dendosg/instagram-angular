@@ -4,61 +4,140 @@
     <tr *ngIf="type === 'GET_COMMENT_COMPONENT'">
       <th>Id</th>
       <th>Text</th>
-      <th>Created At</th>
+      <th (click)="sort('created_at')">Created At</th>
       <th>Owner Id</th>
       <th>Owner Username</th>
     </tr>
 
     <tr *ngIf="type === 'GET_FOLLOWER_COMPONENT' || type === 'GET_FOLLOWING_COMPONENT' || type === 'GET_LIKE_COMPONENT' ">
-      <td>Id</td>
-      <td>Username</td>
-      <td>Full Name</td>
-      <td>Is Verified</td>
+      <th>Id</th>
+      <th>Username</th>
+      <th>Full Name</th>
+      <th (click)="sort('is_verified')">Is Verified</th>
     </tr>
 
     <tr *ngIf="type === 'GET_MEDIA_COMPONENT' || type === 'GET_MEDIA_INFO_COMPONENT'">
-      <td>Id</td>
-      <td>Owner Id</td>
-      <td>Thumbnail</td>
-      <td>Is Video</td>
-      <td>Caption</td>
-      <td>Shortcode</td>
-      <td>Comment</td>
-      <td>Like</td>
-      <td>Taken at</td>
-      <td>Location</td>
+      <th>Id</th>
+      <th>Owner Id</th>
+      <th>Thumbnail</th>
+      <th>Is Video</th>
+      <th>Caption</th>
+      <th>Shortcode</th>
+      <th (click)="sort('comment')">Comment</th>
+      <th (click)="sort('like')">Like</th>
+      <th (click)="sort('taken_at_timestamp')">Taken at</th>
+      <th>Location</th>
     </tr>
 
     <tr *ngIf="type === 'GET_USER_INFO_COMPONENT' ">
-      <td>Id</td>
-      <td>Bio</td>
-      <td>Website</td>
-      <td>Follower</td>
-      <td>Following</td>
-      <td>Full Name</td>
-      <td>Username</td>
-      <td>Is Verified</td>
-      <td>Is Private</td>
+      <th>Id</th>
+      <th>Bio</th>
+      <th>Website</th>
+      <th>Follower</th>
+      <th>Following</th>
+      <th>Full Name</th>
+      <th>Username</th>
+      <th>Is Verified</th>
+      <th>Is Private</th>
     </tr>
 
 
     <tr *ngIf="type === 'GET_MY_STORIES' ">
-      <td>Id</td>
-      <td>Thumbnail</td>
-      <td>Video</td>
-      <td>Taken At</td>
-      <td>Expiring At</td>
-      <td>Owner Id</td>
-      <td>Owner Username</td>
+      <th>Id</th>
+      <th>Thumbnail</th>
+      <th>Video</th>
+      <th>Taken At</th>
+      <th>Expiring At</th>
+      <th>Owner Id</th>
+      <th>Owner Username</th>
+    </tr>
+
+
+    <tr *ngIf="type === 'SEARCH_COMPONENT' && optionValue.contextSearch === 'user' ">
+      <th>Id</th>
+      <th>Username</th>
+      <th>Full Name</th>
+      <th (click)="sort('follower_count')">Follower</th>
+      <th (click)="sort('is_verified')">Is Verified</th>
+    </tr>
+    <tr *ngIf="type === 'SEARCH_COMPONENT' && optionValue.contextSearch === 'hashtag' ">
+      <th>Id</th>
+      <th>Name</th>
+      <th (click)="sort('media_count')">Media Count</th>
+    </tr>
+    <tr *ngIf="type === 'SEARCH_COMPONENT' && optionValue.contextSearch === 'place' ">
+      <th>Id</th>
+      <th>Title</th>
+      <th>external_source</th>
+      <th>facebook_places_id</th>
+      <th>address</th>
+      <th>lng</th>
+      <th>lat</th>
     </tr>
   </thead>
+
+
+
+  <tbody *ngIf="type === 'SEARCH_COMPONENT' && optionValue.contextSearch === 'user' ">
+    <tr *ngFor="let data of basicTable.data">
+      <td>{{data.pk}}</td>
+      <td>
+        <nz-avatar nzIcon="user" [nzSrc]="data.profile_pic_url"></nz-avatar>
+        <a href="https://www.instagram.com/{{data.username}}" target="_blank">{{data.username}}</a>
+      </td>
+      <td>{{data.full_name}}</td>
+      <td>{{data.follower_count}}</td>
+      <td>
+        <nz-tag [nzColor]="data.is_verified ? 'blue' : 'grey'">{{data.is_verified ? 'Verified' : 'Not
+          verified'}}</nz-tag>
+      </td>
+    </tr>
+    <div [ngSwitch]="optionValue.contextSearch">
+      <div *ngSwitchCase="'user'">
+      </div>
+      <div *ngSwitchCase="'hashtag'">
+
+      </div>
+      <div *ngSwitchDefault>output2</div>
+    </div>
+
+  </tbody>
+  <tbody *ngIf="type === 'SEARCH_COMPONENT' && optionValue.contextSearch === 'hashtag' ">
+    <tr *ngFor="let data of basicTable.data">
+      <td>{{data.id}}</td>
+      <td>
+        <a href="https://www.instagram.com/explore/tags/{{data.name}}" target="_blank">
+          <nz-tag [nzColor]="'blue'">#{{data.name}}</nz-tag>
+        </a>
+      </td>
+      <td>{{data.media_count}}</td>
+    </tr>
+  </tbody>
+  <tbody *ngIf="type === 'SEARCH_COMPONENT' && optionValue.contextSearch === 'place' ">
+    <tr *ngFor="let data of basicTable.data">
+      <td>{{data.location.pk}}</td>
+      <td>
+        <a href="https://www.instagram.com/explore/locations/{{data.location.pk}}/{{data.slug}}/" target="_blank">
+          {{data.title}}
+        </a>
+      </td>
+      <td>{{data.location.external_source}}</td>
+      <td>{{data.location.facebook_places_id}}</td>
+      <td>{{data.location.address}}</td>
+      <td>{{data.location.lng}}</td>
+      <td>{{data.location.lat}}</td>
+    </tr>
+
+  </tbody>
+
+
 
 
   <tbody *ngIf="type === 'GET_MY_STORIES'">
     <tr *ngFor="let data of basicTable.data">
       <td>{{data.id}}</td>
       <td>
-        <img [src]="data.display_url" height="150" />
+        <img (click)="openImageInNewTab(data.display_url)" [src]="data.display_url" height="150" />
       </td>
       <td>
         <a *ngIf="data.is_video" [href]="data.video_resources[data.video_resources.length-1].src" target="_blank">VIDEO</a>
@@ -93,7 +172,9 @@
         <nz-avatar nzIcon="user" [nzSrc]="data.profile_pic_url"></nz-avatar>
         <a href="https://www.instagram.com/{{data.username}}" target="_blank">{{data.username}}</a>
       </td>
-      <td>{{data.is_verified}}</td>
+      <td>
+        <nz-tag [nzColor]="data.is_verified ? 'blue' : 'grey'">{{data.is_verified ? 'Verified' : 'Not verified'}}</nz-tag>
+      </td>
       <td>{{data.is_private}}</td>
     </tr>
   </tbody>
@@ -103,10 +184,12 @@
       <td>{{data.id}}</td>
       <td>{{data.owner.id}}</td>
       <td>
-        <!-- <img [src]="data.thumbnail_resources[0].src" /> -->
-        <img [src]="data.display_url" height="150" />
+        <img (click)="openImageInNewTab(data.display_url)" [src]="data.thumbnail_resources[0].src" />
+        <!-- <img (click)="openImageInNewTab(data.display_url)" [src]="data.display_url" height="150" /> -->
       </td>
-      <td>{{data.is_video}}</td>
+      <td>
+        <nz-tag [nzColor]="'cyan'">{{data.is_video ? 'Video' : 'Photo' }}</nz-tag>
+      </td>
       <td>
         <span nz-tooltip [nzTitle]="data.edge_media_to_caption.edges[0]?.node?.text">
           {{data.edge_media_to_caption.edges[0]?.node?.text | slice:0:20}}
@@ -136,7 +219,9 @@
         <a href="https://www.instagram.com/{{data.username}}" target="_blank">{{data.username}}</a>
       </td>
       <td>{{data.full_name}}</td>
-      <td>{{data.is_verified}}</td>
+      <td>
+        <nz-tag [nzColor]="data.is_verified ? 'blue' : 'grey'">{{data.is_verified ? 'Verified' : 'Not verified'}}</nz-tag>
+      </td>
     </tr>
   </tbody>
 

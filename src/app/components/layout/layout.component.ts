@@ -5,6 +5,9 @@ import { AccountModel } from "src/model/account.model";
 import { InstagramService } from "src/app/_service/instagram.service";
 import { Constants } from "src/app/utils/Constants";
 import { isArray } from "util";
+import lodash from 'lodash';
+import { NzMessageService } from "ng-zorro-antd";
+
 export interface Task {
   input: string;
   account: AccountModel;
@@ -21,13 +24,16 @@ export class LayoutComponent implements OnInit {
   public results: any[] = [];
   public working: Task[] = [];
   public done: Task[] = [];
-
+  public isStop: boolean = false;
   public count: { [key: string]: number } = {};
   public total: { [key: string]: number } = {};
   public loading: { [key: string]: boolean } = {};
 
   // Data of app
-  constructor(private instagramService: InstagramService) { }
+  constructor(
+    private instagramService: InstagramService,
+    private message: NzMessageService
+    ) { }
 
   ngOnInit() { }
 
@@ -50,12 +56,22 @@ export class LayoutComponent implements OnInit {
       const { statusCode, data } = taskDone
       if (statusCode !== 200) return console.log('Co loi xay ra')
       data.map(story => this.results = this.results.concat(story.items))
-      if (this.done.length === this.selectedAccounts.length) return this.loading.content = false
+      if (this.done.length === this.selectedAccounts.length){
+        this.results = lodash.sortBy(this.results,'expiring_at_timestamp')
+        return this.loading.content = false
+      } 
     })
   }
 
+  public stop() {
+    if (this.loading.content) {
+      this.loading.content = false
+      this.isStop = true
+    }
+  }
+  
   public submit() {
-    if(this.type=== Constants.typeComponent.GET_MY_STORIES) return this.getMyStories()
+    if (this.type === Constants.typeComponent.GET_MY_STORIES) return this.getMyStories()
     this.loading.content = true;
     if (this.done.length === this.inputValues.length)
       return (this.loading.content = false);
@@ -96,6 +112,7 @@ export class LayoutComponent implements OnInit {
   }
 
   public getResultForOneInput({ input, cookie, after }) {
+    if (this.isStop) return this.message.info('Stop')
     let query;
     switch (this.type) {
       case Constants.typeComponent.GET_COMMENT_COMPONENT:
@@ -129,6 +146,14 @@ export class LayoutComponent implements OnInit {
       case Constants.typeComponent.GET_MEDIA_COMPONENT:
         switch (this.optionValue.getMediaOf) {
           case "user":
+            if (this.optionValue.isGetTaggedMedia) {
+              query = this.instagramService.getMediaTaggedOfUser({
+                cookie,
+                userId: input,
+                after
+              })
+              break;
+            }
             query = this.instagramService.getMediaOfUser({
               cookie,
               userId: input,
@@ -136,6 +161,13 @@ export class LayoutComponent implements OnInit {
             });
             break;
           case "hashtag":
+            if (this.optionValue.isGetTopMedia) {
+              query = this.instagramService.getTopMediaOfHashtag({
+                cookie,
+                tag_name: input
+              })
+              break;
+            }
             query = this.instagramService.getMediaOfHashtag({
               cookie,
               tag_name: input,
@@ -143,6 +175,12 @@ export class LayoutComponent implements OnInit {
             });
             break;
           case "location":
+            if (this.optionValue.isGetTopMedia) {
+              query = this.instagramService.getTopMediaOfLocation({
+                cookie, locationId: input
+              })
+              break
+            }
             query = this.instagramService.getMediaOfLocation({
               cookie,
               locationId: input,
@@ -165,14 +203,18 @@ export class LayoutComponent implements OnInit {
           username: input
         });
         break;
+      case Constants.typeComponent.SEARCH_COMPONENT:
+        query = this.instagramService.search({
+          cookie, query: input, context: this.optionValue.contextSearch
+        })
+        break  
       default:
         break;
     }
 
     return query.then(({ data: { data, statusCode } }) => {
-      if (statusCode !== 200 && !data)
-        return Promise.reject("getResultForOneInput error");
-      if (!data || !data.length) return Promise.resolve({ cookie, input });
+      if (statusCode !== 200 && !data) return Promise.reject("getResultForOneInput error");
+      if (!data) return Promise.resolve({ cookie, input });
       if (!data.data) {
         this.results = isArray(data) ? this.results.concat(data) : this.results.concat([data]);
         return Promise.resolve({ cookie, input });

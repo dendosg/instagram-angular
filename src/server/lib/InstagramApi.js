@@ -457,7 +457,8 @@ class Instagram {
   search({ query, context = "blended" }) {
     return this.request("/web/search/topsearch/", {
       qs: { query, context, include_reel: true }
-    });
+    }).then(res => ({ statusCode: 200, data: res[`${context}s`].map(result => result[context]) }))
+      .catch(e => ({ statusCode: 400, data: null }))
   }
 }
 

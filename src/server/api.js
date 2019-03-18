@@ -13,7 +13,7 @@ router.post("/", async (req, res) => {
     type,
     latitude,
     longitude,
-    contextSearch
+    context
   } = req.body;
 
   if (!type) return res.json({ msg: "Vui long cung cap type" });
@@ -86,7 +86,7 @@ router.post("/", async (req, res) => {
     case "SEARCH":
       data = await client.search({
         query: input,
-        context: contextSearch //hashtag || place || user || blended
+        context //hashtag || place || user || blended
       });
       break;
     case "GET_STORIES":

@@ -5,8 +5,24 @@
 
 
 
-<nz-radio-group (ngModelChange)="ngModelChangeXX()" [(ngModel)]="optionValue.getMediaOf" *ngIf="type === 'GET_MEDIA_COMPONENT' " >
-  <label nz-radio nzValue="user">User</label>
-  <label nz-radio nzValue="hashtag">Hashtag</label>
-  <label nz-radio nzValue="location">Location</label>
-</nz-radio-group>
+
+<div *ngIf="type === 'GET_MEDIA_COMPONENT'">
+  <nz-radio-group [(ngModel)]="optionValue.getMediaOf">
+    <label nz-radio nzValue="user">User</label>
+    <label nz-radio nzValue="hashtag">Hashtag</label>
+    <label nz-radio nzValue="location">Location</label>
+  </nz-radio-group>
+  <div>
+    <label *ngIf="optionValue.getMediaOf && optionValue.getMediaOf !== 'user' " nz-checkbox [(ngModel)]="optionValue.isGetTopMedia">Top Media</label>
+    <label *ngIf="optionValue.getMediaOf === 'user' " nz-checkbox [(ngModel)]="optionValue.isGetTaggedMedia">Tagged Media</label>
+  </div>
+</div>
+
+
+<div *ngIf="type === 'SEARCH_COMPONENT'">
+    <nz-radio-group [(ngModel)]="optionValue.contextSearch">
+        <label nz-radio nzValue="user">User</label>
+        <label nz-radio nzValue="hashtag">Hashtag</label>
+        <label nz-radio nzValue="place">Place</label>
+      </nz-radio-group>
+</div>

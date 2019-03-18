@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { AccountService } from 'src/app/_service/account.service';
 import { AccountModel } from 'src/model/account.model';
 
+
 @Component({
   selector: "app-option",
   templateUrl: "./option.component.html",
@@ -9,10 +10,18 @@ import { AccountModel } from 'src/model/account.model';
 })
 export class OptionComponent implements OnInit {
   @Input() public type: string;
-
-  public optionValue : {getMediaOf: string} = {
-    getMediaOf: ''
-  }
+  public optionValue:
+    {
+      getMediaOf: string,
+      contextSearch:string,
+      isGetTopMedia: boolean,
+      isGetTaggedMedia: boolean
+    } = {
+      getMediaOf: '',
+      contextSearch: 'hashtag',
+      isGetTopMedia: false,
+      isGetTaggedMedia: false
+    }
 
   public selectedAccountIds: string[] = [];
   public accounts: AccountModel[] = [];
@@ -23,9 +32,7 @@ export class OptionComponent implements OnInit {
       this.selectedAccountIds.includes(account._id)
     );
   }
-  public ngModelChangeXX(){
-    console.log('ngModelChangeXX')
-  }
+
   ngOnInit() {
     this.accountService.getAccounts().then(accounts => {
       if (!accounts) return;

@@ -8,17 +8,17 @@
       <nz-progress [nzPercent]="getPercentResult(taskWorking.input)" nzStatus="active"></nz-progress>
     </p>
     <p *ngFor="let taskDone of done">
-      DONE: <nz-tag [nzColor]="'green'">{{taskDone.input || taskDone.account.user.full_name}}</nz-tag>
+      DONE: <nz-tag [nzColor]="'green'">{{taskDone.input || taskDone?.account?.user.full_name}}</nz-tag>
     </p>
   </div>
   <div nz-col class="gutter-row" nzSpan="8">
     <app-option [type]="type"></app-option>
   </div>
   <div nz-col class="gutter-row" nzSpan="8">
-    <app-buttons [loading]="loading" (submit)="submit()" [type]="type" [isAllowToSubmit]="isAllowToSubmit"></app-buttons>
+    <app-buttons [loading]="loading" (stop)="stop()" (submit)="submit()" [type]="type" [isAllowToSubmit]="isAllowToSubmit"></app-buttons>
   </div>
 </div>
 
 <div nz-row>
-  <app-result [type]="type" [results]="results"></app-result>
+  <app-result [type]="type" [optionValue]="optionValue" [results]="results"></app-result>
 </div>

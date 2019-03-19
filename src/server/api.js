@@ -60,8 +60,7 @@ router.post("/", async (req, res) => {
       break;
     case "GET_TOP_MEDIA_OF_HASHTAG":
       data = await client.get_media_by_hashtag_top_posts({
-        tag_name: input,
-        after
+        tag_name: input
       });
       break;
     case "GET_LOCATION_INFO":
@@ -72,8 +71,7 @@ router.post("/", async (req, res) => {
       break;
     case "GET_TOP_MEDIA_OF_LOCATION":
       data = await client.get_media_by_location_top_posts({
-        locationId: input,
-        after
+        locationId: input
       });
       break;
     case "LOCATION_SEARCH":
@@ -103,6 +101,18 @@ router.post("/", async (req, res) => {
   return res.json(data);
 });
 
+router.post("/upload",async (req,res)=>{
+  if (!req.body) return;
+
+  const {
+    cookie,
+    photoUrl,
+    caption
+  } = req.body;
+  const client = new Instagram({ cookie });
+  const data = await client.uploadPhoto({ photo: photoUrl, caption })
+  res.json(data)
+})
 // Add an account
 // http://localhost:8080/api/account
 router.post("/account", (req, res) => {

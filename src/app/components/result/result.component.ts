@@ -18,11 +18,12 @@ export class ResultComponent implements OnInit {
   public getFormatDate(timestamp) {
     return moment(timestamp * 1000).fromNow();
   }
-  public get isViderere() {
-    return this.results.filter(item => item['is_video'])[0]
-  }
+
   openImageInNewTab(imageUrl: string) {
     window.open(imageUrl, '_blank')
+  }
+  public scrollTop(){
+    window.scroll(0, 0)
   }
   public sort(type: string) {
     const sortedResults = this.results.sort((a, b) => {

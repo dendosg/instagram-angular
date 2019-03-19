@@ -1,4 +1,4 @@
-<nz-table #basicTable [nzData]="results">
+<nz-table #basicTable [nzData]="results" (nzPageIndexChange)="scrollTop()" >
   <thead>
 
     <tr *ngIf="type === 'GET_COMMENT_COMPONENT'">
@@ -184,7 +184,7 @@
       <td>{{data.id}}</td>
       <td>{{data.owner.id}}</td>
       <td>
-        <img (click)="openImageInNewTab(data.display_url)" [src]="data.thumbnail_resources[0].src" />
+        <img (click)="openImageInNewTab(data.display_url)" height="150" [src]="data.thumbnail_src" />
         <!-- <img (click)="openImageInNewTab(data.display_url)" [src]="data.display_url" height="150" /> -->
       </td>
       <td>
@@ -192,7 +192,7 @@
       </td>
       <td>
         <span nz-tooltip [nzTitle]="data.edge_media_to_caption.edges[0]?.node?.text">
-          {{data.edge_media_to_caption.edges[0]?.node?.text | slice:0:20}}
+          {{data.edge_media_to_caption?.edges[0]?.node?.text | slice:0:20}}
         </span>
       </td>
       <td>

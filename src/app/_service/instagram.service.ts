@@ -156,7 +156,10 @@ export class InstagramService {
     });
   }
 
-  public search({ cookie, query, context = 'hashtag' || 'place' || 'user' || 'blended' }) {
+  public search(
+    { cookie, query, context }:
+      { cookie: string, query: string, context: 'hashtag' | 'place' | 'user' | 'blended' }
+  ) {
     return Axios({
       method: "post",
       url: Constants.baseApiUrl,

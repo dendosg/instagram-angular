@@ -4,6 +4,7 @@
     <p>results: {{results?.length}}</p>
     <p *ngFor="let taskWorking of working">
       WORKING: <nz-tag [nzColor]="'volcano'">{{taskWorking.input || taskWorking.account.user.full_name}}</nz-tag>
+      by <nz-tag *ngIf="taskWorking.input" [nzColor]="'purple'">{{taskWorking.account.user.full_name}}</nz-tag>
       <nz-tag [nzColor]="'green'">Total: {{total[taskWorking.input] || 0}}</nz-tag>
       <nz-progress [nzPercent]="getPercentResult(taskWorking.input)" nzStatus="active"></nz-progress>
     </p>

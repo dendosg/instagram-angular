@@ -7,6 +7,7 @@ import { Constants } from "src/app/utils/Constants";
 import { isArray } from "util";
 import lodash from 'lodash';
 import { NzMessageService } from "ng-zorro-antd";
+import { sleep } from "src/app/utils/sleep";
 
 export interface Task {
   input: string;
@@ -69,8 +70,14 @@ export class LayoutComponent implements OnInit {
       this.isStop = true
     }
   }
-  
-  public submit() {
+  public submit(){
+    this.working = []
+    this.done = []
+    this.results = []
+    this.isStop = false
+    this.onSubmit()
+  }
+  public onSubmit() {
     if (this.type === Constants.typeComponent.GET_MY_STORIES) return this.getMyStories()
     this.loading.content = true;
     if (this.done.length === this.inputValues.length)
@@ -104,7 +111,7 @@ export class LayoutComponent implements OnInit {
           task => task.input !== taskDone.input
         );
         this.done.push(taskDone);
-        this.submit();
+        this.onSubmit();
       } catch (error) {
         console.log("loi cmnr", error);
       }
@@ -198,6 +205,13 @@ export class LayoutComponent implements OnInit {
         });
         break;
       case Constants.typeComponent.GET_USER_INFO_COMPONENT:
+        if (Number(input)) {
+          query = this.instagramService.getUserById({
+            cookie,
+            userId: input
+          });
+          break;
+        }
         query = this.instagramService.getUserByUsername({
           cookie,
           username: input
@@ -212,7 +226,7 @@ export class LayoutComponent implements OnInit {
         break;
     }
 
-    return query.then(({ data: { data, statusCode } }) => {
+    return query.then(async ({ data: { data, statusCode } }) => {
       if (statusCode !== 200 && !data) return Promise.reject("getResultForOneInput error");
       if (!data) return Promise.resolve({ cookie, input });
       if (!data.data) {
@@ -220,6 +234,7 @@ export class LayoutComponent implements OnInit {
         return Promise.resolve({ cookie, input });
       }
       const result = data.data;
+      console.log('data', data)
       this.count[input] += result.length;
       this.results = this.results.concat(result);
 
@@ -231,6 +246,7 @@ export class LayoutComponent implements OnInit {
       } = data;
       this.total[input] = count;
       if (!has_next_page) return Promise.resolve({ cookie, input });
+      await sleep(1000)
       return this.getResultForOneInput({ input, cookie, after: end_cursor });
     });
   }

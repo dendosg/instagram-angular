@@ -139,7 +139,7 @@ class Instagram {
         return { statusCode: e.statusCode, data: [] };
       });
   }
-  getComment({ shortcode, first = 30, after }) {
+  getComment({ shortcode, first = 50, after }) {
     return this._getData({
       fieldName: "edge_media_to_comment",
       type: "shortcode_media",
@@ -186,7 +186,7 @@ class Instagram {
       .catch(e => ({ statusCode: 400, data: [] }))
   }
 
-  get_media_by_location({ locationId, first = 8, after }) {
+  get_media_by_location({ locationId, first = 50, after }) {
     return this._getData({
       fieldName: "edge_location_to_media",
       type: "location",
@@ -194,28 +194,28 @@ class Instagram {
       variables: { id: locationId, first, after }
     });
   }
-  get_media_by_location_top_posts({ locationId, first = 4, after }) {
+  get_media_by_location_top_posts({ locationId, first = 0 }) {
     return this._getData({
       fieldName: "edge_location_to_top_posts",
       type: "location",
       queryHash: "ac38b90f0f3981c42092016a37c59bf7",
-      variables: { id: locationId, first, after }
+      variables: { id: locationId, first }
     });
   }
-  get_media_by_hashtag({ tag_name, first = 5, after }) {
+  get_media_by_hashtag({ tag_name, first = 50, after }) {
     return this._getData({
       fieldName: "edge_hashtag_to_media",
       type: "hashtag",
       queryHash: "ded47faa9a1aaded10161a2ff32abb6b",
-      variables: { tag_name: tag_name, first, after }
+      variables: { tag_name, first, after }
     });
   }
-  get_media_by_hashtag_top_posts({ tag_name, first = 10, after }) {
+  get_media_by_hashtag_top_posts({ tag_name, first = 0 }) {
     return this._getData({
       fieldName: "edge_hashtag_to_top_posts",
       type: "hashtag",
       queryHash: "ded47faa9a1aaded10161a2ff32abb6b",
-      variables: { tag_name: tag_name, first, after }
+      variables: { tag_name, first }
     });
   }
   get_media_by_user({ userId, first = 50, after }) {

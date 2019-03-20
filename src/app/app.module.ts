@@ -26,7 +26,7 @@ import { OptionComponent } from './components/option/option.component';
 import { ButtonsComponent } from './components/buttons/buttons.component';
 import { ResultComponent } from './components/result/result.component';
 import { GetMyStoriesComponent } from './get-my-stories/get-my-stories.component';
-
+import {ContextMenuModule} from 'ngx-contextmenu';
 registerLocaleData(en);
 
 @NgModule({
@@ -48,7 +48,16 @@ registerLocaleData(en);
     ResultComponent,
     GetMyStoriesComponent
   ],
-  imports: [BrowserModule, AppRoutingModule, ModalModule, NgZorroAntdModule, FormsModule, HttpClientModule, BrowserAnimationsModule],
+  imports: [
+    BrowserModule, 
+    AppRoutingModule, 
+    ModalModule, 
+    NgZorroAntdModule, 
+    FormsModule, 
+    HttpClientModule, 
+    BrowserAnimationsModule,
+    ContextMenuModule.forRoot()
+  ],
   providers: [{ provide: NZ_I18N, useValue: en_US }],
   bootstrap: [AppComponent]
 })

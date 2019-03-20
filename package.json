@@ -12,6 +12,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^6.1.0",
+    "@angular/cdk": "^7.3.5",
     "@angular/common": "^6.1.0",
     "@angular/compiler": "^6.1.0",
     "@angular/core": "^6.1.0",
@@ -25,6 +26,7 @@
     "lodash": "^4.17.11",
     "moment": "^2.24.0",
     "ng-zorro-antd": "^7.0.0-rc.1",
+    "ngx-contextmenu": "^5.1.1",
     "ngx-modal": "^0.0.29",
     "rxjs": "~6.2.0",
     "zone.js": "~0.8.26"

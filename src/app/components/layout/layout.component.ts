@@ -259,6 +259,9 @@ export class LayoutComponent implements OnInit {
     if (this.type === Constants.typeComponent.GET_MY_STORIES) return this.selectedAccounts.length
     return this.inputValues.length && this.selectedAccounts.length;
   }
+  public resetResults(){
+    this.results = []
+  }
   public get optionValue() {
     return this.optionComponent.optionValue;
   }

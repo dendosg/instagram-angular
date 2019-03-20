@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AccountService } from 'src/app/_service/account.service';
 import { AccountModel } from 'src/model/account.model';
 
@@ -10,6 +10,8 @@ import { AccountModel } from 'src/model/account.model';
 })
 export class OptionComponent implements OnInit {
   @Input() public type: string;
+  @Output() public resetResults = new EventEmitter()
+
   public optionValue:
     {
       getMediaOf: string,
@@ -17,7 +19,7 @@ export class OptionComponent implements OnInit {
       isGetTopMedia: boolean,
       isGetTaggedMedia: boolean
     } = {
-      getMediaOf: '',
+      getMediaOf: 'hashtag',
       contextSearch: 'hashtag' ,
       isGetTopMedia: false,
       isGetTaggedMedia: false
@@ -26,7 +28,9 @@ export class OptionComponent implements OnInit {
   public selectedAccountIds: string[] = [];
   public accounts: AccountModel[] = [];
   constructor(private accountService: AccountService) { }
-
+  public onResetResults(){
+    this.resetResults.emit()
+  }
   public get selectedAccounts(): AccountModel[] {
     return this.accounts.filter(account =>
       this.selectedAccountIds.includes(account._id)
@@ -38,7 +42,6 @@ export class OptionComponent implements OnInit {
       if (!accounts) return;
       this.accounts = accounts;
       this.selectedAccountIds = this.accounts.map(account => account._id)
-      console.log(this.accounts);
     });
   }
 }

@@ -7,22 +7,24 @@
 
 
 <div *ngIf="type === 'GET_MEDIA_COMPONENT'">
-  <nz-radio-group [(ngModel)]="optionValue.getMediaOf">
+  <nz-radio-group [(ngModel)]="optionValue.getMediaOf" (ngModelChange)="onResetResults()">
     <label nz-radio nzValue="user">User</label>
     <label nz-radio nzValue="hashtag">Hashtag</label>
     <label nz-radio nzValue="location">Location</label>
   </nz-radio-group>
   <div>
-    <label *ngIf="optionValue.getMediaOf && optionValue.getMediaOf !== 'user' " nz-checkbox [(ngModel)]="optionValue.isGetTopMedia">Top Media</label>
-    <label *ngIf="optionValue.getMediaOf === 'user' " nz-checkbox [(ngModel)]="optionValue.isGetTaggedMedia">Tagged Media</label>
+    <label (ngModelChange)="onResetResults()" *ngIf="optionValue.getMediaOf && optionValue.getMediaOf !== 'user' "
+      nz-checkbox [(ngModel)]="optionValue.isGetTopMedia">Top media</label>
+    <label (ngModelChange)="onResetResults()" *ngIf="optionValue.getMediaOf === 'user' " nz-checkbox [(ngModel)]="optionValue.isGetTaggedMedia">Tagged
+      media</label><label>of {{optionValue.getMediaOf}}</label>
   </div>
 </div>
 
 
 <div *ngIf="type === 'SEARCH_COMPONENT'">
-    <nz-radio-group [(ngModel)]="optionValue.contextSearch">
-        <label nz-radio nzValue="user">User</label>
-        <label nz-radio nzValue="hashtag">Hashtag</label>
-        <label nz-radio nzValue="place">Place</label>
-      </nz-radio-group>
+  <nz-radio-group (ngModelChange)="onResetResults()" [(ngModel)]="optionValue.contextSearch">
+    <label nz-radio nzValue="user">User</label>
+    <label nz-radio nzValue="hashtag">Hashtag</label>
+    <label nz-radio nzValue="place">Place</label>
+  </nz-radio-group>
 </div>

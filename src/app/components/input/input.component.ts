@@ -22,7 +22,7 @@ export class InputComponent implements OnInit {
     switch (this.type) {
       case Constants.typeComponent.GET_FOLLOWER_COMPONENT:
       case Constants.typeComponent.GET_FOLLOWING_COMPONENT: return "Enter userId";
-      case Constants.typeComponent.GET_USER_INFO_COMPONENT: return "Enter username"
+      case Constants.typeComponent.GET_USER_INFO_COMPONENT: return "Enter username or userId"
       case Constants.typeComponent.SEARCH_COMPONENT: return "Enter keyword"  
       case Constants.typeComponent.GET_COMMENT_COMPONENT:
       case Constants.typeComponent.GET_LIKE_COMPONENT:

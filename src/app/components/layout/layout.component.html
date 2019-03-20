@@ -13,7 +13,7 @@
     </p>
   </div>
   <div nz-col class="gutter-row" nzSpan="8">
-    <app-option [type]="type"></app-option>
+    <app-option [type]="type" (resetResults)="resetResults()" ></app-option>
   </div>
   <div nz-col class="gutter-row" nzSpan="8">
     <app-buttons [loading]="loading" (stop)="stop()" (submit)="submit()" [type]="type" [isAllowToSubmit]="isAllowToSubmit"></app-buttons>

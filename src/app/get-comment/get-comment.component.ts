@@ -5,7 +5,7 @@ import { Constants } from "../utils/Constants";
 @Component({
   selector: "app-get-comment",
   templateUrl: "./get-comment.component.html",
-  styleUrls: ["./get-comment.component.css"]
+  styleUrls: ["./get-comment.component.scss"]
 })
 export class GetCommentComponent implements OnInit {
   public type = Constants.typeComponent.GET_COMMENT_COMPONENT

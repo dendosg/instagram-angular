@@ -6,7 +6,7 @@ import { AccountModel } from 'src/model/account.model';
 @Component({
   selector: "app-option",
   templateUrl: "./option.component.html",
-  styleUrls: ["./option.component.css"]
+  styleUrls: ["./option.component.scss"]
 })
 export class OptionComponent implements OnInit {
   @Input() public type: string;

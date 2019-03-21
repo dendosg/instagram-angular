@@ -5,12 +5,13 @@ import * as moment from "moment";
 @Component({
   selector: "app-result",
   templateUrl: "./result.component.html",
-  styleUrls: ["./result.component.css"]
+  styleUrls: ["./result.component.scss"]
 })
 export class ResultComponent implements OnInit {
   @Input() public type: string;
   @Input() public results: object[];
   @Input() public optionValue: any;
+  public tagHtml = `<span class='highlight'>this is hightlosht from result</span>`
   
   public isDescending: boolean = true;
   constructor() { }

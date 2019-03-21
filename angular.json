@@ -125,5 +125,10 @@
       }
     }
   },
-  "defaultProject": "instagram-by-angular"
+  "defaultProject": "instagram-by-angular",
+  "schematics": {
+    "@schematics/angular:component": {
+      "styleext": "scss"
+    }
+  }
 }

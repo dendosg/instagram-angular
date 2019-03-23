@@ -11,8 +11,7 @@ export class ResultComponent implements OnInit {
   @Input() public type: string;
   @Input() public results: object[];
   @Input() public optionValue: any;
-  public tagHtml = `<span class='highlight'>this is hightlosht from result</span>`
-  
+
   public isDescending: boolean = true;
   constructor() { }
 
@@ -23,7 +22,20 @@ export class ResultComponent implements OnInit {
   openImageInNewTab(imageUrl: string) {
     window.open(imageUrl, '_blank')
   }
-  public scrollTop(){
+
+  public getHashtagFromMessage(message: string) {
+    if (!message) return []
+    const hashtags = message.match(/(?:\s|^)#[A-Za-z0-9\-\.\_]+(?:\s|$)/g) || []
+    return hashtags.map(hashtag => hashtag.replace('#', '').replace(/\s/g, ""))
+  }
+
+  public getUserFromMessage(message: string) {
+    if (!message) return []
+    const users = message.match(/(?:\s|^)@[A-Za-z0-9\-\.\_]+(?:\s|$)/g) || []
+    return users.map(user => user.replace('@', '').replace(/\s/g, ""))
+  }
+
+  public scrollTop() {
     window.scroll(0, 0)
   }
   public sort(type: string) {

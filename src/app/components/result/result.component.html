@@ -1,4 +1,4 @@
-<nz-table #basicTable [nzData]="results" (nzPageIndexChange)="scrollTop()" >
+<nz-table #basicTable [nzData]="results" (nzPageIndexChange)="scrollTop()">
   <thead>
 
     <tr *ngIf="type === 'GET_COMMENT_COMPONENT'">
@@ -22,6 +22,8 @@
       <th>Thumbnail</th>
       <th>Is Video</th>
       <th>Caption</th>
+      <th>Hashtag in Caption</th>
+      <th>User in Caption</th>
       <th>Shortcode</th>
       <th (click)="sort('comment')">Comment</th>
       <th (click)="sort('like')">Like</th>
@@ -196,6 +198,21 @@
         </span>
       </td>
       <td>
+        <a *ngFor="let hashtag of getHashtagFromMessage(data.edge_media_to_caption?.edges[0]?.node?.text)" href="https://www.instagram.com/explore/tags/{{hashtag}}"
+          target="_blank">
+          <span nz-tooltip [nzTitle]="hashtag">
+            <nz-tag [nzColor]="'teal'">#{{hashtag}}</nz-tag>
+          </span>
+        </a>
+      </td>
+      <td>
+        <a href="https://instagram.com/{{user}}" target="_blank" *ngFor="let user of getUserFromMessage(data.edge_media_to_caption?.edges[0]?.node?.text)">
+          <span nz-tooltip [nzTitle]="user">
+            <nz-tag [nzColor]="'teal'">@{{user}}</nz-tag>
+          </span>
+        </a>
+      </td>
+      <td>
         <span nz-tooltip [nzTitle]="data.shortcode">
           <a href="https://www.instagram.com/p/{{data.shortcode}}" target="_blank">{{data.shortcode}}</a>
         </span>
@@ -242,10 +259,3 @@
 
 
 <span>From result:{{results[0] | json}}</span>
-<div class="aaa" [innerHTML]="tagHtml" ></div>
-
-<div class="test1">
-  <div class="test2">
-    alo 123
-  </div>
-</div>

@@ -97,7 +97,7 @@ router.post("/", async (req, res) => {
       console.log("DEFAULT CMNR");
       break;
   }
-  console.log('datatata', data)
+  
   return res.json(data);
 });
 

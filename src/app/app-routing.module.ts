@@ -11,6 +11,7 @@ import { GetMediaInfoComponent } from "./get-media-info/get-media-info.component
 import { GetUserInfoComponent } from "./get-user-info/get-user-info.component";
 import { SearchComponent } from "./search/search.component";
 import { GetMyStoriesComponent } from "./get-my-stories/get-my-stories.component";
+import { GetHashtagInfoComponent } from "./get-hashtag-info/get-hashtag-info.component";
 
 const routes: Routes = [
   { path: "comment", component: GetCommentComponent },
@@ -20,6 +21,7 @@ const routes: Routes = [
   { path: "media", component: GetMediaComponent },
   { path: "media-info", component: GetMediaInfoComponent },
   { path: "user-info", component: GetUserInfoComponent },
+  { path: "hashtag-info", component: GetHashtagInfoComponent },
   { path: "search", component: SearchComponent },
   { path: "get-my-stories", component: GetMyStoriesComponent },
   { path: "", component: SearchComponent },

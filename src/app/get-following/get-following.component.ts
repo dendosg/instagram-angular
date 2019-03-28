@@ -4,7 +4,7 @@ import { Constants } from '../utils/Constants';
 @Component({
   selector: 'app-get-following',
   templateUrl: './get-following.component.html',
-  styleUrls: ['./get-following.component.css']
+  styleUrls: ['./get-following.component.scss']
 })
 export class GetFollowingComponent implements OnInit {
   public type = Constants.typeComponent.GET_FOLLOWING_COMPONENT

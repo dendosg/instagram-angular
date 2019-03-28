@@ -43,6 +43,12 @@
       <th>Is Private</th>
     </tr>
 
+    <tr *ngIf="type === 'GET_HASHTAG_INFO_COMPONENT'">
+      <th>Id</th>
+      <th>Name</th>
+      <th (click)="sort('hashtagCount')">Count</th>
+      <th>Allow follow</th>
+    </tr>
 
     <tr *ngIf="type === 'GET_MY_STORIES' ">
       <th>Id</th>
@@ -78,7 +84,17 @@
     </tr>
   </thead>
 
-
+  <tbody *ngIf="type === 'GET_HASHTAG_INFO_COMPONENT'">
+    <tr *ngFor="let data of basicTable.data">
+      <td>{{data.id}}</td>
+      <td>
+        <nz-avatar nzIcon="user" [nzSrc]="data.profile_pic_url"></nz-avatar>
+        <a href="https://www.instagram.com/explore/tags/{{data.name}}" target="_blank">#{{data.name}}</a>
+      </td>
+      <td>{{data.edge_hashtag_to_media.count}}</td>
+      <td>{{data.allow_following}}</td>
+    </tr>
+  </tbody>
 
   <tbody *ngIf="type === 'SEARCH_COMPONENT' && optionValue.contextSearch === 'user' ">
     <tr *ngFor="let data of basicTable.data">
@@ -200,7 +216,17 @@
       <td>
         <a *ngFor="let hashtag of getHashtagFromMessage(data.edge_media_to_caption?.edges[0]?.node?.text)" href="https://www.instagram.com/explore/tags/{{hashtag}}"
           target="_blank">
-          <span nz-tooltip [nzTitle]="hashtag">
+          <ng-template #copyHashtagTemplate>
+            <div>
+              <p>
+                <a (click)="copyItems(getHashtagFromMessage(data.edge_media_to_caption?.edges[0]?.node?.text))">Copy all</a>
+              </p>
+              <p>
+                <a (click)="copyItems([hashtag])">Copy hashtag</a>
+              </p>
+            </div>
+          </ng-template>
+          <span nz-popover  [(nzVisible)]="visible[hashtag]" [nzTitle]="hashtag" [nzContent]="copyHashtagTemplate" nzTrigger="click" >
             <nz-tag [nzColor]="'teal'">#{{hashtag}}</nz-tag>
           </span>
         </a>

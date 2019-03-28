@@ -27,6 +27,7 @@ export class InputComponent implements OnInit {
       case Constants.typeComponent.GET_COMMENT_COMPONENT:
       case Constants.typeComponent.GET_LIKE_COMPONENT:
       case Constants.typeComponent.GET_MEDIA_INFO_COMPONENT: return 'Enter shortcode';
+      case Constants.typeComponent.GET_HASHTAG_INFO_COMPONENT: return 'Enter hashtag';
       case Constants.typeComponent.GET_MEDIA_COMPONENT:
         switch (this.optionValue.getMediaOf) {
           case 'user': return 'Enter userid'

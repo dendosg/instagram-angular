@@ -27,6 +27,7 @@ import { ButtonsComponent } from './components/buttons/buttons.component';
 import { ResultComponent } from './components/result/result.component';
 import { GetMyStoriesComponent } from './get-my-stories/get-my-stories.component';
 import {ContextMenuModule} from 'ngx-contextmenu';
+import { GetHashtagInfoComponent } from './get-hashtag-info/get-hashtag-info.component';
 registerLocaleData(en);
 
 @NgModule({
@@ -46,7 +47,8 @@ registerLocaleData(en);
     OptionComponent,
     ButtonsComponent,
     ResultComponent,
-    GetMyStoriesComponent
+    GetMyStoriesComponent,
+    GetHashtagInfoComponent
   ],
   imports: [
     BrowserModule, 

@@ -4,7 +4,7 @@ import { Constants } from '../utils/Constants';
 @Component({
   selector: 'app-get-media',
   templateUrl: './get-media.component.html',
-  styleUrls: ['./get-media.component.css']
+  styleUrls: ['./get-media.component.scss']
 })
 export class GetMediaComponent implements OnInit {
   public type = Constants.typeComponent.GET_MEDIA_COMPONENT

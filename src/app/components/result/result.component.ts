@@ -13,6 +13,7 @@ export class ResultComponent implements OnInit {
   @Input() public optionValue: any;
 
   public isDescending: boolean = true;
+  public visible: { [key: string]: boolean } = {};
   constructor() { }
 
   public getFormatDate(timestamp) {
@@ -27,6 +28,16 @@ export class ResultComponent implements OnInit {
     if (!message) return []
     const hashtags = message.match(/(?:\s|^)#[A-Za-z0-9\-\.\_]+(?:\s|$)/g) || []
     return hashtags.map(hashtag => hashtag.replace('#', '').replace(/\s/g, ""))
+  }
+
+  public copyItems(arrItems) {
+    const message = arrItems.join('\n')
+    console.log(message)
+    message.select()
+    document.execCommand("copy");
+    for (const item of arrItems) {
+      this.visible[item] = false
+    }
   }
 
   public getUserFromMessage(message: string) {
@@ -56,6 +67,13 @@ export class ResultComponent implements OnInit {
           a["edge_media_preview_like"].count
           : a["edge_media_preview_like"].count -
           b["edge_media_preview_like"].count;
+      if(type ==='hashtagCount'){
+        return this.isDescending
+        ? b["edge_hashtag_to_media"].count -
+        a["edge_hashtag_to_media"].count
+        : a["edge_hashtag_to_media"].count -
+        b["edge_hashtag_to_media"].count;
+      }    
     });
 
     this.isDescending = !this.isDescending;

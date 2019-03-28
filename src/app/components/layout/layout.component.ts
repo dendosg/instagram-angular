@@ -217,6 +217,9 @@ export class LayoutComponent implements OnInit {
           username: input
         });
         break;
+      case Constants.typeComponent.GET_HASHTAG_INFO_COMPONENT:
+        query = this.instagramService.getHashtagInfo({ cookie, hashtag: input })
+        break;  
       case Constants.typeComponent.SEARCH_COMPONENT:
         query = this.instagramService.search({
           cookie, query: input, context: this.optionValue.contextSearch

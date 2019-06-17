@@ -1,21 +1,36 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
+    "baseUrl": "src",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
-    "module": "es2015",
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "pretty": true,
+    "strictNullChecks": true,
+    "noStrictGenericChecks": true,
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "noImplicitAny": false,
+    "noFallthroughCasesInSwitch": true,
+    "inlineSources": true,
     "target": "es5",
+    "jsx": "react",
     "typeRoots": [
       "node_modules/@types"
     ],
     "lib": [
       "es2017",
-      "dom"
+      "es6",
+      "dom",
+      "esnext.asynciterable"
+    ],
+    "types": [
+      "@types/graphql",
+      "jquery",
+      "jasmine"
     ]
-  }
+  },
 }

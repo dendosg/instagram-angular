@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
-import { AccountService } from "src/app/_service/account.service";
-import { AccountModel } from "src/model/account.model";
+import { AccountModel } from "model/account.model";
+import { AccountService } from "app/_service/account.service";
 
 @Component({
   selector: "app-navbar",

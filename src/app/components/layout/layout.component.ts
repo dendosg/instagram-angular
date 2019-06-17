@@ -1,13 +1,14 @@
 import { Component, OnInit, Input, ViewChild } from "@angular/core";
 import { InputComponent } from "../input/input.component";
 import { OptionComponent } from "../option/option.component";
-import { AccountModel } from "src/model/account.model";
-import { InstagramService } from "src/app/_service/instagram.service";
-import { Constants } from "src/app/utils/Constants";
+import { InstagramService } from "app/_service/instagram.service";
+import { Constants } from "app/utils/Constants";
 import { isArray } from "util";
 import lodash from 'lodash';
 import { NzMessageService } from "ng-zorro-antd";
-import { sleep } from "src/app/utils/sleep";
+import { sleep } from "app/utils/sleep";
+import { AccountModel } from "model/account.model";
+import { AppService } from "app/_service/app.service";
 
 export interface Task {
   input: string;
@@ -33,7 +34,8 @@ export class LayoutComponent implements OnInit {
   // Data of app
   constructor(
     private instagramService: InstagramService,
-    private message: NzMessageService
+    private message: NzMessageService,
+    private appService: AppService
     ) { }
 
   ngOnInit() { }
@@ -45,7 +47,7 @@ export class LayoutComponent implements OnInit {
   public getMyStories() {
     this.loading.content = true
     this.selectedAccounts.forEach(async account => {
-      const task: Task = { input: null, account }
+      const task: Task = { input: '', account }
       this.working.push(task);
       const taskDone = (await this.instagramService.getMyStories({ cookie: account.cookie })).data
       
@@ -80,10 +82,10 @@ export class LayoutComponent implements OnInit {
   public onSubmit() {
     if (this.type === Constants.typeComponent.GET_MY_STORIES) return this.getMyStories()
     this.loading.content = true;
-    if (this.done.length === this.inputValues.length)
+    if (this.done.length === this.appService.inputValues.length)
       return (this.loading.content = false);
     this.selectedAccounts.forEach(async account => {
-      const input = this.inputValues.filter(
+      const input = this.appService.inputValues.filter(
         value =>
           !this.working.map(task => task.input).includes(value) &&
           !this.done.map(task => task.input).includes(value)
@@ -260,7 +262,7 @@ export class LayoutComponent implements OnInit {
     )
       return false;
     if (this.type === Constants.typeComponent.GET_MY_STORIES) return this.selectedAccounts.length
-    return this.inputValues.length && this.selectedAccounts.length;
+    return this.appService.inputValues.length && this.selectedAccounts.length;
   }
   public resetResults(){
     this.results = []
@@ -269,9 +271,6 @@ export class LayoutComponent implements OnInit {
     return this.optionComponent.optionValue;
   }
 
-  public get inputValues(): string[] {
-    return this.inputComponent.inputValues || [];
-  }
   public get selectedAccounts(): AccountModel[] {
     return this.optionComponent.selectedAccounts;
   }

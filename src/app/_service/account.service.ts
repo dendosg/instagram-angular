@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
 import axios from "axios";
-import { UserModel } from "src/model/user.model";
 @Injectable({
   providedIn: "root"
 })

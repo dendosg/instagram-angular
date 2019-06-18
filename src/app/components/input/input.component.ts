@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, Input } from "@angular/core";
-import lodash from 'lodash'
+import {uniq} from 'lodash'
 import { Constants } from "app/utils/Constants";
 import { AppService } from "app/_service/app.service";
 @Component({
@@ -12,13 +12,14 @@ export class InputComponent implements OnInit {
   @Input() public optionValue;
   public inputValue: string;
 
-  constructor(
-    private appService: AppService
-  ) { }
+  constructor(private appService: AppService) { }
 
   public handleInputValues(){
-    this.appService.setInputValues(this.inputValue)
+    if (!this.inputValue) return this.appService.setInputValues([])
+    const keywords: string[] = uniq(this.inputValue.split("\n").filter(item => item));
+    this.appService.setInputValues(keywords)
   }
+
   public get placeholder() {
     switch (this.type) {
       case Constants.typeComponent.GET_FOLLOWER_COMPONENT:
@@ -40,5 +41,7 @@ export class InputComponent implements OnInit {
     }
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.appService.inputValuesSubject.subscribe(inputValues => this.inputValue = inputValues.join('\n'))
+   }
 }

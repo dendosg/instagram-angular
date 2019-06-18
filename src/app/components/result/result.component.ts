@@ -1,6 +1,8 @@
 import { Component, OnInit, Input } from "@angular/core";
-import { Constants } from "src/app/utils/Constants";
+import { Constants } from "app/utils/Constants";
 import * as moment from "moment";
+import { Router } from "@angular/router";
+import { AppService } from "app/_service/app.service";
 
 @Component({
   selector: "app-result",
@@ -14,7 +16,10 @@ export class ResultComponent implements OnInit {
 
   public isDescending: boolean = true;
   public visible: { [key: string]: boolean } = {};
-  constructor() { }
+  constructor(
+    private router: Router,
+    private appService: AppService
+  ) { }
 
   public getFormatDate(timestamp) {
     return moment(timestamp * 1000).fromNow();
@@ -29,7 +34,11 @@ export class ResultComponent implements OnInit {
     const hashtags = message.match(/(?:\s|^)#[A-Za-z0-9\-\.\_]+(?:\s|$)/g) || []
     return hashtags.map(hashtag => hashtag.replace('#', '').replace(/\s/g, ""))
   }
-
+  public getMediaOf(hashtags: string[]){
+    this.appService.setInputValues(hashtags)
+    // set option to hashtag
+    this.scrollTop()
+  }
   public copyItems(arrItems) {
     const message = arrItems.join('\n')
     console.log(message)
@@ -74,10 +83,15 @@ export class ResultComponent implements OnInit {
         : a["edge_hashtag_to_media"].count -
         b["edge_hashtag_to_media"].count;
       }    
+      return 0
     });
 
     this.isDescending = !this.isDescending;
     this.results = [...sortedResults]
   }
-  ngOnInit() { }
+  ngOnInit() {
+    // this.appService.inputValuesSubject.subscribe(res=>{
+    //   console.log('res',res)
+    // })
+  }
 }

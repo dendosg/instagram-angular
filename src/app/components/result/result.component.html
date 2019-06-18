@@ -218,11 +218,11 @@
           target="_blank">
           <ng-template #copyHashtagTemplate>
             <div>
-              <p>
-                <a (click)="copyItems(getHashtagFromMessage(data.edge_media_to_caption?.edges[0]?.node?.text))">Copy all</a>
+              <p (click)="getMediaOf(getHashtagFromMessage(data.edge_media_to_caption?.edges[0]?.node?.text))">
+                <a>Get media of all hashtag</a>
               </p>
-              <p>
-                <a (click)="copyItems([hashtag])">Copy hashtag</a>
+              <p (click)="getMediaOf([hashtag])">
+                <a>Get media of {{hashtag}}</a>
               </p>
             </div>
           </ng-template>
@@ -284,4 +284,4 @@
 </nz-table>
 
 
-<span>From result:{{results[0] | json}}</span>
+<!-- <span>From result:{{results[0] | json}}</span> -->

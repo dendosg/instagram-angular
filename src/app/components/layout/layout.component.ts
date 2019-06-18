@@ -9,6 +9,7 @@ import { NzMessageService } from "ng-zorro-antd";
 import { sleep } from "app/utils/sleep";
 import { AccountModel } from "model/account.model";
 import { AppService } from "app/_service/app.service";
+import { ActivatedRoute } from "@angular/router";
 
 export interface Task {
   input: string;
@@ -23,6 +24,7 @@ export class LayoutComponent implements OnInit {
   @Input() type: string;
   @ViewChild(OptionComponent) public optionComponent: OptionComponent;
   @ViewChild(InputComponent) public inputComponent: InputComponent;
+  public inputValues: string[] = [];
   public results: any[] = [];
   public working: Task[] = [];
   public done: Task[] = [];
@@ -35,10 +37,22 @@ export class LayoutComponent implements OnInit {
   constructor(
     private instagramService: InstagramService,
     private message: NzMessageService,
-    private appService: AppService
+    private appService: AppService,
+    private route: ActivatedRoute
     ) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    // http://localhost:4200/media?query=huy,alo,dashdsadu
+    this.route.queryParams
+      .subscribe(params => {
+        const query: string = params.query
+        if(!query) return
+        const keywords: string[] = query.split(',').filter(item => item)
+        this.appService.setInputValues(keywords)
+      });
+
+    this.appService.inputValuesSubject.subscribe(inputValues => this.inputValues = inputValues)
+   }
 
   public getPercentResult(input) {
     return Math.ceil((this.count[input] / this.total[input]) * 100) || 0;
@@ -82,10 +96,10 @@ export class LayoutComponent implements OnInit {
   public onSubmit() {
     if (this.type === Constants.typeComponent.GET_MY_STORIES) return this.getMyStories()
     this.loading.content = true;
-    if (this.done.length === this.appService.inputValues.length)
+    if (this.done.length === this.inputValues.length)
       return (this.loading.content = false);
     this.selectedAccounts.forEach(async account => {
-      const input = this.appService.inputValues.filter(
+      const input = this.inputValues.filter(
         value =>
           !this.working.map(task => task.input).includes(value) &&
           !this.done.map(task => task.input).includes(value)
@@ -262,7 +276,7 @@ export class LayoutComponent implements OnInit {
     )
       return false;
     if (this.type === Constants.typeComponent.GET_MY_STORIES) return this.selectedAccounts.length
-    return this.appService.inputValues.length && this.selectedAccounts.length;
+    return this.inputValues.length && this.selectedAccounts.length;
   }
   public resetResults(){
     this.results = []

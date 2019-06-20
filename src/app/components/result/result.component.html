@@ -216,19 +216,7 @@
       <td>
         <a *ngFor="let hashtag of getHashtagFromMessage(data.edge_media_to_caption?.edges[0]?.node?.text)" href="https://www.instagram.com/explore/tags/{{hashtag}}"
           target="_blank">
-          <ng-template #copyHashtagTemplate>
-            <div>
-              <p (click)="getMediaOf(getHashtagFromMessage(data.edge_media_to_caption?.edges[0]?.node?.text))">
-                <a>Get media of all hashtag</a>
-              </p>
-              <p (click)="getMediaOf([hashtag])">
-                <a>Get media of {{hashtag}}</a>
-              </p>
-            </div>
-          </ng-template>
-          <span nz-popover  [(nzVisible)]="visible[hashtag]" [nzTitle]="hashtag" [nzContent]="copyHashtagTemplate" nzTrigger="click" >
-            <nz-tag [nzColor]="'teal'">#{{hashtag}}</nz-tag>
-          </span>
+          <nz-tag [nzColor]="'teal'">#{{hashtag}}</nz-tag>
         </a>
       </td>
       <td>

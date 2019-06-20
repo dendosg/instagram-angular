@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
   providedIn: 'root'
 })
 export class AppService {
-  public inputValuesSubject: Subject<any> = new Subject<any>();
+  public inputValuesSubject: Subject<any[]> = new Subject<any[]>();
   public optionValue:
   {
     getMediaOf: string,

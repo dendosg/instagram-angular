@@ -33,13 +33,14 @@ export class LayoutComponent implements OnInit {
   public total: { [key: string]: number } = {};
   public loading: { [key: string]: boolean } = {};
 
-  // Data of app
   constructor(
     private instagramService: InstagramService,
     private message: NzMessageService,
     private appService: AppService,
     private route: ActivatedRoute
-    ) { }
+    ) {
+     this.appService.inputValuesSubject.subscribe(inputValues => this.inputValues = inputValues)
+    }
 
   ngOnInit() {
     // http://localhost:4200/media?query=huy,alo,dashdsadu
@@ -51,7 +52,6 @@ export class LayoutComponent implements OnInit {
         this.appService.setInputValues(keywords)
       });
 
-    this.appService.inputValuesSubject.subscribe(inputValues => this.inputValues = inputValues)
    }
 
   public getPercentResult(input) {

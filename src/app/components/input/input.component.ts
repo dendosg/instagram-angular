@@ -12,7 +12,9 @@ export class InputComponent implements OnInit {
   @Input() public optionValue;
   public inputValue: string;
 
-  constructor(private appService: AppService) { }
+  constructor(private appService: AppService) { 
+    this.appService.inputValuesSubject.subscribe(inputValues => this.inputValue = inputValues.join('\n'))
+  }
 
   public handleInputValues(){
     if (!this.inputValue) return this.appService.setInputValues([])
@@ -42,6 +44,5 @@ export class InputComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.appService.inputValuesSubject.subscribe(inputValues => this.inputValue = inputValues.join('\n'))
    }
 }

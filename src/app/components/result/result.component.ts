@@ -11,7 +11,7 @@ import { AppService } from "app/_service/app.service";
 })
 export class ResultComponent implements OnInit {
   @Input() public type: string;
-  @Input() public results: object[];
+  public results: object[] = [];
   @Input() public optionValue: any;
 
   public isDescending: boolean = true;
@@ -19,7 +19,9 @@ export class ResultComponent implements OnInit {
   constructor(
     private router: Router,
     private appService: AppService
-  ) { }
+  ) { 
+    this.appService.resultsSubject.subscribe(results => this.results = results)
+  }
 
   public getFormatDate(timestamp) {
     return moment(timestamp * 1000).fromNow();
@@ -87,11 +89,10 @@ export class ResultComponent implements OnInit {
     });
 
     this.isDescending = !this.isDescending;
-    this.results = [...sortedResults]
+    const results = [...sortedResults]
+    this.appService.setResults(results)
   }
   ngOnInit() {
-    // this.appService.inputValuesSubject.subscribe(res=>{
-    //   console.log('res',res)
-    // })
+
   }
 }

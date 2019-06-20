@@ -1,3 +1,4 @@
+import { AppService } from './../../_service/app.service';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
@@ -11,7 +12,12 @@ export class ButtonsComponent implements OnInit {
   @Output() public submit = new EventEmitter();
   @Output() public stop = new EventEmitter();
   @Input() public isAllowToSubmit: boolean;
-  constructor() { }
+  public results: object[] = []
+  constructor(
+    private appService: AppService
+  ) {
+    this.appService.resultsSubject.subscribe(results => this.results = results)
+   }
 
   ngOnInit() {
   }
@@ -20,6 +26,9 @@ export class ButtonsComponent implements OnInit {
   }
   public onSubmit() {
     this.submit.emit()
+  }
+  public copyResults() {
+    console.log(this.results)
   }
 
 }

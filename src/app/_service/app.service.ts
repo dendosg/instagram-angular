@@ -6,6 +6,7 @@ import { Subject } from 'rxjs';
 })
 export class AppService {
   public inputValuesSubject: Subject<any[]> = new Subject<any[]>();
+  public resultsSubject: Subject<object[]> = new Subject<object[]>();
   public optionValue:
   {
     getMediaOf: string,
@@ -21,5 +22,8 @@ export class AppService {
   constructor() { }
   public setInputValues(keywords: string[]) {
     this.inputValuesSubject.next(keywords || [])
+  }
+  public setResults(results: object[]){
+    this.resultsSubject.next(results)
   }
 }

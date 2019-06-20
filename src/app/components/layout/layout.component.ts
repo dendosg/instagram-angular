@@ -4,7 +4,7 @@ import { OptionComponent } from "../option/option.component";
 import { InstagramService } from "app/_service/instagram.service";
 import { Constants } from "app/utils/Constants";
 import { isArray } from "util";
-import lodash from 'lodash';
+import { sortBy } from "lodash";
 import { NzMessageService } from "ng-zorro-antd";
 import { sleep } from "app/utils/sleep";
 import { AccountModel } from "model/account.model";
@@ -40,6 +40,7 @@ export class LayoutComponent implements OnInit {
     private route: ActivatedRoute
     ) {
      this.appService.inputValuesSubject.subscribe(inputValues => this.inputValues = inputValues)
+     this.appService.resultsSubject.subscribe(results => this.results = results)
     }
 
   ngOnInit() {
@@ -72,9 +73,13 @@ export class LayoutComponent implements OnInit {
       
       const { statusCode, data } = taskDone
       if (statusCode !== 200) return console.log('Co loi xay ra')
-      data.map(story => this.results = this.results.concat(story.items))
+      data.map(story => {
+        const results = this.results.concat(story.items)
+        this.appService.setResults(results)
+      })
       if (this.done.length === this.selectedAccounts.length){
-        this.results = lodash.sortBy(this.results,'expiring_at_timestamp')
+        const results = sortBy(this.results,'expiring_at_timestamp')
+        this.appService.setResults(results)
         return this.loading.content = false
       } 
     })
@@ -89,7 +94,7 @@ export class LayoutComponent implements OnInit {
   public submit(){
     this.working = []
     this.done = []
-    this.results = []
+    this.appService.setResults([])
     this.isStop = false
     this.onSubmit()
   }
@@ -249,14 +254,15 @@ export class LayoutComponent implements OnInit {
       if (statusCode !== 200 && !data) return Promise.reject("getResultForOneInput error");
       if (!data) return Promise.resolve({ cookie, input });
       if (!data.data) {
-        this.results = isArray(data) ? this.results.concat(data) : this.results.concat([data]);
+        const results = isArray(data) ? this.results.concat(data) : this.results.concat([data]);
+        this.appService.setResults(results)
         return Promise.resolve({ cookie, input });
       }
       const result = data.data;
       console.log('data', data)
       this.count[input] += result.length;
-      this.results = this.results.concat(result);
-
+      const results = this.results.concat(result);
+      this.appService.setResults(results)
       if (!data.page_info) return Promise.resolve({ cookie, input });
 
       const {
@@ -279,7 +285,7 @@ export class LayoutComponent implements OnInit {
     return this.inputValues.length && this.selectedAccounts.length;
   }
   public resetResults(){
-    this.results = []
+    this.appService.setResults([])
   }
   public get optionValue() {
     return this.optionComponent.optionValue;

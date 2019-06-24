@@ -1,25 +1,47 @@
-<div nz-row nzGutter="24">
+<div nz-row nzGutter="24" class="app-input">
   <div nz-col class="gutter-row" nzSpan="8">
     <app-input [type]="type" [optionValue]="optionValue"></app-input>
-    <p>results: {{results?.length}}</p>
+    <p>results: {{ results?.length }}</p>
     <p *ngFor="let taskWorking of working">
-      WORKING: <nz-tag [nzColor]="'volcano'">{{taskWorking.input || taskWorking.account.user.full_name}}</nz-tag>
-      by <nz-tag *ngIf="taskWorking.input" [nzColor]="'purple'">{{taskWorking.account.user.full_name}}</nz-tag>
-      <nz-tag [nzColor]="'green'">Total: {{total[taskWorking.input] || 0}}</nz-tag>
-      <nz-progress [nzPercent]="getPercentResult(taskWorking.input)" nzStatus="active"></nz-progress>
+      WORKING:
+      <nz-tag [nzColor]="'volcano'">{{
+        taskWorking.input || taskWorking.account.user.full_name
+      }}</nz-tag>
+      by
+      <nz-tag *ngIf="taskWorking.input" [nzColor]="'purple'">{{
+        taskWorking.account.user.full_name
+      }}</nz-tag>
+      <nz-tag [nzColor]="'green'"
+        >Total: {{ total[taskWorking.input] || 0 }}</nz-tag
+      >
+      <nz-progress
+        [nzPercent]="getPercentResult(taskWorking.input)"
+        nzStatus="active"
+      ></nz-progress>
     </p>
     <p *ngFor="let taskDone of done">
-      DONE: <nz-tag [nzColor]="'green'">{{taskDone.input || taskDone?.account?.user.full_name}}</nz-tag>
+      DONE:
+      <nz-tag [nzColor]="'green'">{{
+        taskDone.input || taskDone?.account?.user.full_name
+      }}</nz-tag>
     </p>
   </div>
   <div nz-col class="gutter-row" nzSpan="8">
-    <app-option [type]="type" (resetResults)="resetResults()" ></app-option>
+    <app-option [type]="type" (resetResults)="resetResults()"></app-option>
   </div>
   <div nz-col class="gutter-row" nzSpan="8">
-    <app-buttons [loading]="loading" (stop)="stop()" (submit)="submit()" [type]="type" [isAllowToSubmit]="isAllowToSubmit"></app-buttons>
+    <app-buttons
+      [loading]="loading"
+      (stop)="stop()"
+      (submit)="submit()"
+      [type]="type"
+      [isAllowToSubmit]="isAllowToSubmit"
+    ></app-buttons>
   </div>
 </div>
-
+<div nz-row *ngIf="loading?.content" class="loading">
+  <img src="/src/assets/loading.svg" alt="" srcset="" />
+</div>
 <div nz-row>
   <app-result [type]="type" [optionValue]="optionValue"></app-result>
 </div>

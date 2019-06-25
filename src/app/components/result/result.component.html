@@ -21,14 +21,14 @@
       <th>Owner Id</th>
       <th>Thumbnail</th>
       <th>Is Video</th>
-      <th>Caption</th>
-      <th>Hashtag in Caption</th>
-      <th>User in Caption</th>
+      <th (click)="sort('caption')">Caption</th>
+      <th (click)="sort('hashtagInCaption')">Hashtag in Caption</th>
+      <th (click)="sort('userInCaption')">User in Caption</th>
       <th>Shortcode</th>
       <th (click)="sort('comment')">Comment</th>
       <th (click)="sort('like')">Like</th>
       <th (click)="sort('taken_at_timestamp')">Taken at</th>
-      <th>Location</th>
+      <th *ngIf="type === 'GET_MEDIA_INFO_COMPONENT'">Location</th>
     </tr>
 
     <tr *ngIf="type === 'GET_USER_INFO_COMPONENT' ">
@@ -200,13 +200,13 @@
   <tbody *ngIf="type === 'GET_MEDIA_COMPONENT' || type === 'GET_MEDIA_INFO_COMPONENT'">
     <tr *ngFor="let data of basicTable.data">
       <td>{{data.id}}</td>
-      <td>{{data.owner.id}}</td>
+      <td>{{data?.owner.id}}</td>
       <td>
-        <img (click)="openImageInNewTab(data.display_url)" height="150" [src]="data.thumbnail_src" />
+        <img (click)="openImageInNewTab(data.display_url)" height="150" [src]="data.thumbnail_src || data.display_url" />
         <!-- <img (click)="openImageInNewTab(data.display_url)" [src]="data.display_url" height="150" /> -->
       </td>
       <td>
-        <nz-tag [nzColor]="'cyan'">{{data.is_video ? 'Video' : 'Photo' }}</nz-tag>
+        <nz-tag [nzColor]="'cyan'">{{data?.is_video ? 'Video' : 'Photo' }}</nz-tag>
       </td>
       <td>
         <span nz-tooltip [nzTitle]="data.edge_media_to_caption.edges[0]?.node?.text">
@@ -231,8 +231,8 @@
           <a href="https://www.instagram.com/p/{{data.shortcode}}" target="_blank">{{data.shortcode}}</a>
         </span>
       </td>
-      <td>{{data.edge_media_to_comment.count}}</td>
-      <td>{{data.edge_media_preview_like.count}}</td>
+      <td>{{data?.edge_media_to_comment?.count || data?.edge_media_preview_comment?.count}}</td>
+      <td>{{data?.edge_media_preview_like?.count}}</td>
       <td>{{getFormatDate(data.taken_at_timestamp)}}</td>
       <td *ngIf="data.location">
         <span nz-tooltip [nzTitle]="data.location.id">
@@ -272,4 +272,4 @@
 </nz-table>
 
 
-<!-- <span>From result:{{results[0] | json}}</span> -->
+<span>From result:{{results | json}}</span>

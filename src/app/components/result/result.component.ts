@@ -3,6 +3,7 @@ import { Constants } from "app/utils/Constants";
 import * as moment from "moment";
 import { Router } from "@angular/router";
 import { AppService } from "app/_service/app.service";
+import { get } from 'lodash';
 
 @Component({
   selector: "app-result",
@@ -65,26 +66,51 @@ export class ResultComponent implements OnInit {
       if (type === "taken_at_timestamp" || type === "created_at" || type === 'is_verified' || type === 'follower_count' || type === 'media_count')
         return this.isDescending ? b[type] - a[type] : a[type] - b[type];
 
-      if (type === "comment")
+      if (type === "comment"){
+        const comment_a = get(a,'edge_media_to_comment.count',0) || get(a,'edge_media_preview_comment.count',0)
+        const comment_b = get(b,'edge_media_to_comment.count',0) || get(b,'edge_media_preview_comment.count',0)
         return this.isDescending
-          ? b["edge_media_to_comment"].count -
-          a["edge_media_to_comment"].count
-          : a["edge_media_to_comment"].count -
-          b["edge_media_to_comment"].count;
+          ? comment_b - comment_a
+          : comment_a - comment_b;
+      }
 
-      if (type === "like")
-        return this.isDescending
-          ? b["edge_media_preview_like"].count -
-          a["edge_media_preview_like"].count
-          : a["edge_media_preview_like"].count -
-          b["edge_media_preview_like"].count;
+      if (type === "like"){
+        const like_a = get(a, "edge_media_preview_like.count", 0);
+        const like_b = get(b, "edge_media_preview_like.count", 0);
+        return this.isDescending ? like_b - like_a : like_a - like_b;
+      }
       if(type ==='hashtagCount'){
         return this.isDescending
         ? b["edge_hashtag_to_media"].count -
         a["edge_hashtag_to_media"].count
         : a["edge_hashtag_to_media"].count -
         b["edge_hashtag_to_media"].count;
-      }    
+      }  
+      if(type ==='caption'){
+        const caption_a = get(a,'edge_media_to_caption.edges[0].node.text') || ''
+        const caption_b = get(b,'edge_media_to_caption.edges[0].node.text') || ''
+        return this.isDescending
+          ? caption_b.length - caption_a.length
+          : caption_a.length - caption_b.length;
+      }
+      if(type ==='hashtagInCaption'){
+        const message_a = get(a,'edge_media_to_caption.edges[0].node.text')
+        const message_b = get(b,'edge_media_to_caption.edges[0].node.text')
+        const hashtags_a = this.getHashtagFromMessage(message_a)
+        const hashtags_b = this.getHashtagFromMessage(message_b)
+        return this.isDescending
+          ? hashtags_b.length - hashtags_a.length
+          : hashtags_a.length - hashtags_b.length;
+      }
+      if(type ==='userInCaption') {
+        const message_a = get(a,'edge_media_to_caption.edges[0].node.text')
+        const message_b = get(b,'edge_media_to_caption.edges[0].node.text')
+        const users_a = this.getUserFromMessage(message_a)
+        const users_b = this.getUserFromMessage(message_b)
+        return this.isDescending
+          ? users_b.length - users_a.length
+          : users_a.length - users_b.length;
+      }
       return 0
     });
 

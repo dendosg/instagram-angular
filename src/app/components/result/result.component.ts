@@ -61,7 +61,7 @@ export class ResultComponent implements OnInit {
   public scrollTop() {
     window.scroll(0, 0)
   }
-  public sort(field: string, type?: string){
+  public sort(field: string, type?: string, anotherField?: string){
     const sortedResults = this.results.sort((a, b) => {
       if(type && type === 'hashtagInCaption') {
         const message_a = get(a,'edge_media_to_caption.edges[0].node.text')
@@ -81,8 +81,8 @@ export class ResultComponent implements OnInit {
           ? users_b.length - users_a.length
           : users_a.length - users_b.length;
       }
-      const res_a = get(a, field);
-      const res_b = get(b, field);
+      const res_a = get(a, field) || get(a, anotherField);
+      const res_b = get(b, field) || get(b, anotherField);
       return this.isDescending ? res_b - res_a : res_a - res_b;
     });
 

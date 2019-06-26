@@ -25,8 +25,8 @@
       <th (click)="sort(null, 'hashtagInCaption')">Hashtag in Caption</th>
       <th (click)="sort(null, 'userInCaption')">User in Caption</th>
       <th>Shortcode</th>
-      <th (click)="sort('edge_media_to_comment.count')">Comment</th>
-      <th (click)="sort('edge_liked_by.count')">Like</th>
+      <th (click)="sort('edge_media_to_comment.count', '', 'edge_media_preview_comment.count')">Comment</th>
+      <th (click)="sort('edge_liked_by.count', '', 'edge_media_preview_like.count')">Like</th>
       <th (click)="sort('taken_at_timestamp')">Taken at</th>
       <th *ngIf="type === 'GET_MEDIA_INFO_COMPONENT'">Location</th>
     </tr>
@@ -35,8 +35,8 @@
       <th>Id</th>
       <th>Bio</th>
       <th (click)="sort('external_url')">Website</th>
-      <th (click)="sort('edge_follow.count')">Follower</th>
-      <th (click)="sort('edge_followed_by.count')">Following</th>
+      <th (click)="sort('edge_followed_by.count')">Follower</th>
+      <th (click)="sort('edge_follow.count')">Following</th>
       <th>Full Name</th>
       <th>Username</th>
       <th (click)="sort('is_verified')">Is Verified</th>

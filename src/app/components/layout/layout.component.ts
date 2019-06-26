@@ -251,6 +251,7 @@ export class LayoutComponent implements OnInit {
     }
 
     return query.then(async ({ data: { data, statusCode } }) => {
+      if (statusCode === 404) return Promise.resolve({ cookie, input });
       if (statusCode !== 200 && !data) return Promise.reject("getResultForOneInput error");
       if (!data) return Promise.resolve({ cookie, input });
       if (!data.data) {

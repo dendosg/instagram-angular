@@ -61,39 +61,9 @@ export class ResultComponent implements OnInit {
   public scrollTop() {
     window.scroll(0, 0)
   }
-  public sort(type: string) {
+  public sort(field: string, type?: string){
     const sortedResults = this.results.sort((a, b) => {
-      if (type === "taken_at_timestamp" || type === "created_at" || type === 'is_verified' || type === 'follower_count' || type === 'media_count')
-        return this.isDescending ? b[type] - a[type] : a[type] - b[type];
-
-      if (type === "comment"){
-        const comment_a = get(a,'edge_media_to_comment.count',0) || get(a,'edge_media_preview_comment.count',0)
-        const comment_b = get(b,'edge_media_to_comment.count',0) || get(b,'edge_media_preview_comment.count',0)
-        return this.isDescending
-          ? comment_b - comment_a
-          : comment_a - comment_b;
-      }
-
-      if (type === "like"){
-        const like_a = get(a, "edge_media_preview_like.count", 0);
-        const like_b = get(b, "edge_media_preview_like.count", 0);
-        return this.isDescending ? like_b - like_a : like_a - like_b;
-      }
-      if(type ==='hashtagCount'){
-        return this.isDescending
-        ? b["edge_hashtag_to_media"].count -
-        a["edge_hashtag_to_media"].count
-        : a["edge_hashtag_to_media"].count -
-        b["edge_hashtag_to_media"].count;
-      }  
-      if(type ==='caption'){
-        const caption_a = get(a,'edge_media_to_caption.edges[0].node.text') || ''
-        const caption_b = get(b,'edge_media_to_caption.edges[0].node.text') || ''
-        return this.isDescending
-          ? caption_b.length - caption_a.length
-          : caption_a.length - caption_b.length;
-      }
-      if(type ==='hashtagInCaption'){
+      if(type && type === 'hashtagInCaption') {
         const message_a = get(a,'edge_media_to_caption.edges[0].node.text')
         const message_b = get(b,'edge_media_to_caption.edges[0].node.text')
         const hashtags_a = this.getHashtagFromMessage(message_a)
@@ -102,7 +72,7 @@ export class ResultComponent implements OnInit {
           ? hashtags_b.length - hashtags_a.length
           : hashtags_a.length - hashtags_b.length;
       }
-      if(type ==='userInCaption') {
+      if(type && type === 'userInCaption'){
         const message_a = get(a,'edge_media_to_caption.edges[0].node.text')
         const message_b = get(b,'edge_media_to_caption.edges[0].node.text')
         const users_a = this.getUserFromMessage(message_a)
@@ -111,7 +81,9 @@ export class ResultComponent implements OnInit {
           ? users_b.length - users_a.length
           : users_a.length - users_b.length;
       }
-      return 0
+      const res_a = get(a, field);
+      const res_b = get(b, field);
+      return this.isDescending ? res_b - res_a : res_a - res_b;
     });
 
     this.isDescending = !this.isDescending;

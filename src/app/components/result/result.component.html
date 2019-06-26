@@ -20,13 +20,13 @@
       <th>Id</th>
       <th>Owner Id</th>
       <th>Thumbnail</th>
-      <th>Is Video</th>
-      <th (click)="sort('caption')">Caption</th>
-      <th (click)="sort('hashtagInCaption')">Hashtag in Caption</th>
-      <th (click)="sort('userInCaption')">User in Caption</th>
+      <th (click)="sort('is_video')">Is Video</th>
+      <th (click)="sort('edge_media_to_caption.edges[0].node.text.length')">Caption</th>
+      <th (click)="sort(null, 'hashtagInCaption')">Hashtag in Caption</th>
+      <th (click)="sort(null, 'userInCaption')">User in Caption</th>
       <th>Shortcode</th>
-      <th (click)="sort('comment')">Comment</th>
-      <th (click)="sort('like')">Like</th>
+      <th (click)="sort('edge_media_to_comment.count')">Comment</th>
+      <th (click)="sort('edge_liked_by.count')">Like</th>
       <th (click)="sort('taken_at_timestamp')">Taken at</th>
       <th *ngIf="type === 'GET_MEDIA_INFO_COMPONENT'">Location</th>
     </tr>
@@ -34,20 +34,20 @@
     <tr *ngIf="type === 'GET_USER_INFO_COMPONENT' ">
       <th>Id</th>
       <th>Bio</th>
-      <th>Website</th>
-      <th>Follower</th>
-      <th>Following</th>
+      <th (click)="sort('external_url')">Website</th>
+      <th (click)="sort('edge_follow.count')">Follower</th>
+      <th (click)="sort('edge_followed_by.count')">Following</th>
       <th>Full Name</th>
       <th>Username</th>
-      <th>Is Verified</th>
-      <th>Is Private</th>
+      <th (click)="sort('is_verified')">Is Verified</th>
+      <th (click)="sort('is_private')">Is Private</th>
     </tr>
 
     <tr *ngIf="type === 'GET_HASHTAG_INFO_COMPONENT'">
       <th>Id</th>
       <th>Name</th>
-      <th (click)="sort('hashtagCount')">Count</th>
-      <th>Allow follow</th>
+      <th (click)="sort('edge_hashtag_to_media.count')">Count</th>
+      <th (click)="sort('allow_following')">Allow follow</th>
     </tr>
 
     <tr *ngIf="type === 'GET_MY_STORIES' ">

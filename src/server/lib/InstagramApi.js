@@ -43,55 +43,23 @@ class Instagram {
   }
   getUserById({ userId }) {
     let options = {
-      url: "https://www.instagram.com/web/friendships/" + userId + "/follow/",
+      url: `https://i.instagram.com/api/v1/users/${userId}/info/`,
       headers: {
         Cookie: this.credentials.cookie
       }
     };
     return request(options)
       .then(body => {
-        let data = body.match(/sharedData(.*?);<\/script>/i);
-        if (!data) {
-          console.log("getUserById Khong co data");
-          return { statusCode: 400, data };
-        }
-        data = data[0].replace(";</script>", "").replace("sharedData = ", "");
-        data = JSON.parse(data);
-        if (data.entry_data.Challenge) {
-          console.log(
-            this.credentials.cookie.slice(-15),
-            "Checkpoint cmnr",
-            data.entry_data.Challenge[0].challengeType
-          );
-          return { statusCode: 404, data };
-        }
-        data = data.entry_data.ProfilePage[0].graphql.user;
+        const data = JSON.parse(body).user
         return {
           statusCode: 200,
           data
         };
       })
-      .catch(e => {
-        if (!e) {
-          console.log("Ko co e");
-          return { statusCode: 404, data: null };
-        }
-        if (!e.statusCode) {
-          console.log(userId, e.message);
-          return { statusCode: 404, data: null };
-        }
-        if (e.statusCode == 400) {
-          console.log("id sai", e.name);
-        }
-        if (e.statusCode == 404) {
-          console.log("id sai, page notfound", e.name);
-        }
-        console.log(userId, "getUserById Loi cmnr" + e.message);
-        return {
-          statusCode: e.statusCode,
-          data: e.name
-        };
-      });
+      .catch(e => ({
+        statusCode: e.statusCode,
+        data: e.name
+      }));
   }
   getUserByUsername({ username }) {
     return this.request(`/${username}/?__a=1`)

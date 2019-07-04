@@ -28,6 +28,7 @@ export class NavbarComponent implements OnInit {
     if (!this.accountService.verifyCookie({ cookie }))
       return alert("Check cookie again");
     const user = await this.accountService.getUserByCookie({ cookie });
+    if(!user) return
     const addedUser = await this.accountService.addAccount({ cookie, user });
     this.isShowAddAccountModal = false;
   }

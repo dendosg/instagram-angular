@@ -133,7 +133,10 @@ router.get("/account", (req, res) => {
   });
 });
 
-router.get("/test", (req, res) => {
+router.get("/test", async (req, res) => {
+  const cookie = `mid=XQuVNgAEAAFru4Dfnny4w6ByqnYu; csrftoken=87Sr5fIiMuUYpCbMlXt5WlQvBB1IbArJ; shbid=12186; shbts=1562253757.2293599; ds_user_id=4045592339; sessionid=4045592339%3AkiVIgiKqnWAmBK%3A26; rur=PRN; urlgen="{\"27.64.255.187\": 7552}:1hj3Zt:MngcK2TC1wqBWmXI_WmmqarIzrY"`
+  const client = new Instagram({ cookie });
+  data = await client.getUserById({ userId: '4045592339' });
   res.json({ a: "test" });
 });
 

@@ -1,11 +1,12 @@
 import { Injectable } from "@angular/core";
 import axios from "axios";
+import { Constants } from "app/utils/Constants";
 @Injectable({
   providedIn: "root"
 })
 export class AccountService {
   public instagram;
-  public baseUrlAccount = "http://localhost:8080/api/account";
+  public baseUrlAccount = Constants.baseApiUrl + "account";
   constructor() {}
 
   verifyCookie({ cookie }) {
@@ -24,7 +25,7 @@ export class AccountService {
     const data = { type: "GET_USER_BY_ID", cookie, input: user_id };
     return axios({
       method: "post",
-      url: "http://localhost:8080/api",
+      url: Constants.baseApiUrl,
       data
     }).then(res => {
       const { statusCode, data } = res.data;

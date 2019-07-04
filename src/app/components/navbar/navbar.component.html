@@ -46,7 +46,7 @@
     </button>
 
     <!-- Add Account Modal -->
-    <nz-modal [(nzVisible)]="isShowAddAccountModal" nzTitle="The first Modal" (nzOnCancel)="handleCancel()" (nzOnOk)="addAccount()">
+    <nz-modal [(nzVisible)]="isShowAddAccountModal" nzTitle="Add Cookie" (nzOnCancel)="handleCancel()" (nzOnOk)="addAccount()">
       <textarea rows="4" nz-input [(ngModel)]="cookies" placeholder="Enter cookies"></textarea>
     </nz-modal>
 

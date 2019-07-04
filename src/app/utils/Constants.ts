@@ -1,5 +1,7 @@
+import { environment } from "environments/environment";
+
 export const Constants = {
-  baseApiUrl: 'http://localhost:8080/api/',
+  baseApiUrl: environment.baseApiUrl,
   typeRequest: {
     GET_MY_PROFILE: "GET_MY_PROFILE",
     GET_COMMENT: "GET_COMMENT",

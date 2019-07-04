@@ -1,7 +1,7 @@
 <div nz-row nzGutter="24" class="app-input">
   <div nz-col class="gutter-row" nzSpan="8">
     <app-input [type]="type" [optionValue]="optionValue"></app-input>
-    <p>results: {{ results?.length }}</p>
+    <p>Total: {{ results?.length }}</p>
     <p *ngFor="let taskWorking of working">
       WORKING:
       <nz-tag [nzColor]="'volcano'">{{
@@ -40,7 +40,7 @@
   </div>
 </div>
 <div nz-row *ngIf="loading?.content" class="loading">
-  <img src="/src/assets/loading.svg" alt="" srcset="" />
+  <img src="/assets/loading.svg" alt="" srcset="" />
 </div>
 <div nz-row>
   <app-result [type]="type" [optionValue]="optionValue"></app-result>

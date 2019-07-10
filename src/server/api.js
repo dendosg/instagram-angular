@@ -119,10 +119,17 @@ router.post("/account", (req, res) => {
   const { cookie, user } = req.body;
   if (!cookie) return res.json({ statusCode: 400, msg: "Provide cookie" });
   const account = { cookie, user, updatedTime: new Date() };
-  db.accounts.insert(account, (err, docs) => {
+  db.accounts.findAndModify({
+    query: {
+      "user.pk": user.pk
+    },
+    update: { $set: account },
+    new: true,
+    upsert: true
+  },(err,docs)=> {
     if (err) return res.json({ statusCode: 400, msg: err });
     res.json({ statusCode: 200, msg: docs });
-  });
+  })
 });
 // Get all account
 // http://localhost:8080/api/account

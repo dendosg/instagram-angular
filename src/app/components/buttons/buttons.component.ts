@@ -31,13 +31,20 @@ export class ButtonsComponent implements OnInit {
   public onSubmit() {
     this.submit.emit()
   }
-  public copyResults(
-    field:'username' | 'pk' |'id' = 'username',
-    total: number = 10) {
+  public copyResults(type:'username' |'id' | 'shortcode' = 'shortcode') {
     const currentPage = this.appService.currentPage
     const start = (currentPage - 1) * 10;
     const end = start + 10;
-    const resultCopy = slice(this.results.map(item => item[field]), start, end);
+    const resultCopy = slice(
+      this.results.map(item => {
+        if (type === "id") return item["id"] || item["pk"];
+        return item[type]
+      }),
+      start,
+      end
+    ).filter(Boolean);
+    console.log('resultCopy', resultCopy)
+    if (!resultCopy.length) return;
     this.clipboardService.copyFromContent(resultCopy.join("\n"));
     this.message.success("Copied");
   }

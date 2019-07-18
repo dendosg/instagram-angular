@@ -1,5 +1,6 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
+import { ClipboardModule } from 'ngx-clipboard';
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -58,7 +59,8 @@ registerLocaleData(en);
     FormsModule, 
     HttpClientModule, 
     BrowserAnimationsModule,
-    ContextMenuModule.forRoot()
+    ContextMenuModule.forRoot(),
+    ClipboardModule
   ],
   providers: [{ provide: NZ_I18N, useValue: en_US }],
   bootstrap: [AppComponent]

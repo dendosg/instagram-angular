@@ -1,4 +1,4 @@
-<nz-table #basicTable [nzData]="results" (nzPageIndexChange)="scrollTop()">
+<nz-table #basicTable [nzData]="results" (nzPageIndexChange)="onPageIndexChange($event)">
   <thead>
 
     <tr *ngIf="type === 'GET_COMMENT_COMPONENT'">

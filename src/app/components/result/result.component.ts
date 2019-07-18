@@ -57,7 +57,10 @@ export class ResultComponent implements OnInit {
     const users = message.match(/(?:\s|^)@[A-Za-z0-9\-\.\_]+(?:\s|$)/g) || []
     return users.map(user => user.replace('@', '').replace(/\s/g, ""))
   }
-
+  public onPageIndexChange(page:number){
+    this.appService.setCurrentIndexPage(page)
+    this.scrollTop()
+  }
   public scrollTop() {
     window.scroll(0, 0)
   }

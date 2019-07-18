@@ -5,6 +5,7 @@ import { Subject } from 'rxjs';
   providedIn: 'root'
 })
 export class AppService {
+  public currentPage: number;
   public inputValuesSubject: Subject<any[]> = new Subject<any[]>();
   public resultsSubject: Subject<object[]> = new Subject<object[]>();
   public optionValue:
@@ -20,6 +21,9 @@ export class AppService {
     isGetTaggedMedia: false
   }
   constructor() { }
+  public setCurrentIndexPage(page){
+    this.currentPage = page
+  }
   public setInputValues(keywords: string[]) {
     this.inputValuesSubject.next(keywords || [])
   }

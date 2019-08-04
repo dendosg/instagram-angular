@@ -160,7 +160,9 @@
       <td class="cursor teal" (click)="goToGetMedia(data.id)">
         {{data.id}}
       </td>
-      <td>{{data.name}}</td>
+      <td>
+        <a href="fb.com/{{data.id}}" target="_blank">{{data.name}}</a>
+      </td>
       <td>
         <span nz-tooltip [nzTitle]="data.about || data.description">{{(data.about || data.description) | slice:0:20}}</span>
       </td>

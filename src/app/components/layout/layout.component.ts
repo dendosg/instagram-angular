@@ -1,6 +1,6 @@
 import { CONTEXT_SEARCH } from './../../utils/Constants';
 import { FacebookService } from './../../_service/facebook.service';
-import { Component, OnInit, Input, ViewChild } from "@angular/core";
+import { Component, OnInit, Input, ViewChild, OnDestroy } from "@angular/core";
 import { InputComponent } from "../input/input.component";
 import { OptionComponent } from "../option/option.component";
 import { InstagramService } from "app/_service/instagram.service";
@@ -23,7 +23,7 @@ export interface Task {
   templateUrl: "./layout.component.html",
   styleUrls: ["./layout.component.scss"]
 })
-export class LayoutComponent implements OnInit {
+export class LayoutComponent implements OnInit, OnDestroy {
   @Input() type: string;
   @ViewChild(OptionComponent) public optionComponent: OptionComponent;
   @ViewChild(InputComponent) public inputComponent: InputComponent;
@@ -309,5 +309,8 @@ export class LayoutComponent implements OnInit {
 
   public get selectedAccounts(): AccountModel[] {
     return this.optionComponent.selectedAccounts;
+  }
+  ngOnDestroy(): void {
+    this.stop()
   }
 }

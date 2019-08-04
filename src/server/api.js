@@ -95,6 +95,9 @@ router.post("/", async (req, res) => {
     case "SEARCH_PLACE_FACEBOOK":
       data = await facebook.searchPlace({ keyword: input, after });
       break;
+    case "GET_POSTS_PAGE_FACEBOOK": 
+      data = await facebook.getPostsOfPage({ pageId: input, after });
+      break  
     case "GET_STORIES":
       data = await client.getStories();
       break;

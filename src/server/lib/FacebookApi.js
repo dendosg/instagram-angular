@@ -35,6 +35,14 @@ class Facebook {
       .then(data => ({ statusCode: 200, data }))
       .catch(e => ({ statusCode: 400, data: [] }));
   }
+  getPostsOfPage({ pageId, limit = 25, after = "" }) {
+    const fields = "shares,likes.limit(0).summary(true),comments.limit(0).summary(true)";
+    return this.request(pageId + "/feed", {
+      qs: {
+        fields
+      }
+    });
+  }
 }
 
 module.exports = Facebook;

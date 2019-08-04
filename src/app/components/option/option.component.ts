@@ -1,3 +1,4 @@
+import { CONTEXT_SEARCH } from './../../utils/Constants';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AccountService } from 'app/_service/account.service';
 import { AccountModel } from 'model/account.model';
@@ -15,12 +16,12 @@ export class OptionComponent implements OnInit {
   public optionValue:
     {
       getMediaOf: string,
-      contextSearch: 'hashtag' | 'place' | 'user' | 'blended' | 'placeFacebook',
+      contextSearch: CONTEXT_SEARCH,
       isGetTopMedia: boolean,
       isGetTaggedMedia: boolean
     } = {
       getMediaOf: 'hashtag',
-      contextSearch: 'hashtag' ,
+      contextSearch: CONTEXT_SEARCH.HASHTAG ,
       isGetTopMedia: false,
       isGetTaggedMedia: false
     }

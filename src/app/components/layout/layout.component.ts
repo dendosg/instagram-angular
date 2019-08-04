@@ -1,3 +1,4 @@
+import { CONTEXT_SEARCH } from './../../utils/Constants';
 import { FacebookService } from './../../_service/facebook.service';
 import { Component, OnInit, Input, ViewChild } from "@angular/core";
 import { InputComponent } from "../input/input.component";
@@ -248,7 +249,7 @@ export class LayoutComponent implements OnInit {
         query = this.instagramService.getHashtagInfo({ cookie, hashtag: input })
         break;  
       case Constants.typeComponent.SEARCH_COMPONENT:
-        if(this.optionValue.contextSearch === 'placeFacebook'){
+        if(this.optionValue.contextSearch === CONTEXT_SEARCH.PLACE_FACEBOOK){
           query = this.facebookService.searchPlace({
             access_token,
             keyword: input,

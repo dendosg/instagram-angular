@@ -1,3 +1,4 @@
+import { CONTEXT_SEARCH } from './../utils/Constants';
 import { Injectable } from '@angular/core';
 import { uniq } from 'lodash'
 import { Subject } from 'rxjs';
@@ -11,12 +12,12 @@ export class AppService {
   public optionValue:
   {
     getMediaOf: string,
-    contextSearch: 'hashtag' | 'place' | 'user' | 'blended',
+    contextSearch: CONTEXT_SEARCH,
     isGetTopMedia: boolean,
     isGetTaggedMedia: boolean
   } = {
     getMediaOf: 'hashtag',
-    contextSearch: 'hashtag' ,
+    contextSearch: CONTEXT_SEARCH.HASHTAG ,
     isGetTopMedia: false,
     isGetTaggedMedia: false
   }

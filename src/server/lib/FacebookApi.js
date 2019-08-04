@@ -22,7 +22,7 @@ class Facebook {
     });
   }
   searchPlace({ keyword, limit = 50, after = "" }) {
-    const fields = "fan_count,name,checkins";
+    const fields = "fan_count,name,checkins,about,description,talking_about_count";
     return this.request("search", {
       qs: {
         type: "place",

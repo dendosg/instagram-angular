@@ -85,7 +85,9 @@
     <tr *ngIf="type === 'SEARCH_COMPONENT' && optionValue.contextSearch === 'placeFacebook'">
       <th>Id</th>
       <th>Name</th>
+      <th>Description</th>
       <th (click)="sort('fan_count')">Fan Count</th>
+      <th (click)="sort('talking_about_count')">Talk About</th>
       <th (click)="sort('checkins')">Checkins</th>
     </tr>
   </thead>
@@ -159,7 +161,11 @@
         {{data.id}}
       </td>
       <td>{{data.name}}</td>
+      <td>
+        <span nz-tooltip [nzTitle]="data.about || data.description">{{(data.about || data.description) | slice:0:20}}</span>
+      </td>
       <td>{{data.fan_count}}</td>
+      <td>{{data.talking_about_count}}</td>
       <td>{{data.checkins}}</td>
     </tr>
 

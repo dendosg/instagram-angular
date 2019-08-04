@@ -84,9 +84,9 @@ export class ResultComponent implements OnInit {
           ? users_b.length - users_a.length
           : users_a.length - users_b.length;
       }
-      const res_a = get(a, field) || get(a, anotherField);
-      const res_b = get(b, field) || get(b, anotherField);
-      return this.isDescending ? res_b - res_a : res_a - res_b;
+      const res_a = get(a, field) || get(a, anotherField) || 0;
+      const res_b = get(b, field) || get(b, anotherField) || 0;
+      return this.isDescending ? Number(res_b) - Number(res_a) : Number(res_a) - Number(res_b);
     });
 
     this.isDescending = !this.isDescending;

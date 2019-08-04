@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Instagram = require("./lib/InstagramApi");
+const Facebook = require("./lib/FacebookApi");
 const db = require("./db");
 // http://localhost:8080/api
 router.post("/", async (req, res) => {
@@ -13,13 +14,17 @@ router.post("/", async (req, res) => {
     type,
     latitude,
     longitude,
-    context
+    context,
+    access_token
   } = req.body;
 
   if (!type) return res.json({ msg: "Vui long cung cap type" });
-  if (!input && type !== 'GET_MY_PROFILE' && type !== 'GET_STORIES') return res.json({ msg: "Vui long cung cap input" });
-  if (!cookie) return res.json({ msg: "Vui long cung cap cookie" });
-  const client = new Instagram({ cookie });
+  if (!input && type !== "GET_MY_PROFILE" && type !== "GET_STORIES")
+    return res.json({ msg: "Vui long cung cap input" });
+  if (!cookie && !access_token)
+    return res.json({ msg: "Vui long cung cap cookie hoac access_token" });
+  if (cookie) var client = new Instagram({ cookie });
+  if (access_token) var facebook = new Facebook({ access_token });
   let data = [];
   switch (type) {
     case "GET_MY_PROFILE":
@@ -87,6 +92,9 @@ router.post("/", async (req, res) => {
         context //hashtag || place || user || blended
       });
       break;
+    case "SEARCH_PLACE_FACEBOOK":
+      data = await facebook.searchPlace({ keyword: input, after });
+      break;
     case "GET_STORIES":
       data = await client.getStories();
       break;
@@ -97,54 +105,55 @@ router.post("/", async (req, res) => {
       console.log("DEFAULT CMNR");
       break;
   }
-  
+
   return res.json(data);
 });
 
-router.post("/upload",async (req,res)=>{
+router.post("/upload", async (req, res) => {
   if (!req.body) return;
 
-  const {
-    cookie,
-    photoUrl,
-    caption
-  } = req.body;
+  const { cookie, photoUrl, caption } = req.body;
   const client = new Instagram({ cookie });
-  const data = await client.uploadPhoto({ photo: photoUrl, caption })
-  res.json(data)
-})
+  const data = await client.uploadPhoto({ photo: photoUrl, caption });
+  res.json(data);
+});
 // Add an account
 // http://localhost:8080/api/account
 router.post("/account", (req, res) => {
   const { cookie, user } = req.body;
   if (!cookie) return res.json({ statusCode: 400, msg: "Provide cookie" });
   const account = { cookie, user, updatedTime: new Date() };
-  db.accounts.findAndModify({
-    query: {
-      "user.pk": user.pk
+  db.accountsForMe.findAndModify(
+    {
+      query: {
+        "user.pk": user.pk
+      },
+      update: { $set: account },
+      new: true,
+      upsert: true
     },
-    update: { $set: account },
-    new: true,
-    upsert: true
-  },(err,docs)=> {
-    if (err) return res.json({ statusCode: 400, msg: err });
-    res.json({ statusCode: 200, msg: docs });
-  })
+    (err, docs) => {
+      if (err) return res.json({ statusCode: 400, msg: err });
+      res.json({ statusCode: 200, msg: docs });
+    }
+  );
 });
 // Get all account
 // http://localhost:8080/api/account
 router.get("/account", (req, res) => {
-  db.accounts.find({}, function (err, docs) {
+  db.accountsForMe.find({}, function(err, docs) {
     if (err) return res.json({ statusCode: 400, msg: err });
     res.json({ statusCode: 200, msg: docs });
   });
 });
 
 router.get("/test", async (req, res) => {
-  const cookie = `mid=XQuVNgAEAAFru4Dfnny4w6ByqnYu; csrftoken=87Sr5fIiMuUYpCbMlXt5WlQvBB1IbArJ; shbid=12186; shbts=1562253757.2293599; ds_user_id=4045592339; sessionid=4045592339%3AkiVIgiKqnWAmBK%3A26; rur=PRN; urlgen="{\"27.64.255.187\": 7552}:1hj3Zt:MngcK2TC1wqBWmXI_WmmqarIzrY"`
-  const client = new Instagram({ cookie });
-  data = await client.getUserById({ userId: '4045592339' });
-  res.json({ a: "test" });
+  const access_token =
+    "EAAGNO4a7r2wBANdRQbZBZCaDpq9g8fJmLtFvq0E7Q8xz4VhWBsUa7Aqaj7ZBocEqYrfNnL70y5ZAK8ncEMZAkFcMJMSto4KP86BI9ltgKZAZAAEzcpZBrabktTUzDU5C8BwHxgJX5f0IVzFbKtBjmsDCpRxb8bZB7m1Wno8HwnNZBL3cZClPB0NetkV";
+  const facebook = new Facebook({ access_token });
+  console.log(facebook);
+  const aa = await facebook.searchPlace({ keyword: "daklak" });
+  res.json({ aa });
 });
 
 module.exports = router;

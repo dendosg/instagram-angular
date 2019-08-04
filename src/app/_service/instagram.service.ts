@@ -158,7 +158,7 @@ export class InstagramService {
 
   public search(
     { cookie, query, context }:
-      { cookie: string, query: string, context: 'hashtag' | 'place' | 'user' | 'blended' }
+      { cookie: string, query: string, context: 'hashtag' | 'place' | 'user' | 'blended' | 'placeFacebook' }
   ) {
     return Axios({
       method: "post",

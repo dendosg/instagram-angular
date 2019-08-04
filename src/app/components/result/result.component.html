@@ -82,6 +82,12 @@
       <th>lng</th>
       <th>lat</th>
     </tr>
+    <tr *ngIf="type === 'SEARCH_COMPONENT' && optionValue.contextSearch === 'placeFacebook'">
+      <th>Id</th>
+      <th>Name</th>
+      <th>Fan Count</th>
+      <th>Checkins</th>
+    </tr>
   </thead>
 
   <tbody *ngIf="type === 'GET_HASHTAG_INFO_COMPONENT'">
@@ -147,7 +153,15 @@
     </tr>
 
   </tbody>
+  <tbody *ngIf="type === 'SEARCH_COMPONENT' && optionValue.contextSearch === 'placeFacebook' ">
+    <tr *ngFor="let data of basicTable.data">
+      <td>{{data.id}}</td>
+      <td>{{data.name}}</td>
+      <td>{{data.fan_count}}</td>
+      <td>{{data.checkins}}</td>
+    </tr>
 
+  </tbody>
 
 
 
@@ -272,4 +286,4 @@
 </nz-table>
 
 
-<!-- <span>From result:{{results | json}}</span> -->
+<span>From result:{{results[0] | json}}</span>

@@ -1,15 +1,17 @@
+import { FacebookService } from './../../_service/facebook.service';
 import { Component, OnInit, Input, ViewChild } from "@angular/core";
 import { InputComponent } from "../input/input.component";
 import { OptionComponent } from "../option/option.component";
 import { InstagramService } from "app/_service/instagram.service";
 import { Constants } from "app/utils/Constants";
 import { isArray } from "util";
-import { sortBy } from "lodash";
+import { sortBy, get } from "lodash";
 import { NzMessageService } from "ng-zorro-antd";
 import { sleep } from "app/utils/sleep";
 import { AccountModel } from "model/account.model";
 import { AppService } from "app/_service/app.service";
 import { ActivatedRoute } from "@angular/router";
+import { environment } from 'environments/environment';
 
 export interface Task {
   input: string;
@@ -35,6 +37,7 @@ export class LayoutComponent implements OnInit {
 
   constructor(
     private instagramService: InstagramService,
+    private facebookService: FacebookService,
     private message: NzMessageService,
     private appService: AppService,
     private route: ActivatedRoute
@@ -56,6 +59,7 @@ export class LayoutComponent implements OnInit {
    }
 
   public getPercentResult(input) {
+    if(!this.total[input]) return 0
     return Math.ceil((this.count[input] / this.total[input]) * 100) || 0;
   }
 
@@ -124,6 +128,7 @@ export class LayoutComponent implements OnInit {
         this.count[input] = 0;
         const taskDone = await this.getResultForOneInput({
           cookie: account.cookie,
+          access_token: account.access_token,
           input,
           after: null
         });
@@ -139,7 +144,8 @@ export class LayoutComponent implements OnInit {
     });
   }
 
-  public getResultForOneInput({ input, cookie, after }) {
+  public getResultForOneInput({ input, cookie, access_token, after }) {
+    console.log('first after :', after);
     if (this.isStop) return this.message.info('Stop')
     let query;
     switch (this.type) {
@@ -242,9 +248,17 @@ export class LayoutComponent implements OnInit {
         query = this.instagramService.getHashtagInfo({ cookie, hashtag: input })
         break;  
       case Constants.typeComponent.SEARCH_COMPONENT:
-        query = this.instagramService.search({
-          cookie, query: input, context: this.optionValue.contextSearch
-        })
+        if(this.optionValue.contextSearch === 'placeFacebook'){
+          query = this.facebookService.searchPlace({
+            access_token,
+            keyword: input,
+            after
+          });
+        } else {
+          query = this.instagramService.search({
+            cookie, query: input, context: this.optionValue.contextSearch
+          })
+        }
         break  
       default:
         break;
@@ -264,16 +278,16 @@ export class LayoutComponent implements OnInit {
       this.count[input] += result.length;
       const results = this.results.concat(result);
       this.appService.setResults(results)
-      if (!data.page_info) return Promise.resolve({ cookie, input });
+      if (!data.page_info && !data.paging) return Promise.resolve({ cookie, input });
 
-      const {
-        count,
-        page_info: { end_cursor, has_next_page }
-      } = data;
+      const count = get(data,'count')
+      const end_cursor = get(data,'page_info.end_cursor')
+      const has_next_page = get(data,'page_info.has_next_page')
+      const after = get(data, "paging.cursors.after"); // FOR FACEBOOK SEARCH
       this.total[input] = count;
-      if (!has_next_page) return Promise.resolve({ cookie, input });
+      if (!has_next_page && !after) return Promise.resolve({ cookie, input });
       await sleep(1000)
-      return this.getResultForOneInput({ input, cookie, after: end_cursor });
+      return this.getResultForOneInput({ input, cookie, access_token, after: (end_cursor || after) });
     });
   }
   public get isAllowToSubmit() {

@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  baseApiUrl: 'http://localhost:8080/api/'
+  baseApiUrl: 'http://localhost:8080/api/',
+  FACEOOK_ACCESS_TOKEN: 'EAAGNO4a7r2wBANdRQbZBZCaDpq9g8fJmLtFvq0E7Q8xz4VhWBsUa7Aqaj7ZBocEqYrfNnL70y5ZAK8ncEMZAkFcMJMSto4KP86BI9ltgKZAZAAEzcpZBrabktTUzDU5C8BwHxgJX5f0IVzFbKtBjmsDCpRxb8bZB7m1Wno8HwnNZBL3cZClPB0NetkV'
 };
 
 /*

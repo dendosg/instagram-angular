@@ -15,7 +15,7 @@ export class OptionComponent implements OnInit {
   public optionValue:
     {
       getMediaOf: string,
-      contextSearch: 'hashtag' | 'place' | 'user' | 'blended',
+      contextSearch: 'hashtag' | 'place' | 'user' | 'blended' | 'placeFacebook',
       isGetTopMedia: boolean,
       isGetTaggedMedia: boolean
     } = {

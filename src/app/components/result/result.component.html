@@ -16,7 +16,7 @@
       <th (click)="sort('is_verified')">Is Verified</th>
     </tr>
 
-    <tr *ngIf="(type === 'GET_MEDIA_COMPONENT' || type === 'GET_MEDIA_INFO_COMPONENT') && optionValue.getMediaOf !== 'facebookPage'">
+    <tr *ngIf="(type === 'GET_MEDIA_COMPONENT' || type === 'GET_MEDIA_INFO_COMPONENT') && optionValue.getMediaOf !== 'facebookFeed'">
       <th>Id</th>
       <th>Owner Id</th>
       <th>Thumbnail</th>
@@ -30,7 +30,7 @@
       <th (click)="sort('taken_at_timestamp')">Taken at</th>
       <th *ngIf="type === 'GET_MEDIA_INFO_COMPONENT'">Location</th>
     </tr>
-    <tr *ngIf="type === 'GET_MEDIA_COMPONENT' && optionValue.getMediaOf === 'facebookPage'">
+    <tr *ngIf="type === 'GET_MEDIA_COMPONENT' && optionValue.getMediaOf === 'facebookFeed'">
         <th>Post Id</th>
         <th>Message</th>
         <th>Full Picture</th>
@@ -229,7 +229,7 @@
     </tr>
   </tbody>
 
-  <tbody *ngIf="(type === 'GET_MEDIA_COMPONENT' || type === 'GET_MEDIA_INFO_COMPONENT') && optionValue.getMediaOf !== 'facebookPage'">
+  <tbody *ngIf="(type === 'GET_MEDIA_COMPONENT' || type === 'GET_MEDIA_INFO_COMPONENT') && optionValue.getMediaOf !== 'facebookFeed'">
     <tr *ngFor="let data of basicTable.data">
       <td>{{data.id}}</td>
       <td>{{data?.owner.id}}</td>
@@ -274,7 +274,7 @@
     </tr>
   </tbody>
 
-  <tbody *ngIf="type === 'GET_MEDIA_COMPONENT' && optionValue.getMediaOf === 'facebookPage'">
+  <tbody *ngIf="type === 'GET_MEDIA_COMPONENT' && optionValue.getMediaOf === 'facebookFeed'">
     <tr *ngFor="let data of basicTable.data">
         <td>
           <a href="http://fb.com/{{data.id}}" target="_blank">{{data.id}}</a>

@@ -37,7 +37,7 @@ export class InputComponent implements OnInit {
           case GET_MEDIA_TYPE.USER: return 'Enter userid'
           case GET_MEDIA_TYPE.HASHTAG: return 'Enter hashtag name'
           case GET_MEDIA_TYPE.LOCATION: return 'Enter locationId'
-          case GET_MEDIA_TYPE.FACEBOOK_PAGE: return 'Enter pageId'
+          case GET_MEDIA_TYPE.FACEBOOK_FEED: return 'Enter pageId or userId'
           default: return ''
         }
       default: return '';

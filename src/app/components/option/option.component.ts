@@ -20,11 +20,13 @@ export class OptionComponent implements OnInit {
       contextSearch: CONTEXT_SEARCH,
       isGetTopMedia: boolean,
       isGetTaggedMedia: boolean
+      isProfile: boolean
     } = {
-      getMediaOf: GET_MEDIA_TYPE.FACEBOOK_PAGE,
+      getMediaOf: GET_MEDIA_TYPE.FACEBOOK_FEED,
       contextSearch: CONTEXT_SEARCH.PLACE_FACEBOOK ,
       isGetTopMedia: false,
-      isGetTaggedMedia: false
+      isGetTaggedMedia: false,
+      isProfile: false
     }
 
   public selectedAccountIds: string[] = [];

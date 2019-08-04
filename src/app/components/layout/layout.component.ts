@@ -222,7 +222,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
               after
             });
             break;
-          case GET_MEDIA_TYPE.FACEBOOK_PAGE:
+          case GET_MEDIA_TYPE.FACEBOOK_FEED:
             query = this.facebookService.getPostsOfPage({
               access_token,
               keyword: input,

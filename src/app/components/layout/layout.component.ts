@@ -12,6 +12,7 @@ import { sleep } from "app/utils/sleep";
 import { AccountModel } from "model/account.model";
 import { AppService } from "app/_service/app.service";
 import { ActivatedRoute } from "@angular/router";
+import axios from 'axios';
 import { environment } from 'environments/environment';
 
 export interface Task {
@@ -127,12 +128,21 @@ export class LayoutComponent implements OnInit, OnDestroy {
       this.working.push(task);
       try {
         this.count[input] = 0;
-        const taskDone = await this.getResultForOneInput({
-          cookie: account.cookie,
-          access_token: account.access_token,
-          input,
-          after: null
-        });
+        let taskDone
+        if(this.optionValue.isProfile){
+          taskDone = await this.getFeedForOneInput({
+            access_token: account.access_token,
+            input
+          })
+          console.log('taskDone :', taskDone);
+        }else {
+          taskDone = await this.getResultForOneInput({
+            cookie: account.cookie,
+            access_token: account.access_token,
+            input,
+            after: null
+          });
+        }
 
         this.working = this.working.filter(
           task => task.input !== taskDone.input
@@ -144,7 +154,32 @@ export class LayoutComponent implements OnInit, OnDestroy {
       }
     });
   }
-
+  public updateResults({input, results}){
+    this.count[input] += results.length;
+    const newResults = this.results.concat(results);
+    this.appService.setResults(newResults)
+  }
+  
+  public async getFeedForOneInput({access_token, input}){
+    const firstLoadData = await this.facebookService.getPostsOfPage({
+      access_token,
+      keyword: input,
+      after: null
+    });
+    const posts = get(firstLoadData, "data.data.data");
+    const next = get(firstLoadData, "data.data.paging.next")
+    this.updateResults({ input, results: posts });
+    const getAgain = nextUrl => {
+      return axios(nextUrl).then(res => {
+        const posts = get(res, "data.data");
+        this.updateResults({input,results: posts})
+        const next = get(res, "data.paging.next")
+        if(next) return getAgain(next)
+        return Promise.resolve({access_token, input})
+      })
+    }
+    return getAgain(next)
+  }
   public getResultForOneInput({ input, cookie, access_token, after }) {
     console.log('first after :', after);
     if (this.isStop) return this.message.info('Stop')
@@ -281,11 +316,8 @@ export class LayoutComponent implements OnInit, OnDestroy {
         this.appService.setResults(results)
         return Promise.resolve({ cookie, input });
       }
-      const result = data.data;
-      // console.log('data', data)
-      this.count[input] += result.length;
-      const results = this.results.concat(result);
-      this.appService.setResults(results)
+      const results = data.data;
+      this.updateResults({input, results})
       if (!data.page_info && !data.paging) return Promise.resolve({ cookie, input });
 
       const count = get(data,'count')

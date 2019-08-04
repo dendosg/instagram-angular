@@ -277,7 +277,7 @@
   <tbody *ngIf="type === 'GET_MEDIA_COMPONENT' && optionValue.getMediaOf === 'facebookFeed'">
     <tr *ngFor="let data of basicTable.data">
         <td>
-          <a href="http://fb.com/{{data.id}}" target="_blank">{{data.id}}</a>
+          <a href="{{data.permalink_url}}" target="_blank">{{data.id}}</a>
         </td>
         <td> <span nz-tooltip [nzTitle]="data.message">{{data.message | slice:0:20}}</span></td>
         <td>

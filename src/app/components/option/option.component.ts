@@ -26,7 +26,7 @@ export class OptionComponent implements OnInit {
       contextSearch: CONTEXT_SEARCH.PLACE_FACEBOOK ,
       isGetTopMedia: false,
       isGetTaggedMedia: false,
-      isProfile: false
+      isProfile: true
     }
 
   public selectedAccountIds: string[] = [];

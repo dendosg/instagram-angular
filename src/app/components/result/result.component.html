@@ -85,8 +85,8 @@
     <tr *ngIf="type === 'SEARCH_COMPONENT' && optionValue.contextSearch === 'placeFacebook'">
       <th>Id</th>
       <th>Name</th>
-      <th>Fan Count</th>
-      <th>Checkins</th>
+      <th (click)="sort('fan_count')">Fan Count</th>
+      <th (click)="sort('checkins')">Checkins</th>
     </tr>
   </thead>
 
@@ -155,7 +155,9 @@
   </tbody>
   <tbody *ngIf="type === 'SEARCH_COMPONENT' && optionValue.contextSearch === 'placeFacebook' ">
     <tr *ngFor="let data of basicTable.data">
-      <td>{{data.id}}</td>
+      <td class="cursor teal" (click)="goToGetMedia(data.id)">
+        {{data.id}}
+      </td>
       <td>{{data.name}}</td>
       <td>{{data.fan_count}}</td>
       <td>{{data.checkins}}</td>

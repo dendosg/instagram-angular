@@ -1,4 +1,5 @@
-import { CONTEXT_SEARCH } from './../../utils/Constants';
+import { ActivatedRoute } from '@angular/router';
+import { CONTEXT_SEARCH, GET_MEDIA_TYPE } from './../../utils/Constants';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AccountService } from 'app/_service/account.service';
 import { AccountModel } from 'model/account.model';
@@ -15,20 +16,24 @@ export class OptionComponent implements OnInit {
 
   public optionValue:
     {
-      getMediaOf: string,
+      getMediaOf: GET_MEDIA_TYPE,
       contextSearch: CONTEXT_SEARCH,
       isGetTopMedia: boolean,
       isGetTaggedMedia: boolean
     } = {
-      getMediaOf: 'hashtag',
-      contextSearch: CONTEXT_SEARCH.HASHTAG ,
+      getMediaOf: GET_MEDIA_TYPE.HASHTAG,
+      contextSearch: CONTEXT_SEARCH.PLACE_FACEBOOK ,
       isGetTopMedia: false,
       isGetTaggedMedia: false
     }
 
   public selectedAccountIds: string[] = [];
   public accounts: AccountModel[] = [];
-  constructor(private accountService: AccountService) { }
+  constructor(
+    private accountService: AccountService,
+    private route: ActivatedRoute
+
+    ) { }
   public onResetResults(){
     this.resetResults.emit()
   }
@@ -43,6 +48,14 @@ export class OptionComponent implements OnInit {
       if (!accounts) return;
       this.accounts = accounts;
       this.selectedAccountIds = this.accounts.map(account => account._id)
+    });
+
+    // http://localhost:4200/media?query=huy,alo,dashdsadu&type=hashtag
+    this.route.queryParams
+    .subscribe(params => {
+      const type: GET_MEDIA_TYPE = params.type
+      if(!type) return
+      this.optionValue.getMediaOf = type
     });
   }
 }

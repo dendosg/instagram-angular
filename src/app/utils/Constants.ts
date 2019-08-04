@@ -44,3 +44,9 @@ export enum CONTEXT_SEARCH {
   BLENDED = "blended",
   PLACE_FACEBOOK = "placeFacebook"
 }
+
+export enum GET_MEDIA_TYPE {
+  USER = "user",
+  HASHTAG = "hashtag",
+  LOCATION = "location",
+}

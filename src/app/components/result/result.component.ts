@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from "@angular/core";
-import { Constants } from "app/utils/Constants";
+import { Constants, GET_MEDIA_TYPE } from "app/utils/Constants";
 import * as moment from "moment";
 import { Router } from "@angular/router";
 import { AppService } from "app/_service/app.service";
@@ -92,6 +92,9 @@ export class ResultComponent implements OnInit {
     this.isDescending = !this.isDescending;
     const results = [...sortedResults]
     this.appService.setResults(results)
+  }
+  public goToGetMedia(keyword: string){
+    this.router.navigate(["/media"], { queryParams: { query: keyword, type: GET_MEDIA_TYPE.LOCATION} });
   }
   ngOnInit() {
 

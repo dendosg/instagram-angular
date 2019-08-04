@@ -38,7 +38,7 @@ class Facebook {
   }
   getPostsOfPage({ pageId, limit = 50, after = "" }) {
     const fields =
-      "shares,likes.limit(0).summary(true),comments.limit(0).summary(true),message,created_time";
+      "shares,likes.limit(0).summary(true),comments.limit(0).summary(true),message,created_time,full_picture";
     return this.request(pageId + "/feed", {
       qs: {
         fields,

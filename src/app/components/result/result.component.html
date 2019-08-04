@@ -33,6 +33,7 @@
     <tr *ngIf="type === 'GET_MEDIA_COMPONENT' && optionValue.getMediaOf === 'facebookPage'">
         <th>Post Id</th>
         <th>Message</th>
+        <th>Full Picture</th>
         <th (click)="sort('created_time')">Created Time</th>
         <th (click)="sort('likesCount')">Likes Count</th>
         <th (click)="sort('commentsCount')">Comments Count</th>
@@ -279,6 +280,9 @@
           <a href="http://fb.com/{{data.id}}" target="_blank">{{data.id}}</a>
         </td>
         <td> <span nz-tooltip [nzTitle]="data.message">{{data.message | slice:0:20}}</span></td>
+        <td>
+          <img *ngIf="data.full_picture" (click)="openImageInNewTab(data.full_picture)" [src]="data.full_picture" height="150" />
+        </td>
         <td>{{getFormatDate(data.created_time)}}</td>
         <td>{{data.likesCount}}</td>
         <td>{{data.commentsCount}}</td>

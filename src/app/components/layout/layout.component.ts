@@ -171,7 +171,14 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.updateResults({ input, results: posts });
     const getAgain = nextUrl => {
       return axios(nextUrl).then(res => {
-        const posts = get(res, "data.data");
+        let posts = get(res, "data.data");
+        posts = posts.map(item => ({
+          ...item,
+          created_time: new Date(get(item, 'created_time')).getTime() / 1000,
+          likesCount: get(item, "likes.summary.total_count") || 0,
+          commentsCount: get(item, "comments.summary.total_count") || 0,
+          sharesCount: get(item, "shares.count") || 0
+        }))
         this.updateResults({input,results: posts})
         const next = get(res, "data.paging.next")
         if(next) return getAgain(next)

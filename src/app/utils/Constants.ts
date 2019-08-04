@@ -49,4 +49,5 @@ export enum GET_MEDIA_TYPE {
   USER = "user",
   HASHTAG = "hashtag",
   LOCATION = "location",
+  FACEBOOK_PAGE = "facebookPage"
 }

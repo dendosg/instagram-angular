@@ -4,7 +4,7 @@ import { Component, OnInit, Input, ViewChild, OnDestroy } from "@angular/core";
 import { InputComponent } from "../input/input.component";
 import { OptionComponent } from "../option/option.component";
 import { InstagramService } from "app/_service/instagram.service";
-import { Constants } from "app/utils/Constants";
+import { Constants, GET_MEDIA_TYPE } from "app/utils/Constants";
 import { isArray } from "util";
 import { sortBy, get } from "lodash";
 import { NzMessageService } from "ng-zorro-antd";
@@ -180,7 +180,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
         break;
       case Constants.typeComponent.GET_MEDIA_COMPONENT:
         switch (this.optionValue.getMediaOf) {
-          case "user":
+          case GET_MEDIA_TYPE.USER:
             if (this.optionValue.isGetTaggedMedia) {
               query = this.instagramService.getMediaTaggedOfUser({
                 cookie,
@@ -195,7 +195,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
               after
             });
             break;
-          case "hashtag":
+          case GET_MEDIA_TYPE.HASHTAG:
             if (this.optionValue.isGetTopMedia) {
               query = this.instagramService.getTopMediaOfHashtag({
                 cookie,
@@ -209,7 +209,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
               after
             });
             break;
-          case "location":
+          case GET_MEDIA_TYPE.LOCATION:
             if (this.optionValue.isGetTopMedia) {
               query = this.instagramService.getTopMediaOfLocation({
                 cookie, locationId: input
@@ -222,6 +222,13 @@ export class LayoutComponent implements OnInit, OnDestroy {
               after
             });
             break;
+          case GET_MEDIA_TYPE.FACEBOOK_PAGE:
+            query = this.facebookService.getPostsOfPage({
+              access_token,
+              keyword: input,
+              after
+            });
+            break  
           default:
             break;
         }
@@ -275,7 +282,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
         return Promise.resolve({ cookie, input });
       }
       const result = data.data;
-      console.log('data', data)
+      // console.log('data', data)
       this.count[input] += result.length;
       const results = this.results.concat(result);
       this.appService.setResults(results)

@@ -21,7 +21,7 @@ export class OptionComponent implements OnInit {
       isGetTopMedia: boolean,
       isGetTaggedMedia: boolean
     } = {
-      getMediaOf: GET_MEDIA_TYPE.HASHTAG,
+      getMediaOf: GET_MEDIA_TYPE.FACEBOOK_PAGE,
       contextSearch: CONTEXT_SEARCH.PLACE_FACEBOOK ,
       isGetTopMedia: false,
       isGetTaggedMedia: false

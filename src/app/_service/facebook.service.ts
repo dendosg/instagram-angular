@@ -8,7 +8,7 @@ import { Injectable } from "@angular/core";
 export class FacebookService {
   constructor() {}
 
-  searchPlace({
+  public searchPlace({
     access_token,
     keyword,
     after
@@ -25,6 +25,22 @@ export class FacebookService {
         access_token,
         input: keyword,
         type: "SEARCH_PLACE_FACEBOOK"
+      }
+    });
+  }
+  public getPostsOfPage({
+    access_token,
+    keyword,
+    after
+  }){
+    return Axios({
+      method: "post",
+      url: Constants.baseApiUrl,
+      data: {
+        after,
+        access_token,
+        input: keyword,
+        type: "GET_POSTS_PAGE_FACEBOOK"
       }
     });
   }

@@ -11,6 +11,7 @@
     <label nz-radio nzValue="user">User</label>
     <label nz-radio nzValue="hashtag">Hashtag</label>
     <label nz-radio nzValue="location">Location</label>
+    <label nz-radio nzValue="facebookPage">Facebook Page</label>
   </nz-radio-group>
   <div>
     <label (ngModelChange)="onResetResults()" *ngIf="optionValue.getMediaOf && optionValue.getMediaOf !== 'user' "

@@ -16,7 +16,7 @@
       <th (click)="sort('is_verified')">Is Verified</th>
     </tr>
 
-    <tr *ngIf="type === 'GET_MEDIA_COMPONENT' || type === 'GET_MEDIA_INFO_COMPONENT'">
+    <tr *ngIf="(type === 'GET_MEDIA_COMPONENT' || type === 'GET_MEDIA_INFO_COMPONENT') && optionValue.getMediaOf !== 'facebookPage'">
       <th>Id</th>
       <th>Owner Id</th>
       <th>Thumbnail</th>
@@ -30,7 +30,14 @@
       <th (click)="sort('taken_at_timestamp')">Taken at</th>
       <th *ngIf="type === 'GET_MEDIA_INFO_COMPONENT'">Location</th>
     </tr>
-
+    <tr *ngIf="type === 'GET_MEDIA_COMPONENT' && optionValue.getMediaOf === 'facebookPage'">
+        <th>Post Id</th>
+        <th>Message</th>
+        <th (click)="sort('created_time')">Created Time</th>
+        <th (click)="sort('likesCount')">Likes Count</th>
+        <th (click)="sort('commentsCount')">Comments Count</th>
+        <th (click)="sort('sharesCount')">Shares Count</th>
+    </tr>
     <tr *ngIf="type === 'GET_USER_INFO_COMPONENT' ">
       <th>Id</th>
       <th>Bio</th>
@@ -161,7 +168,7 @@
         {{data.id}}
       </td>
       <td>
-        <a href="fb.com/{{data.id}}" target="_blank">{{data.name}}</a>
+        <a href="http://fb.com/{{data.id}}" target="_blank">{{data.name}}</a>
       </td>
       <td>
         <span nz-tooltip [nzTitle]="data.about || data.description">{{(data.about || data.description) | slice:0:20}}</span>
@@ -221,7 +228,7 @@
     </tr>
   </tbody>
 
-  <tbody *ngIf="type === 'GET_MEDIA_COMPONENT' || type === 'GET_MEDIA_INFO_COMPONENT'">
+  <tbody *ngIf="(type === 'GET_MEDIA_COMPONENT' || type === 'GET_MEDIA_INFO_COMPONENT') && optionValue.getMediaOf !== 'facebookPage'">
     <tr *ngFor="let data of basicTable.data">
       <td>{{data.id}}</td>
       <td>{{data?.owner.id}}</td>
@@ -263,6 +270,19 @@
           <a href="https://www.instagram.com/explore/locations/{{data.location.id}}/{{data.location.slug}}/" target="_blank">{{data.location.name}}</a>
         </span>
       </td>
+    </tr>
+  </tbody>
+
+  <tbody *ngIf="type === 'GET_MEDIA_COMPONENT' && optionValue.getMediaOf === 'facebookPage'">
+    <tr *ngFor="let data of basicTable.data">
+        <td>
+          <a href="http://fb.com/{{data.id}}" target="_blank">{{data.id}}</a>
+        </td>
+        <td> <span nz-tooltip [nzTitle]="data.message">{{data.message | slice:0:20}}</span></td>
+        <td>{{getFormatDate(data.created_time)}}</td>
+        <td>{{data.likesCount}}</td>
+        <td>{{data.commentsCount}}</td>
+        <td>{{data.sharesCount}}</td>
     </tr>
   </tbody>
 

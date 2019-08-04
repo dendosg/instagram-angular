@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, Input } from "@angular/core";
 import {uniq} from 'lodash'
-import { Constants } from "app/utils/Constants";
+import { Constants, GET_MEDIA_TYPE } from "app/utils/Constants";
 import { AppService } from "app/_service/app.service";
 @Component({
   selector: "app-input",
@@ -34,9 +34,10 @@ export class InputComponent implements OnInit {
       case Constants.typeComponent.GET_HASHTAG_INFO_COMPONENT: return 'Enter hashtag';
       case Constants.typeComponent.GET_MEDIA_COMPONENT:
         switch (this.optionValue.getMediaOf) {
-          case 'user': return 'Enter userid'
-          case 'hashtag': return 'Enter hashtag name'
-          case 'location': return 'Enter locationId'
+          case GET_MEDIA_TYPE.USER: return 'Enter userid'
+          case GET_MEDIA_TYPE.HASHTAG: return 'Enter hashtag name'
+          case GET_MEDIA_TYPE.LOCATION: return 'Enter locationId'
+          case GET_MEDIA_TYPE.FACEBOOK_PAGE: return 'Enter pageId'
           default: return ''
         }
       default: return '';

@@ -35,6 +35,7 @@
         <th>Message</th>
         <th>Full Picture</th>
         <th (click)="sort('created_time')">Created Time</th>
+        <th (click)="sort('type')">Type</th>
         <th (click)="sort('likesCount')">Likes Count</th>
         <th (click)="sort('commentsCount')">Comments Count</th>
         <th (click)="sort('sharesCount')">Shares Count</th>
@@ -284,6 +285,7 @@
           <img *ngIf="data.full_picture" (click)="openImageInNewTab(data.full_picture)" [src]="data.full_picture" height="150" />
         </td>
         <td>{{getFormatDate(data.created_time)}}</td>
+        <td>{{data.type}}</td>
         <td>{{data.likesCount}}</td>
         <td>{{data.commentsCount}}</td>
         <td>{{data.sharesCount}}</td>

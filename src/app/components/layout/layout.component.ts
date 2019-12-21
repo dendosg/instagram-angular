@@ -131,14 +131,14 @@ export class LayoutComponent implements OnInit, OnDestroy {
         let taskDone
         if(this.optionValue.isProfile){
           taskDone = await this.getFeedForOneInput({
-            access_token: account.access_token,
+            access_token: environment.FACEOOK_ACCESS_TOKEN,
             input
           })
           console.log('taskDone :', taskDone);
         }else {
           taskDone = await this.getResultForOneInput({
             cookie: account.cookie,
-            access_token: account.access_token,
+            access_token: environment.FACEOOK_ACCESS_TOKEN,
             input,
             after: null
           });

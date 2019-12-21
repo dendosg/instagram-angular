@@ -1,13 +1,14 @@
 import { Injectable } from "@angular/core";
 import axios from "axios";
 import { Constants } from "app/utils/Constants";
+import { HttpClient } from "@angular/common/http";
 @Injectable({
   providedIn: "root"
 })
 export class AccountService {
   public instagram;
   public baseUrlAccount = Constants.baseApiUrl + "account";
-  constructor() {}
+  constructor(private httpClient: HttpClient) {}
 
   verifyCookie({ cookie }) {
     const user_id =
@@ -48,12 +49,6 @@ export class AccountService {
       .catch(err => null);
   }
   getAccounts() {
-    return axios
-      .get(this.baseUrlAccount)
-      .then(res => {
-        if (res.data.statusCode !== 200) return null;
-        return res.data.msg;
-      })
-      .catch(() => null);
+    return this.httpClient.get(this.baseUrlAccount);
   }
 }

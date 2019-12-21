@@ -1,38 +1,44 @@
+import { getOptionSelector, getInputSelector } from './../../reducers/layout.reducer';
 import { Component, OnInit, Output, Input } from "@angular/core";
 import {uniq} from 'lodash'
-import { Constants, GET_MEDIA_TYPE } from "app/utils/Constants";
+import { Constants, GET_MEDIA_TYPE, APP_ROUTES } from "app/utils/Constants";
 import { AppService } from "app/_service/app.service";
+import { Store, select } from "@ngrx/store";
+import { AppState } from "app/reducers";
+import { getCurrentRouteSelector } from "app/reducers/layout.reducer";
+import { SetCurrentInputText } from 'app/actions/layout.action';
 @Component({
   selector: "app-input",
   templateUrl: "./input.component.html",
   styleUrls: ["./input.component.scss"]
 })
 export class InputComponent implements OnInit {
-  @Input() public type: string;
-  @Input() public optionValue;
+  public currentRoute: APP_ROUTES;
+  public optionValue;
   public inputValue: string;
-
-  constructor(private appService: AppService) { 
-    this.appService.inputValuesSubject.subscribe(inputValues => this.inputValue = inputValues.join('\n'))
+  constructor(private store: Store<AppState>) { 
+    this.store.pipe(select(getCurrentRouteSelector)).subscribe(currentRoute => this.currentRoute = currentRoute)
+    this.store.pipe(select(getOptionSelector)).subscribe(optionValue => this.optionValue = optionValue)
+    this.store.pipe(select(getInputSelector)).subscribe(inputValue => this.inputValue = inputValue)
   }
 
-  public handleInputValues(){
-    if (!this.inputValue) return this.appService.setInputValues([])
-    const keywords: string[] = uniq(this.inputValue.split("\n").filter(item => item));
-    this.appService.setInputValues(keywords)
+  public handleInputValues(event){
+    this.store.dispatch(
+      new SetCurrentInputText(this.inputValue, this.currentRoute)
+    );
   }
 
   public get placeholder() {
-    switch (this.type) {
-      case Constants.typeComponent.GET_FOLLOWER_COMPONENT:
-      case Constants.typeComponent.GET_FOLLOWING_COMPONENT: return "Enter userId";
-      case Constants.typeComponent.GET_USER_INFO_COMPONENT: return "Enter username or userId"
-      case Constants.typeComponent.SEARCH_COMPONENT: return "Enter keyword"  
-      case Constants.typeComponent.GET_COMMENT_COMPONENT:
-      case Constants.typeComponent.GET_LIKE_COMPONENT:
-      case Constants.typeComponent.GET_MEDIA_INFO_COMPONENT: return 'Enter shortcode';
-      case Constants.typeComponent.GET_HASHTAG_INFO_COMPONENT: return 'Enter hashtag';
-      case Constants.typeComponent.GET_MEDIA_COMPONENT:
+    switch (this.currentRoute) {
+      case APP_ROUTES.GET_FOLLOWER:
+      case APP_ROUTES.GET_FOLLOWING: return "Enter userId";
+      case APP_ROUTES.GET_USER_INFO: return "Enter username or userId"
+      case APP_ROUTES.SEARCH: return "Enter keyword"  
+      case APP_ROUTES.GET_COMMENT:
+      case APP_ROUTES.GET_LIKE:
+      case APP_ROUTES.GET_MEDIA_INFO: return 'Enter shortcode';
+      case APP_ROUTES.GET_HASHTAG_INFO: return 'Enter hashtag';
+      case APP_ROUTES.GET_MEDIA:
         switch (this.optionValue.getMediaOf) {
           case GET_MEDIA_TYPE.USER: return 'Enter userid'
           case GET_MEDIA_TYPE.HASHTAG: return 'Enter hashtag name'

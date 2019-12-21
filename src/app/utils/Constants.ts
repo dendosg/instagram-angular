@@ -51,3 +51,16 @@ export enum GET_MEDIA_TYPE {
   LOCATION = "location",
   FACEBOOK_FEED = "facebookFeed"
 }
+
+export enum APP_ROUTES {
+  SEARCH = "search",
+  GET_LIKE = "like",
+  GET_COMMENT = "comment",
+  GET_FOLLOWER = "follower",
+  GET_FOLLOWING = "following",
+  GET_MEDIA = "media",
+  GET_MEDIA_INFO = "media-info",
+  GET_USER_INFO = "user-info",
+  GET_HASHTAG_INFO = "hashtag-info",
+  GET_MY_STORIES = "my-stories",
+}

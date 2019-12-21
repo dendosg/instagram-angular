@@ -1,4 +1,4 @@
-import { CONTEXT_SEARCH } from './../../utils/Constants';
+import { CONTEXT_SEARCH, APP_ROUTES } from './../../utils/Constants';
 import { FacebookService } from './../../_service/facebook.service';
 import { Component, OnInit, Input, ViewChild, OnDestroy } from "@angular/core";
 import { InputComponent } from "../input/input.component";
@@ -14,6 +14,9 @@ import { AppService } from "app/_service/app.service";
 import { ActivatedRoute } from "@angular/router";
 import axios from 'axios';
 import { environment } from 'environments/environment';
+import { Store, select } from '@ngrx/store';
+import { AppState } from 'app/reducers';
+import { SetCurrentRoute } from 'app/actions/layout.action';
 
 export interface Task {
   input: string;
@@ -36,13 +39,14 @@ export class LayoutComponent implements OnInit, OnDestroy {
   public count: { [key: string]: number } = {};
   public total: { [key: string]: number } = {};
   public loading: { [key: string]: boolean } = {};
-
+  
   constructor(
     private instagramService: InstagramService,
     private facebookService: FacebookService,
     private message: NzMessageService,
     private appService: AppService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private store: Store<AppState>
     ) {
      this.appService.inputValuesSubject.subscribe(inputValues => this.inputValues = inputValues)
      this.appService.resultsSubject.subscribe(results => this.results = results)
@@ -58,6 +62,9 @@ export class LayoutComponent implements OnInit, OnDestroy {
         this.appService.setInputValues(keywords)
       });
 
+    this.route.params.subscribe(({ routeType }: { routeType: APP_ROUTES }) =>
+      this.store.dispatch(new SetCurrentRoute(routeType))
+    );
    }
 
   public getPercentResult(input) {

@@ -1,5 +1,7 @@
+import { getOptionSelector } from './../../reducers/layout.reducer';
+import { getCurrentRouteSelector } from 'app/reducers/layout.reducer';
 import { ActivatedRoute } from "@angular/router";
-import { CONTEXT_SEARCH, GET_MEDIA_TYPE } from "./../../utils/Constants";
+import { CONTEXT_SEARCH, GET_MEDIA_TYPE, APP_ROUTES } from "./../../utils/Constants";
 import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import { AccountModel } from "model/account.model";
 import { Store, select } from "@ngrx/store";
@@ -12,28 +14,21 @@ import { getAccountsSelector } from "app/reducers/account.reducer";
   styleUrls: ["./option.component.scss"]
 })
 export class OptionComponent implements OnInit {
-  @Input() public type: string;
-  @Output() public resetResults = new EventEmitter();
-
   public optionValue: {
     getMediaOf: GET_MEDIA_TYPE;
     contextSearch: CONTEXT_SEARCH;
     isGetTopMedia: boolean;
     isGetTaggedMedia: boolean;
     isProfile: boolean;
-  } = {
-    getMediaOf: GET_MEDIA_TYPE.FACEBOOK_FEED,
-    contextSearch: CONTEXT_SEARCH.PLACE_FACEBOOK,
-    isGetTopMedia: false,
-    isGetTaggedMedia: false,
-    isProfile: false
   };
 
   public selectedAccountIds: string[] = [];
   public accounts: AccountModel[];
-  constructor(private route: ActivatedRoute, private store: Store<AppState>) {}
-  public onResetResults() {
-    this.resetResults.emit();
+  public currentRoute: APP_ROUTES;
+  public APP_ROUTES = APP_ROUTES;
+  constructor(private route: ActivatedRoute, private store: Store<AppState>) {
+    this.store.pipe(select(getCurrentRouteSelector)).subscribe(currentRoute => this.currentRoute = currentRoute)
+    this.store.pipe(select(getOptionSelector)).subscribe(optionValue => this.optionValue = optionValue)
   }
   public get selectedAccounts(): AccountModel[] {
     return this.accounts.filter(account =>

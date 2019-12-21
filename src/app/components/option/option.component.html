@@ -6,8 +6,8 @@
 
 
 
-<div *ngIf="type === 'GET_MEDIA_COMPONENT'">
-  <nz-radio-group [(ngModel)]="optionValue.getMediaOf" (ngModelChange)="onResetResults()">
+<div *ngIf="currentRoute === APP_ROUTES.GET_MEDIA">
+  <nz-radio-group [(ngModel)]="optionValue.getMediaOf">
     <label nz-radio nzValue="user">User</label>
     <label nz-radio nzValue="hashtag">Hashtag</label>
     <label nz-radio nzValue="location">Location</label>
@@ -17,21 +17,21 @@
   
     <span [ngSwitch]="optionValue.getMediaOf">
       <p *ngSwitchCase="'facebookFeed'">
-          <label (ngModelChange)="onResetResults()" nz-checkbox [(ngModel)]="optionValue.isProfile">Profile</label>
+          <label nz-checkbox [(ngModel)]="optionValue.isProfile">Profile</label>
       </p>
       <p *ngSwitchCase="'user'">
-          <label (ngModelChange)="onResetResults()" nz-checkbox [(ngModel)]="optionValue.isGetTaggedMedia">Tagged media of user</label>
+          <label nz-checkbox [(ngModel)]="optionValue.isGetTaggedMedia">Tagged media of user</label>
       </p>
       <p *ngSwitchDefault>
-          <label (ngModelChange)="onResetResults()" nz-checkbox [(ngModel)]="optionValue.isGetTopMedia">Top media of hashtag</label>
+          <label nz-checkbox [(ngModel)]="optionValue.isGetTopMedia">Top media of hashtag</label>
       </p>
     </span>
   </div>
 </div>
 
 
-<div *ngIf="type === 'SEARCH_COMPONENT'">
-  <nz-radio-group (ngModelChange)="onResetResults()" [(ngModel)]="optionValue.contextSearch">
+<div *ngIf="currentRoute === APP_ROUTES.SEARCH">
+  <nz-radio-group [(ngModel)]="optionValue.contextSearch">
     <label nz-radio nzValue="user">User</label>
     <label nz-radio nzValue="hashtag">Hashtag</label>
     <label nz-radio nzValue="place">Place</label>

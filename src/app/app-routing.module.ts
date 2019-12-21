@@ -1,3 +1,4 @@
+import { LayoutComponent } from './components/layout/layout.component';
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 
@@ -14,17 +15,17 @@ import { GetMyStoriesComponent } from "./get-my-stories/get-my-stories.component
 import { GetHashtagInfoComponent } from "./get-hashtag-info/get-hashtag-info.component";
 
 const routes: Routes = [
-  { path: "comment", component: GetCommentComponent },
-  { path: "following", component: GetFollowingComponent },
-  { path: "follower", component: GetFollowerComponent },
-  { path: "like", component: GetLikeComponent },
-  { path: "media", component: GetMediaComponent },
-  { path: "media-info", component: GetMediaInfoComponent },
-  { path: "user-info", component: GetUserInfoComponent },
-  { path: "hashtag-info", component: GetHashtagInfoComponent },
-  { path: "search", component: SearchComponent },
-  { path: "get-my-stories", component: GetMyStoriesComponent },
-  { path: "", component: SearchComponent },
+  // { path: "comment", component: GetCommentComponent },
+  // { path: "following", component: LayoutComponent },
+  // { path: "follower", component: GetFollowerComponent },
+  // { path: "like", component: GetLikeComponent },
+  // { path: "media", component: GetMediaComponent },
+  // { path: "media-info", component: GetMediaInfoComponent },
+  // { path: "user-info", component: GetUserInfoComponent },
+  // { path: "hashtag-info", component: GetHashtagInfoComponent },
+  // { path: "search", component: SearchComponent },
+  // { path: "get-my-stories", component: GetMyStoriesComponent },
+  { path: ':routeType', component: LayoutComponent },
 ];
 
 @NgModule({

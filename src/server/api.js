@@ -135,9 +135,9 @@ router.post("/account", (req, res) => {
       new: true,
       upsert: true
     },
-    (err, docs) => {
+    (err, users) => {
       if (err) return res.json({ statusCode: 400, msg: err });
-      res.json({ statusCode: 200, msg: docs });
+      res.json(users);
     }
   );
 });

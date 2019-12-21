@@ -7,9 +7,13 @@ import {
   LoadAccounts,
   AccountActionTypes,
   LoadAccountsFailure,
-  LoadAccountsSuccess
+  LoadAccountsSuccess,
+  AddAccount,
+  AddAccountSuccess,
+  AddAccountFailure
 } from "app/actions/account.action";
 import { AccountService } from "app/_service/account.service";
+import { AccountModel } from "model/account.model";
 
 @Injectable()
 export class AccountsEffects {
@@ -21,6 +25,18 @@ export class AccountsEffects {
           return [new LoadAccountsSuccess(res.msg)];
         }),
         catchError(err => of(new LoadAccountsFailure()))
+      )
+    )
+  );
+
+  @Effect() public addAccounts$: Observable<Action> = this.actions$.pipe(
+    ofType<AddAccount>(AccountActionTypes.AddAccountAction),
+    mergeMap(action =>
+      this.accountService.addAccount({cookie: action.cookie, user: action.user}).pipe(
+        switchMap((account: AccountModel) => {
+          return [new AddAccountSuccess(account)];
+        }),
+        catchError(err => of(new AddAccountFailure()))
       )
     )
   );

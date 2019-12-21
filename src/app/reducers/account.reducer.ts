@@ -31,6 +31,11 @@ export function reducer(
         loading: false,
         entities: action.accounts
       };
+    case AccountActionTypes.AddAccountSuccessAction:
+      return {
+        ...state,
+        entities: [...state.entities, action.account]
+      }
     default:
       return state;
   }

@@ -28,25 +28,14 @@ export class AccountService {
       method: "post",
       url: Constants.baseApiUrl,
       data
-    }).then(res => {
-      const { statusCode, data } = res.data;
-      if (statusCode !== 200 || !data) return;
-      return data;
-    });
+    }).then(res => res.data);
   }
 
   addAccount({ cookie, user }) {
-    return axios({
-      method: "post",
-      url: this.baseUrlAccount,
-      data: { cookie, user }
-    })
-      .then(res => {
-        const { statusCode, msg } = res.data;
-        if (statusCode !== 200 || !msg) return;
-        return msg;
-      })
-      .catch(err => null);
+    return this.httpClient.post(this.baseUrlAccount, {
+      cookie,
+      user
+    });
   }
   getAccounts() {
     return this.httpClient.get(this.baseUrlAccount);

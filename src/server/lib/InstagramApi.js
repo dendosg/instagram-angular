@@ -87,12 +87,9 @@ class Instagram {
         return data.data[type][fieldName];
       })
       .then(({ count, page_info, edges }) => ({
-        statusCode: 200,
-        data: {
-          count,
-          page_info,
-          data: edges.map(edge => edge.node)
-        }
+        count,
+        page_info,
+        data: edges.map(edge => edge.node)
       }))
       .catch(e => {
         console.log(
@@ -423,6 +420,7 @@ class Instagram {
     return this.request("/web/search/topsearch/", {
       qs: { query, context, include_reel: true }
     }).then(res => ({ statusCode: 200, data: res[`${context}s`].map(result => result[context]) }))
+      .then(res => res.data)
       .catch(e => ({ statusCode: 400, data: null }))
   }
 }

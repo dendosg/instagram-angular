@@ -15,8 +15,9 @@ export interface HdProfilePicUrlInfo {
   height: number;
 }
 
-export interface UserModel {
+export interface UserFromApi {
   pk: number;
+  id: number;
   username: string;
   full_name: string;
   is_private: boolean;
@@ -86,4 +87,21 @@ export interface UserModel {
   highlight_reshare_disabled: boolean;
   show_post_insights_entry_point: boolean;
   about_your_account_bloks_entrypoint_enabled: boolean;
+}
+
+export class UserModel {
+  public id: number;
+  public full_name: string;
+  public is_private: boolean;
+  public is_verified: boolean;
+  public profile_pic_url: string;
+  public username: string;
+  constructor(u: UserFromApi) {
+    this.id = u.pk || u.id;
+    this.username = u.username;
+    this.full_name = u.full_name;
+    this.profile_pic_url = u.profile_pic_url;
+    this.is_private = u.is_private;
+    this.is_verified = u.is_verified;
+  }
 }

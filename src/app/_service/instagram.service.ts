@@ -1,12 +1,13 @@
 import { Injectable } from "@angular/core";
 import Axios from "axios";
 import { Constants } from "../utils/Constants";
+import { HttpClient } from "@angular/common/http";
 
 @Injectable({
   providedIn: "root"
 })
 export class InstagramService {
-  constructor() { }
+  constructor(private httpClient: HttpClient) { }
   public getMyProfile({ cookie }) {
     return this.commonRequest({
       cookie,
@@ -65,7 +66,7 @@ export class InstagramService {
     });
   }
 
-  public getLikerOfMedia({ cookie, shortcode, after = null }) {
+  public getLikerOfMedia({ cookie, shortcode, after }) {
     return this.commonRequest({
       cookie,
       input: shortcode,
@@ -160,42 +161,35 @@ export class InstagramService {
     { cookie, query, context }:
       { cookie: string, query: string, context: 'hashtag' | 'place' | 'user' | 'blended' | 'placeFacebook' }
   ) {
-    return Axios({
-      method: "post",
-      url: Constants.baseApiUrl,
-      data: {
-        type: Constants.typeRequest.SEARCH,
-        input: query,
-        context,
-        cookie
-      }
+    return this.httpClient.post(Constants.baseApiUrl, {
+      type: Constants.typeRequest.SEARCH,
+      input: query,
+      context,
+      cookie
     });
+
   }
 
   public async getMyStories({ cookie }) {
-    const listStoriesData = (await this.commonRequest({
-      cookie,
-      type: Constants.typeRequest.GET_STORIES
-    })).data;
-    const { statusCode, data } = listStoriesData
-    const storyIds = data.map(story => story.id);
-    return this.commonRequest({
-      cookie,
-      input: storyIds,
-      type: "GET_STORIES_BY_IDS"
-    });
+    // const listStoriesData = (await this.commonRequest({
+    //   cookie,
+    //   type: Constants.typeRequest.GET_STORIES
+    // })).toPromise();
+    // const { statusCode, data } = listStoriesData
+    // const storyIds = data.map(story => story.id);
+    // return this.commonRequest({
+    //   cookie,
+    //   input: storyIds,
+    //   type: "GET_STORIES_BY_IDS"
+    // });
   }
 
   public commonRequest({ cookie, input = null, type, after = null }) {
-    return Axios({
-      method: "post",
-      url: Constants.baseApiUrl,
-      data: {
-        type,
-        input,
-        after,
-        cookie
-      }
-    });
+    return this.httpClient.post(Constants.baseApiUrl,{
+      type,
+      input,
+      after,
+      cookie
+    })
   }
 }

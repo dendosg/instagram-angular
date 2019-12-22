@@ -344,15 +344,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
       return this.getResultForOneInput({ input, cookie, access_token, after: (end_cursor || after) });
     });
   }
-  public get isAllowToSubmit() {
-    if (
-      this.type === Constants.typeComponent.GET_MEDIA_COMPONENT &&
-      !this.optionValue.getMediaOf
-    )
-      return false;
-    if (this.type === Constants.typeComponent.GET_MY_STORIES) return this.selectedAccounts.length
-    return this.inputValues.length && this.selectedAccounts.length;
-  }
+
   public resetResults(){
     this.appService.setResults([])
   }

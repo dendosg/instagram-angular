@@ -2,8 +2,8 @@ import { Action } from "@ngrx/store";
 import { APP_ROUTES } from "app/utils/Constants";
 
 export enum LayoutActionTypes {
-  SetCurrentRouteAction = "[Account] Set Current Route",
-  SetCurrentInputTextAction = "[Account] Set Current Input"
+  SetCurrentRouteAction = "[Layout] Set Current Route",
+  SetCurrentInputTextAction = "[Layout] Set Current Input"
 }
 
 export class SetCurrentRoute implements Action {

@@ -1,5 +1,7 @@
 import { AccountsEffects } from "./account.effect";
+import { InstagramEffects } from "./instagram.effect";
 
 export const AppEffects = [
-    AccountsEffects
+    AccountsEffects,
+    InstagramEffects
 ]

@@ -34,7 +34,6 @@
       [loading]="loading"
       (stop)="stop()"
       (submit)="submit()"
-      [isAllowToSubmit]="isAllowToSubmit"
     ></app-buttons>
   </div>
 </div>
@@ -42,5 +41,5 @@
   <img src="/assets/loading.svg" alt="" srcset="" />
 </div>
 <div nz-row>
-  <app-result [type]="type" [optionValue]="optionValue"></app-result>
+  <app-result></app-result>
 </div>

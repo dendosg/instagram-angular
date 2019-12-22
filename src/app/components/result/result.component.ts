@@ -91,6 +91,17 @@ export class ResultComponent implements OnInit {
           "is_video",
           "tagged user"
         ];
+      case this.APP_ROUTES.GET_MEDIA:
+        return [
+          "id",
+          "display_url",
+          "like_count",
+          "comment_count",
+          "caption",
+          "is_video",
+          "ownerId",
+          "taken_at_timestamp"
+        ];
       default:
         break;
     }

@@ -75,7 +75,7 @@ export class InstagramService {
     });
   }
 
-  public getMediaOfUser({ cookie, userId, after = null }) {
+  public getMediaOfUser({ cookie, userId, after }) {
     return this.commonRequest({
       cookie,
       input: userId,
@@ -84,7 +84,7 @@ export class InstagramService {
     });
   }
 
-  public getMediaTaggedOfUser({ cookie, userId, after = null }) {
+  public getMediaTaggedOfUser({ cookie, userId, after }) {
     return this.commonRequest({
       cookie,
       input: userId,
@@ -101,7 +101,7 @@ export class InstagramService {
     });
   }
 
-  public getMediaOfHashtag({ cookie, tag_name, after = null }) {
+  public getMediaOfHashtag({ cookie, tag_name, after }) {
     return this.commonRequest({
       cookie,
       input: tag_name,
@@ -126,7 +126,7 @@ export class InstagramService {
     });
   }
 
-  public getMediaOfLocation({ cookie, locationId, after = null }) {
+  public getMediaOfLocation({ cookie, locationId, after }) {
     return this.commonRequest({
       cookie,
       input: locationId,

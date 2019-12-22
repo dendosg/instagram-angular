@@ -1,5 +1,5 @@
 import { CommentFromApi } from "./../../model/comment.model";
-import { CONTEXT_SEARCH } from "./../utils/Constants";
+import { CONTEXT_SEARCH, GET_MEDIA_TYPE } from "./../utils/Constants";
 import { getKeywordsSelector } from "./../reducers/instagram.reducer";
 import { Injectable } from "@angular/core";
 import { Actions, Effect, ofType } from "@ngrx/effects";
@@ -28,7 +28,10 @@ import {
   GetMediaInfoSuccess,
   GetUserInfo,
   GetUserInfoSuccess,
-  GetUserInfoFailure
+  GetUserInfoFailure,
+  GetMedia,
+  GetMediaSuccess,
+  GetMediaFailure
 } from "app/actions/instagram.action";
 import { InstagramService } from "app/_service/instagram.service";
 import { UserModel, UserFromApi } from "model/user.model";
@@ -70,6 +73,101 @@ export class InstagramEffects {
           catchError(err => of(new SearchFailure()))
         )
     )
+  );
+
+  @Effect() public getMedia$: Observable<Action> = this.actions$.pipe(
+    ofType<GetMedia>(InstagramActionTypes.GetMediaAction),
+    mergeMap(action => {
+      let request;
+      switch (action.getMediaOf) {
+        case GET_MEDIA_TYPE.USER:
+          const param = {
+            cookie: action.cookie,
+            userId: action.keyword,
+            after: action.after
+          };
+          request = this.instagramService.getMediaOfUser(param);
+          if (action.isGetTaggedMedia) {
+            request = this.instagramService.getMediaTaggedOfUser(param);
+          }
+          break;
+        case GET_MEDIA_TYPE.HASHTAG:
+          request = this.instagramService.getMediaOfHashtag({
+            cookie: action.cookie,
+            tag_name: action.keyword,
+            after: action.after
+          });
+          if (action.isGetTopMedia) {
+            request = this.instagramService.getTopMediaOfHashtag({
+              cookie: action.cookie,
+              tag_name: action.keyword
+            });
+          }
+          break;
+        case GET_MEDIA_TYPE.LOCATION:
+          request = this.instagramService.getMediaOfLocation({
+            cookie: action.cookie,
+            locationId: action.keyword,
+            after: action.after
+          });
+          if (action.isGetTopMedia) {
+            request = this.instagramService.getTopMediaOfLocation({
+              cookie: action.cookie,
+              locationId: action.keyword
+            });
+          }
+          break;
+        default:
+          break;
+      }
+
+      return request.pipe(
+        switchMap(
+          ({
+            count,
+            data,
+            page_info
+          }: {
+            count: number;
+            data: MediaFromApi[];
+            page_info: { has_next_page: boolean; end_cursor?: string };
+          }) => {
+            console.log("data", data);
+            const media = data.map(m => new MediaModel(m));
+            const tasks = [
+              new GetMediaSuccess(media, action.getMediaOf, count),
+              ...(page_info && page_info.end_cursor
+                ? [
+                    new GetMedia(
+                      action.keyword,
+                      action.cookie,
+                      action.getMediaOf,
+                      page_info.end_cursor,
+                      action.isGetTaggedMedia
+                    )
+                  ]
+                : this.keywords[0]
+                ? [
+                    new GetMedia(
+                      this.keywords[0],
+                      action.cookie,
+                      action.getMediaOf,
+                      undefined,
+                      action.isGetTaggedMedia,
+                      action.isGetTopMedia
+                    )
+                  ]
+                : [])
+            ];
+            return tasks;
+          }
+        ),
+        catchError(err => {
+          console.log("err", err);
+          return of(new GetMediaFailure());
+        })
+      );
+    })
   );
 
   @Effect() public getLike$: Observable<Action> = this.actions$.pipe(
@@ -274,7 +372,10 @@ export class InstagramEffects {
     })
   );
   @Effect() public alert$: Observable<Action> = this.actions$.pipe(
-    ofType<SearchFailure>(InstagramActionTypes.SearchFailureAction),
+    ofType<SearchFailure | GetMediaFailure>(
+      InstagramActionTypes.SearchFailureAction,
+      InstagramActionTypes.GetMediaFailureAction
+    ),
     mergeMap(action => {
       this.message.error("Something wrong");
       return [];

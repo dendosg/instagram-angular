@@ -19,7 +19,8 @@ import {
   GetFollower,
   GetFollowing,
   GetMediaInfo,
-  GetUserInfo
+  GetUserInfo,
+  GetMedia
 } from "app/actions/instagram.action";
 import { AccountModel } from "model/account.model";
 import { getKeywordsSelector } from "app/reducers/instagram.reducer";
@@ -81,6 +82,21 @@ export class ButtonsComponent implements OnInit {
               this.keywords[0],
               account.cookie,
               this.optionValue.contextSearch
+            )
+          );
+        }
+        break;
+      case APP_ROUTES.GET_MEDIA:
+        for (const account of this.accounts) {
+          if (!this.keywords[0]) break;
+          this.store.dispatch(
+            new GetMedia(
+              this.keywords[0],
+              account.cookie,
+              this.optionValue.getMediaOf,
+              undefined,
+              this.optionValue.isGetTaggedMedia,
+              this.optionValue.isGetTopMedia
             )
           );
         }

@@ -9,7 +9,11 @@ import {
   InstagramActionsUnion,
   InstagramActionTypes
 } from "app/actions/instagram.action";
-import { APP_ROUTES, CONTEXT_SEARCH } from "app/utils/Constants";
+import {
+  APP_ROUTES,
+  CONTEXT_SEARCH,
+  GET_MEDIA_TYPE
+} from "app/utils/Constants";
 import { HashtagModel } from "model/hashtag.model";
 import { PlaceModel } from "model/place.model";
 import { UserModel } from "model/user.model";
@@ -25,6 +29,11 @@ export interface State {
       [CONTEXT_SEARCH.HASHTAG]: HashtagModel[];
       [CONTEXT_SEARCH.PLACE]: PlaceModel[];
     };
+    [APP_ROUTES.GET_MEDIA]: {
+      [GET_MEDIA_TYPE.USER]: MediaModel[];
+      [GET_MEDIA_TYPE.HASHTAG]: MediaModel[];
+      [GET_MEDIA_TYPE.LOCATION]: MediaModel[];
+    };
     [APP_ROUTES.GET_LIKE]: UserModel[];
     [APP_ROUTES.GET_COMMENT]: CommentModel[];
     [APP_ROUTES.GET_FOLLOWER]: UserModel[];
@@ -39,6 +48,7 @@ export interface State {
 export const initialState: State = {
   keywords: {
     [APP_ROUTES.SEARCH]: [],
+    [APP_ROUTES.GET_MEDIA]: [],
     [APP_ROUTES.GET_LIKE]: [],
     [APP_ROUTES.GET_COMMENT]: [],
     [APP_ROUTES.GET_FOLLOWER]: [],
@@ -51,6 +61,11 @@ export const initialState: State = {
       [CONTEXT_SEARCH.USER]: [],
       [CONTEXT_SEARCH.HASHTAG]: [],
       [CONTEXT_SEARCH.PLACE]: []
+    },
+    [APP_ROUTES.GET_MEDIA]: {
+      [GET_MEDIA_TYPE.USER]: [],
+      [GET_MEDIA_TYPE.HASHTAG]: [],
+      [GET_MEDIA_TYPE.LOCATION]: []
     },
     [APP_ROUTES.GET_LIKE]: [],
     [APP_ROUTES.GET_COMMENT]: [],
@@ -81,12 +96,16 @@ export function reducer(
     case InstagramActionTypes.GetFollowingAction:
     case InstagramActionTypes.GetMediaInfoAction:
     case InstagramActionTypes.GetUserInfoAction:
+    case InstagramActionTypes.GetMediaAction:
     case InstagramActionTypes.SearchAction:
       return {
         ...state,
         keywords: {
           ...state.keywords,
           [APP_ROUTES.SEARCH]: state.keywords[APP_ROUTES.SEARCH].filter(
+            item => item !== action.keyword
+          ),
+          [APP_ROUTES.GET_MEDIA]: state.keywords[APP_ROUTES.GET_MEDIA].filter(
             item => item !== action.keyword
           ),
           [APP_ROUTES.GET_LIKE]: state.keywords[APP_ROUTES.GET_LIKE].filter(
@@ -118,6 +137,19 @@ export function reducer(
             ...state.results[APP_ROUTES.SEARCH],
             [action.context]: state.results[APP_ROUTES.SEARCH][
               action.context
+            ].concat(action.results)
+          }
+        }
+      };
+    case InstagramActionTypes.GetMediaSuccessAction:
+      return {
+        ...state,
+        results: {
+          ...state.results,
+          [APP_ROUTES.GET_MEDIA]: {
+            ...state.results[APP_ROUTES.GET_MEDIA],
+            [action.getMediaOf]: state.results[APP_ROUTES.GET_MEDIA][
+              action.getMediaOf
             ].concat(action.results)
           }
         }
@@ -229,6 +261,8 @@ export const getResultsSelector = createSelector(
   (state: State, currentRoute, option) => {
     if (currentRoute === APP_ROUTES.SEARCH)
       return state.results[currentRoute][option.contextSearch];
+    if (currentRoute === APP_ROUTES.GET_MEDIA)
+      return state.results[currentRoute][option.getMediaOf];
     return state.results[currentRoute];
   }
 );

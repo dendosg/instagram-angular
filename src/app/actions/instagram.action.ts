@@ -1,5 +1,5 @@
 import { Action } from "@ngrx/store";
-import { APP_ROUTES, CONTEXT_SEARCH } from "app/utils/Constants";
+import { APP_ROUTES, CONTEXT_SEARCH, GET_MEDIA_TYPE } from "app/utils/Constants";
 import { UserFromApi, UserModel } from "model/user.model";
 import { HashtagModel } from "model/hashtag.model";
 import { PlaceModel } from "model/place.model";
@@ -34,6 +34,11 @@ export enum InstagramActionTypes {
   GetUserInfoAction = "[Instagram] Get User Info",
   GetUserInfoSuccessAction = "[Instagram] Get User Info Success",
   GetUserInfoFailureAction = "[Instagram] Get User Info Failure",
+
+  GetMediaAction = "[Instagram] Get Media",
+  GetMediaSuccessAction = "[Instagram] Get Media Success",
+  GetMediaFailureAction = "[Instagram] Get Media Failure",
+
 }
 
 export class Search implements Action {
@@ -162,6 +167,32 @@ export class GetUserInfoSuccess implements Action {
 export class GetUserInfoFailure implements Action {
   public readonly type = InstagramActionTypes.GetUserInfoFailureAction;
 }
+
+
+export class GetMedia implements Action {
+  public readonly type = InstagramActionTypes.GetMediaAction;
+  constructor(
+    public keyword: string,
+    public cookie: string,
+    public getMediaOf: GET_MEDIA_TYPE,
+    public after?: string,
+    public isGetTaggedMedia?: boolean,
+    public isGetTopMedia?: boolean
+  ) {}
+}
+
+export class GetMediaSuccess implements Action {
+  public readonly type = InstagramActionTypes.GetMediaSuccessAction;
+  constructor(
+    public results: MediaModel[],
+    public getMediaOf: GET_MEDIA_TYPE,
+    public count: number
+  ) {}
+}
+
+export class GetMediaFailure implements Action {
+  public readonly type = InstagramActionTypes.GetMediaFailureAction;
+}
 export type InstagramActionsUnion =
   | Search
   | SearchSuccess
@@ -184,3 +215,6 @@ export type InstagramActionsUnion =
   | GetUserInfo
   | GetUserInfoSuccess
   | GetUserInfoFailure
+  | GetMedia
+  | GetMediaSuccess
+  | GetMediaFailure

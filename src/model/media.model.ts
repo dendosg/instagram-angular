@@ -1,6 +1,6 @@
 import { UserModel } from "./user.model";
 import { PlaceModel } from "./place.model";
-
+import { get } from "lodash";
 // export interface MediaModel {
 //   _id: string;
 //   link: string;
@@ -101,6 +101,7 @@ export interface MediaFromApi {
   edge_media_to_caption: EdgeMediaToCaption;
   caption_is_edited: boolean;
   has_ranked_comments: boolean;
+  edge_media_to_comment: EdgeMediaPreviewComment;
   edge_media_to_parent_comment: EdgeMediaToParentComment;
   edge_media_preview_comment: EdgeMediaPreviewComment;
   comments_disabled: boolean;
@@ -135,10 +136,12 @@ export class MediaModel {
     this.id = m.id;
     this.accessibility_caption = m.accessibility_caption;
     this.display_url = m.display_url;
-    this.like_count = m.edge_media_preview_like.count;
-    this.comment_count = m.edge_media_preview_comment.count;
-    this.caption = m.edge_media_to_caption.edges[0].node.text;
-    this.tagged_users = m.edge_media_to_tagged_user.edges.map(
+    this.like_count = get(m, "edge_media_preview_like.count");
+    this.comment_count = (
+      m.edge_media_preview_comment || m.edge_media_to_comment
+    ).count;
+    this.caption = get(m, "edge_media_to_caption.edges[0].node.text");
+    this.tagged_users = get(m, "edge_media_to_tagged_user.edges") && get(m, "edge_media_to_tagged_user.edges").map(
       edge => edge.node.user
     );
     this.is_video = m.is_video;

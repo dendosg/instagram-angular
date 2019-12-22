@@ -60,10 +60,7 @@ class Instagram {
   }
   getUserByUsername({ username }) {
     return this.request(`/${username}/?__a=1`)
-      .then(res => ({
-        statusCode: 200,
-        data: res.graphql.user
-      }))
+      .then(res => res.graphql.user)
       .catch(e => {
         console.log("getUserByUsername loi cmnr", e.name);
         return {

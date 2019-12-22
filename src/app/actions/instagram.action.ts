@@ -30,6 +30,10 @@ export enum InstagramActionTypes {
   GetMediaInfoAction = "[Instagram] Get Media Info",
   GetMediaInfoSuccessAction = "[Instagram] Get Media Info Success",
   GetMediaInfoFailureAction = "[Instagram] Get Media Info Failure",
+
+  GetUserInfoAction = "[Instagram] Get User Info",
+  GetUserInfoSuccessAction = "[Instagram] Get User Info Success",
+  GetUserInfoFailureAction = "[Instagram] Get User Info Failure",
 }
 
 export class Search implements Action {
@@ -141,6 +145,23 @@ export class GetMediaInfoSuccess implements Action {
 export class GetMediaInfoFailure implements Action {
   public readonly type = InstagramActionTypes.GetMediaInfoFailureAction;
 }
+
+export class GetUserInfo implements Action {
+  public readonly type = InstagramActionTypes.GetUserInfoAction;
+  constructor(
+    public keyword: string,
+    public cookie: string,
+  ) {}
+}
+
+export class GetUserInfoSuccess implements Action {
+  public readonly type = InstagramActionTypes.GetUserInfoSuccessAction;
+  constructor(public user: UserModel) {}
+}
+
+export class GetUserInfoFailure implements Action {
+  public readonly type = InstagramActionTypes.GetUserInfoFailureAction;
+}
 export type InstagramActionsUnion =
   | Search
   | SearchSuccess
@@ -160,3 +181,6 @@ export type InstagramActionsUnion =
   | GetMediaInfo
   | GetMediaInfoSuccess
   | GetMediaInfoFailure
+  | GetUserInfo
+  | GetUserInfoSuccess
+  | GetUserInfoFailure

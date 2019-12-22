@@ -70,6 +70,7 @@ export class ResultComponent implements OnInit {
             "external_source",
             "short_name"
           ];
+        return ["id"];
 
       case this.APP_ROUTES.GET_LIKE:
         return ["id", "username", "full name", "is verified"];
@@ -77,6 +78,7 @@ export class ResultComponent implements OnInit {
         return ["id", "username", "user_id", "text", "commented at"];
       case this.APP_ROUTES.GET_FOLLOWER:
       case this.APP_ROUTES.GET_FOLLOWING:
+      case this.APP_ROUTES.GET_USER_INFO:
         return ["id", "username", "full_name", "is_verified"];
       case this.APP_ROUTES.GET_MEDIA_INFO:
         return [

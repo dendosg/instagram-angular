@@ -18,7 +18,8 @@ import {
   GetComment,
   GetFollower,
   GetFollowing,
-  GetMediaInfo
+  GetMediaInfo,
+  GetUserInfo
 } from "app/actions/instagram.action";
 import { AccountModel } from "model/account.model";
 import { getKeywordsSelector } from "app/reducers/instagram.reducer";
@@ -121,7 +122,14 @@ export class ButtonsComponent implements OnInit {
           );
         }
         break;
-
+      case APP_ROUTES.GET_USER_INFO:
+        for (const account of this.accounts) {
+          if (!this.keywords[0]) break;
+          this.store.dispatch(
+            new GetUserInfo(this.keywords[0], account.cookie)
+          );
+        }
+        break;
       default:
         break;
     }

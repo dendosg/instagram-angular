@@ -30,6 +30,7 @@ export interface State {
     [APP_ROUTES.GET_FOLLOWER]: UserModel[];
     [APP_ROUTES.GET_FOLLOWING]: UserModel[];
     [APP_ROUTES.GET_MEDIA_INFO]: MediaModel[];
+    [APP_ROUTES.GET_USER_INFO]: UserModel[];
   };
   count: {
     [key: string]: number;
@@ -42,7 +43,8 @@ export const initialState: State = {
     [APP_ROUTES.GET_COMMENT]: [],
     [APP_ROUTES.GET_FOLLOWER]: [],
     [APP_ROUTES.GET_FOLLOWING]: [],
-    [APP_ROUTES.GET_MEDIA_INFO]: []
+    [APP_ROUTES.GET_MEDIA_INFO]: [],
+    [APP_ROUTES.GET_USER_INFO]: []
   },
   results: {
     [APP_ROUTES.SEARCH]: {
@@ -54,7 +56,8 @@ export const initialState: State = {
     [APP_ROUTES.GET_COMMENT]: [],
     [APP_ROUTES.GET_FOLLOWER]: [],
     [APP_ROUTES.GET_FOLLOWING]: [],
-    [APP_ROUTES.GET_MEDIA_INFO]: []
+    [APP_ROUTES.GET_MEDIA_INFO]: [],
+    [APP_ROUTES.GET_USER_INFO]: []
   },
   count: {}
 };
@@ -77,6 +80,7 @@ export function reducer(
     case InstagramActionTypes.GetFollowerAction:
     case InstagramActionTypes.GetFollowingAction:
     case InstagramActionTypes.GetMediaInfoAction:
+    case InstagramActionTypes.GetUserInfoAction:
     case InstagramActionTypes.SearchAction:
       return {
         ...state,
@@ -99,6 +103,9 @@ export function reducer(
           ].filter(item => item !== action.keyword),
           [APP_ROUTES.GET_MEDIA_INFO]: state.keywords[
             APP_ROUTES.GET_MEDIA_INFO
+          ].filter(item => item !== action.keyword),
+          [APP_ROUTES.GET_USER_INFO]: state.keywords[
+            APP_ROUTES.GET_USER_INFO
           ].filter(item => item !== action.keyword)
         }
       };
@@ -186,7 +193,19 @@ export function reducer(
             ...state.results[APP_ROUTES.GET_MEDIA_INFO],
             action.media
           ]
-        },
+        }
+      };
+
+    case InstagramActionTypes.GetUserInfoSuccessAction:
+      return {
+        ...state,
+        results: {
+          ...state.results,
+          [APP_ROUTES.GET_USER_INFO]: [
+            ...state.results[APP_ROUTES.GET_USER_INFO],
+            action.user
+          ]
+        }
       };
 
     default:

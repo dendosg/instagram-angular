@@ -25,7 +25,10 @@ import {
   GetFollowingFailure,
   GetMediaInfo,
   GetMediaInfoFailure,
-  GetMediaInfoSuccess
+  GetMediaInfoSuccess,
+  GetUserInfo,
+  GetUserInfoSuccess,
+  GetUserInfoFailure
 } from "app/actions/instagram.action";
 import { InstagramService } from "app/_service/instagram.service";
 import { UserModel, UserFromApi } from "model/user.model";
@@ -240,17 +243,36 @@ export class InstagramEffects {
         .getMediaInfo({ cookie: action.cookie, shortcode: action.keyword })
         .pipe(
           switchMap((media: MediaFromApi) => {
-            console.log('media', media)
             return [new GetMediaInfoSuccess(new MediaModel(media))];
           }),
-          catchError(err => {
-            console.log('err', err)
-            return of(new GetMediaInfoFailure())
-          })
+          catchError(err => of(new GetMediaInfoFailure()))
         )
     )
   );
 
+  @Effect() public getUserInfo$: Observable<Action> = this.actions$.pipe(
+    ofType<GetUserInfo>(InstagramActionTypes.GetUserInfoAction),
+    mergeMap(action => {
+      let request = this.instagramService.getUserByUsername({
+        cookie: action.cookie,
+        username: action.keyword
+      });
+      if (Number(action.keyword))
+        request = this.instagramService.getUserById({
+          cookie: action.cookie,
+          userId: action.keyword
+        });
+      return request.pipe(
+        switchMap((user: UserFromApi) => {
+          return [new GetUserInfoSuccess(new UserModel(user))];
+        }),
+        catchError(err => {
+          console.log("err", err);
+          return of(new GetUserInfoFailure());
+        })
+      );
+    })
+  );
   @Effect() public alert$: Observable<Action> = this.actions$.pipe(
     ofType<SearchFailure>(InstagramActionTypes.SearchFailureAction),
     mergeMap(action => {

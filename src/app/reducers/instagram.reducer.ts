@@ -13,8 +13,8 @@ import { APP_ROUTES, CONTEXT_SEARCH } from "app/utils/Constants";
 import { HashtagModel } from "model/hashtag.model";
 import { PlaceModel } from "model/place.model";
 import { UserModel } from "model/user.model";
-import * as fromLayout from "./layout.reducer";
 import { CommentModel } from "model/comment.model";
+import { MediaModel } from "model/media.model";
 export interface State {
   keywords: {
     [key: string]: string[];
@@ -29,6 +29,7 @@ export interface State {
     [APP_ROUTES.GET_COMMENT]: CommentModel[];
     [APP_ROUTES.GET_FOLLOWER]: UserModel[];
     [APP_ROUTES.GET_FOLLOWING]: UserModel[];
+    [APP_ROUTES.GET_MEDIA_INFO]: MediaModel[];
   };
   count: {
     [key: string]: number;
@@ -40,7 +41,8 @@ export const initialState: State = {
     [APP_ROUTES.GET_LIKE]: [],
     [APP_ROUTES.GET_COMMENT]: [],
     [APP_ROUTES.GET_FOLLOWER]: [],
-    [APP_ROUTES.GET_FOLLOWING]: []
+    [APP_ROUTES.GET_FOLLOWING]: [],
+    [APP_ROUTES.GET_MEDIA_INFO]: []
   },
   results: {
     [APP_ROUTES.SEARCH]: {
@@ -51,7 +53,8 @@ export const initialState: State = {
     [APP_ROUTES.GET_LIKE]: [],
     [APP_ROUTES.GET_COMMENT]: [],
     [APP_ROUTES.GET_FOLLOWER]: [],
-    [APP_ROUTES.GET_FOLLOWING]: []
+    [APP_ROUTES.GET_FOLLOWING]: [],
+    [APP_ROUTES.GET_MEDIA_INFO]: []
   },
   count: {}
 };
@@ -73,6 +76,7 @@ export function reducer(
     case InstagramActionTypes.GetCommentAction:
     case InstagramActionTypes.GetFollowerAction:
     case InstagramActionTypes.GetFollowingAction:
+    case InstagramActionTypes.GetMediaInfoAction:
     case InstagramActionTypes.SearchAction:
       return {
         ...state,
@@ -92,6 +96,9 @@ export function reducer(
           ].filter(item => item !== action.keyword),
           [APP_ROUTES.GET_FOLLOWING]: state.keywords[
             APP_ROUTES.GET_FOLLOWING
+          ].filter(item => item !== action.keyword),
+          [APP_ROUTES.GET_MEDIA_INFO]: state.keywords[
+            APP_ROUTES.GET_MEDIA_INFO
           ].filter(item => item !== action.keyword)
         }
       };
@@ -169,6 +176,17 @@ export function reducer(
           ...state.count,
           [APP_ROUTES.GET_FOLLOWING]: action.count
         }
+      };
+    case InstagramActionTypes.GetMediaInfoSuccessAction:
+      return {
+        ...state,
+        results: {
+          ...state.results,
+          [APP_ROUTES.GET_MEDIA_INFO]: [
+            ...state.results[APP_ROUTES.GET_MEDIA_INFO],
+            action.media
+          ]
+        },
       };
 
     default:

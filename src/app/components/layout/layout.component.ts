@@ -73,29 +73,29 @@ export class LayoutComponent implements OnInit, OnDestroy {
   }
 
   public getMyStories() {
-    this.loading.content = true
-    this.selectedAccounts.forEach(async account => {
-      const task: Task = { input: '', account }
-      this.working.push(task);
-      const taskDone = (await this.instagramService.getMyStories({ cookie: account.cookie })).data
+    // this.loading.content = true
+    // this.selectedAccounts.forEach(async account => {
+    //   const task: Task = { input: '', account }
+    //   this.working.push(task);
+    //   const taskDone = (await this.instagramService.getMyStories({ cookie: account.cookie })).data
       
-      this.working = this.working.filter(
-        task => task.account.cookie !== account.cookie
-      );
-      this.done.push(task);
+    //   this.working = this.working.filter(
+    //     task => task.account.cookie !== account.cookie
+    //   );
+    //   this.done.push(task);
       
-      const { statusCode, data } = taskDone
-      if (statusCode !== 200) return console.log('Co loi xay ra')
-      data.map(story => {
-        const results = this.results.concat(story.items)
-        this.appService.setResults(results)
-      })
-      if (this.done.length === this.selectedAccounts.length){
-        const results = sortBy(this.results,'expiring_at_timestamp')
-        this.appService.setResults(results)
-        return this.loading.content = false
-      } 
-    })
+    //   const { statusCode, data } = taskDone
+    //   if (statusCode !== 200) return console.log('Co loi xay ra')
+    //   data.map(story => {
+    //     const results = this.results.concat(story.items)
+    //     this.appService.setResults(results)
+    //   })
+    //   if (this.done.length === this.selectedAccounts.length){
+    //     const results = sortBy(this.results,'expiring_at_timestamp')
+    //     this.appService.setResults(results)
+    //     return this.loading.content = false
+    //   } 
+    // })
   }
 
   public stop() {

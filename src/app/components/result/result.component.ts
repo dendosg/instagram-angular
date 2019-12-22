@@ -78,6 +78,17 @@ export class ResultComponent implements OnInit {
       case this.APP_ROUTES.GET_FOLLOWER:
       case this.APP_ROUTES.GET_FOLLOWING:
         return ["id", "username", "full_name", "is_verified"];
+      case this.APP_ROUTES.GET_MEDIA_INFO:
+        return [
+          "id",
+          "caption",
+          "like_count",
+          "comment_count",
+          "owner",
+          "location",
+          "is_video",
+          "tagged user"
+        ];
       default:
         break;
     }
@@ -89,6 +100,34 @@ export class ResultComponent implements OnInit {
 
   openImageInNewTab(imageUrl: string) {
     window.open(imageUrl, "_blank");
+  }
+
+  public openInNewTab(
+    type: "media" | "user" | "hashtag" | "place" | "image",
+    data
+  ) {
+    let url = "";
+    switch (type) {
+      case "media":
+        url = `https://www.instagram.com/p/${data}`;
+        break;
+      case "user":
+        url = `https://www.instagram.com/${data}`;
+        break;
+      case "hashtag":
+        url = `https://www.instagram.com/explore/tags/${data}`;
+        break;
+      case "place":
+        url = `https://www.instagram.com/explore/locations/${data.locationId}/${data.slug}/`;
+        break;
+      case "image":
+        url = data;
+        break;
+
+      default:
+        break;
+    }
+    window.open(url, "_blank");
   }
 
   public getHashtagFromMessage(message: string) {

@@ -4,6 +4,7 @@ import { UserFromApi, UserModel } from "model/user.model";
 import { HashtagModel } from "model/hashtag.model";
 import { PlaceModel } from "model/place.model";
 import { CommentModel } from "model/comment.model";
+import { MediaModel } from "model/media.model";
 
 export enum InstagramActionTypes {
   SearchAction = "[Instagram] Search",
@@ -25,6 +26,10 @@ export enum InstagramActionTypes {
   GetFollowingAction = "[Instagram] Get Following",
   GetFollowingSuccessAction = "[Instagram] Get Following Success",
   GetFollowingFailureAction = "[Instagram] Get Following Failure",
+
+  GetMediaInfoAction = "[Instagram] Get Media Info",
+  GetMediaInfoSuccessAction = "[Instagram] Get Media Info Success",
+  GetMediaInfoFailureAction = "[Instagram] Get Media Info Failure",
 }
 
 export class Search implements Action {
@@ -119,6 +124,23 @@ export class GetFollowingSuccess implements Action {
 export class GetFollowingFailure implements Action {
   public readonly type = InstagramActionTypes.GetFollowingFailureAction;
 }
+
+export class GetMediaInfo implements Action {
+  public readonly type = InstagramActionTypes.GetMediaInfoAction;
+  constructor(
+    public keyword: string,
+    public cookie: string,
+  ) {}
+}
+
+export class GetMediaInfoSuccess implements Action {
+  public readonly type = InstagramActionTypes.GetMediaInfoSuccessAction;
+  constructor(public media: MediaModel) {}
+}
+
+export class GetMediaInfoFailure implements Action {
+  public readonly type = InstagramActionTypes.GetMediaInfoFailureAction;
+}
 export type InstagramActionsUnion =
   | Search
   | SearchSuccess
@@ -135,3 +157,6 @@ export type InstagramActionsUnion =
   | GetFollowing
   | GetFollowingSuccess
   | GetFollowingFailure
+  | GetMediaInfo
+  | GetMediaInfoSuccess
+  | GetMediaInfoFailure

@@ -323,7 +323,7 @@ class Instagram {
     return this.request(`/p/${shortcode}/?__a=1`)
       .then(res => {
         console.log("res", res);
-        return { statusCode: 200, data: res.graphql.shortcode_media };
+        return res.graphql.shortcode_media;
       })
       .catch(e => ({ statusCode: e.statusCode, data: null }));
   }

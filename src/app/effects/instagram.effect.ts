@@ -22,7 +22,10 @@ import {
   GetFollowerSuccess,
   GetFollowing,
   GetFollowingSuccess,
-  GetFollowingFailure
+  GetFollowingFailure,
+  GetMediaInfo,
+  GetMediaInfoFailure,
+  GetMediaInfoSuccess
 } from "app/actions/instagram.action";
 import { InstagramService } from "app/_service/instagram.service";
 import { UserModel, UserFromApi } from "model/user.model";
@@ -31,6 +34,7 @@ import { PlaceModel } from "model/place.model";
 import { AppState } from "app/reducers";
 import { NzMessageService } from "ng-zorro-antd";
 import { CommentModel } from "model/comment.model";
+import { MediaFromApi, MediaModel } from "model/media.model";
 
 @Injectable()
 export class InstagramEffects {
@@ -225,6 +229,24 @@ export class InstagramEffects {
             }
           ),
           catchError(err => of(new GetFollowingFailure()))
+        )
+    )
+  );
+
+  @Effect() public getMediaInfo$: Observable<Action> = this.actions$.pipe(
+    ofType<GetMediaInfo>(InstagramActionTypes.GetMediaInfoAction),
+    mergeMap(action =>
+      this.instagramService
+        .getMediaInfo({ cookie: action.cookie, shortcode: action.keyword })
+        .pipe(
+          switchMap((media: MediaFromApi) => {
+            console.log('media', media)
+            return [new GetMediaInfoSuccess(new MediaModel(media))];
+          }),
+          catchError(err => {
+            console.log('err', err)
+            return of(new GetMediaInfoFailure())
+          })
         )
     )
   );

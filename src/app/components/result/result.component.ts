@@ -3,7 +3,12 @@ import {
   getOptionSelector
 } from "./../../reducers/layout.reducer";
 import { Component, OnInit, Input } from "@angular/core";
-import { Constants, GET_MEDIA_TYPE, APP_ROUTES, CONTEXT_SEARCH } from "app/utils/Constants";
+import {
+  Constants,
+  GET_MEDIA_TYPE,
+  APP_ROUTES,
+  CONTEXT_SEARCH
+} from "app/utils/Constants";
 import * as moment from "moment";
 import { Router } from "@angular/router";
 import { AppService } from "app/_service/app.service";
@@ -20,7 +25,6 @@ import { getResultsSelector } from "app/reducers/instagram.reducer";
 export class ResultComponent implements OnInit {
   @Input() public type: string;
   public results: object[] = [];
-  public tableHeaders: string[] = [];
   public optionValue: any;
   public currentRoute: APP_ROUTES;
   public APP_ROUTES = APP_ROUTES;
@@ -42,12 +46,42 @@ export class ResultComponent implements OnInit {
     this.store.pipe(select(getResultsSelector)).subscribe(results => {
       if (!results || !results.length) return;
       this.results = results;
-      const ignoredasd = ["profile_pic_url", "is_private"];
-      const notInclude = item => !ignoredasd.includes(item);
-      this.tableHeaders = Object.keys(results[0]).filter(notInclude);
     });
   }
+  public get tableHeaders(): string[] {
+    let tableHeaders: string[] = [];
+    switch (this.currentRoute) {
+      case this.APP_ROUTES.SEARCH:
+        const { contextSearch } = this.optionValue;
+        if (contextSearch === this.CONTEXT_SEARCH.USER)
+          return ["id", "username", "full_name", "is verified"];
+        if (contextSearch === this.CONTEXT_SEARCH.HASHTAG)
+          return ["id", "hashtag", "media_count", "search_result_subtitle"];
+        if (contextSearch === this.CONTEXT_SEARCH.PLACE)
+          return [
+            "id",
+            "name",
+            "slug",
+            "lng",
+            "lat",
+            "facebook_places_id",
+            "address",
+            "city",
+            "external_source",
+            "short_name"
+          ];
 
+      case this.APP_ROUTES.GET_LIKE:
+        return ["id", "username", "full name", "is verified"];
+      case this.APP_ROUTES.GET_COMMENT:
+        return ["id", "username", "user_id", "text", "commented at"];
+      case this.APP_ROUTES.GET_FOLLOWER:
+        return ["id", "username", "full_name", "is_verified"];
+      default:
+        break;
+    }
+    return tableHeaders;
+  }
   public getFormatDate(timestamp) {
     return moment(timestamp * 1000).fromNow();
   }

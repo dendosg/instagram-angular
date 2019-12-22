@@ -12,7 +12,12 @@ import { Store, select } from "@ngrx/store";
 import { AppState } from "app/reducers";
 import { APP_ROUTES } from "app/utils/Constants";
 import { getCurrentRouteSelector } from "app/reducers/layout.reducer";
-import { Search, GetLike } from "app/actions/instagram.action";
+import {
+  Search,
+  GetLike,
+  GetComment,
+  GetFollower
+} from "app/actions/instagram.action";
 import { AccountModel } from "model/account.model";
 import { getKeywordsSelector } from "app/reducers/instagram.reducer";
 
@@ -83,6 +88,20 @@ export class ButtonsComponent implements OnInit {
           this.store.dispatch(new GetLike(this.keywords[0], account.cookie));
         }
 
+        break;
+      case APP_ROUTES.GET_COMMENT:
+        for (const account of this.accounts) {
+          if (!this.keywords[0]) break;
+          this.store.dispatch(new GetComment(this.keywords[0], account.cookie));
+        }
+        break;
+      case APP_ROUTES.GET_FOLLOWER:
+        for (const account of this.accounts) {
+          if (!this.keywords[0]) break;
+          this.store.dispatch(
+            new GetFollower(this.keywords[0], account.cookie)
+          );
+        }
         break;
       default:
         break;

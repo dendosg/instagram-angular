@@ -1,3 +1,4 @@
+import { CommentFromApi } from "./../../model/comment.model";
 import { CONTEXT_SEARCH } from "./../utils/Constants";
 import { getKeywordsSelector } from "./../reducers/instagram.reducer";
 import { Injectable } from "@angular/core";
@@ -13,7 +14,12 @@ import {
   SearchFailure,
   GetLike,
   GetLikeSuccess,
-  GetLikeFailure
+  GetLikeFailure,
+  GetComment,
+  GetCommentSuccess,
+  GetFollower,
+  GetFollowerFailure,
+  GetFollowerSuccess
 } from "app/actions/instagram.action";
 import { InstagramService } from "app/_service/instagram.service";
 import { UserModel, UserFromApi } from "model/user.model";
@@ -21,6 +27,7 @@ import { HashtagModel } from "model/hashtag.model";
 import { PlaceModel } from "model/place.model";
 import { AppState } from "app/reducers";
 import { NzMessageService } from "ng-zorro-antd";
+import { CommentModel } from "model/comment.model";
 
 @Injectable()
 export class InstagramEffects {
@@ -92,6 +99,88 @@ export class InstagramEffects {
             }
           ),
           catchError(err => of(new GetLikeFailure()))
+        )
+    )
+  );
+
+  @Effect() public getComment$: Observable<Action> = this.actions$.pipe(
+    ofType<GetComment>(InstagramActionTypes.GetCommentAction),
+    mergeMap(action =>
+      this.instagramService
+        .getComment({
+          cookie: action.cookie,
+          shortcode: action.keyword,
+          after: action.after
+        })
+        .pipe(
+          switchMap(
+            ({
+              count,
+              data,
+              page_info
+            }: {
+              count: number;
+              data: CommentFromApi[];
+              page_info: { has_next_page: boolean; end_cursor: string };
+            }) => {
+              const comments = data.map(c => new CommentModel(c));
+              const tasks = [
+                new GetCommentSuccess(comments, count),
+                ...(page_info.end_cursor
+                  ? [
+                      new GetComment(
+                        action.keyword,
+                        action.cookie,
+                        page_info.end_cursor
+                      )
+                    ]
+                  : [])
+              ];
+              return tasks;
+            }
+          ),
+          catchError(err => of(new GetLikeFailure()))
+        )
+    )
+  );
+
+  @Effect() public getFollower$: Observable<Action> = this.actions$.pipe(
+    ofType<GetFollower>(InstagramActionTypes.GetFollowerAction),
+    mergeMap(action =>
+      this.instagramService
+        .getFollower({
+          cookie: action.cookie,
+          userId: action.keyword,
+          after: action.after
+        })
+        .pipe(
+          switchMap(
+            ({
+              count,
+              data,
+              page_info
+            }: {
+              count: number;
+              data: UserFromApi[];
+              page_info: { has_next_page: boolean; end_cursor: string };
+            }) => {
+              const followers = data.map(f => new UserModel(f));
+              const tasks = [
+                new GetFollowerSuccess(followers, count),
+                ...(page_info.end_cursor
+                  ? [
+                      new GetFollower(
+                        action.keyword,
+                        action.cookie,
+                        page_info.end_cursor
+                      )
+                    ]
+                  : [])
+              ];
+              return tasks;
+            }
+          ),
+          catchError(err => of(new GetFollowerFailure()))
         )
     )
   );

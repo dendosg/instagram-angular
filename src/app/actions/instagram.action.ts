@@ -3,6 +3,7 @@ import { APP_ROUTES, CONTEXT_SEARCH } from "app/utils/Constants";
 import { UserFromApi, UserModel } from "model/user.model";
 import { HashtagModel } from "model/hashtag.model";
 import { PlaceModel } from "model/place.model";
+import { CommentModel } from "model/comment.model";
 
 export enum InstagramActionTypes {
   SearchAction = "[Instagram] Search",
@@ -11,7 +12,15 @@ export enum InstagramActionTypes {
 
   GetLikeAction = "[Instagram] Get Like",
   GetLikeSuccessAction = "[Instagram] Get Like Success",
-  GetLikeFailureAction = "[Instagram] Get Like Failure"
+  GetLikeFailureAction = "[Instagram] Get Like Failure",
+
+  GetCommentAction = "[Instagram] Get Comment",
+  GetCommentSuccessAction = "[Instagram] Get Comment Success",
+  GetCommentFailureAction = "[Instagram] Get Comment Failure",
+
+  GetFollowerAction = "[Instagram] Get Followers",
+  GetFollowerSuccessAction = "[Instagram] Get Followers Success",
+  GetFollowerFailureAction = "[Instagram] Get Followers Failure"
 }
 
 export class Search implements Action {
@@ -41,9 +50,7 @@ export class GetLike implements Action {
     public keyword: string,
     public cookie: string,
     public after?: string
-  ) {
-    // this.after = null
-  }
+  ) {}
 }
 
 export class GetLikeSuccess implements Action {
@@ -54,10 +61,52 @@ export class GetLikeSuccess implements Action {
 export class GetLikeFailure implements Action {
   public readonly type = InstagramActionTypes.GetLikeFailureAction;
 }
+
+export class GetComment implements Action {
+  public readonly type = InstagramActionTypes.GetCommentAction;
+  constructor(
+    public keyword: string,
+    public cookie: string,
+    public after?: string
+  ) {}
+}
+
+export class GetCommentSuccess implements Action {
+  public readonly type = InstagramActionTypes.GetCommentSuccessAction;
+  constructor(public results: CommentModel[], public count: number) {}
+}
+
+export class GetCommentFailure implements Action {
+  public readonly type = InstagramActionTypes.GetCommentFailureAction;
+}
+
+export class GetFollower implements Action {
+  public readonly type = InstagramActionTypes.GetFollowerAction;
+  constructor(
+    public keyword: string,
+    public cookie: string,
+    public after?: string
+  ) {}
+}
+
+export class GetFollowerSuccess implements Action {
+  public readonly type = InstagramActionTypes.GetFollowerSuccessAction;
+  constructor(public results: UserModel[], public count: number) {}
+}
+
+export class GetFollowerFailure implements Action {
+  public readonly type = InstagramActionTypes.GetFollowerFailureAction;
+}
 export type InstagramActionsUnion =
   | Search
   | SearchSuccess
   | SearchFailure
   | GetLike
   | GetLikeSuccess
-  | GetLikeFailure;
+  | GetLikeFailure
+  | GetComment
+  | GetCommentSuccess
+  | GetCommentFailure
+  | GetFollower
+  | GetFollowerSuccess
+  | GetFollowerFailure

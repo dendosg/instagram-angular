@@ -14,6 +14,7 @@ import { HashtagModel } from "model/hashtag.model";
 import { PlaceModel } from "model/place.model";
 import { UserModel } from "model/user.model";
 import * as fromLayout from "./layout.reducer";
+import { CommentModel } from "model/comment.model";
 export interface State {
   keywords: {
     [key: string]: string[];
@@ -25,15 +26,19 @@ export interface State {
       [CONTEXT_SEARCH.PLACE]: PlaceModel[];
     };
     [APP_ROUTES.GET_LIKE]: UserModel[];
+    [APP_ROUTES.GET_COMMENT]: CommentModel[];
+    [APP_ROUTES.GET_FOLLOWER]: UserModel[];
   };
   count: {
-    [key: string]: number
-  }
+    [key: string]: number;
+  };
 }
 export const initialState: State = {
   keywords: {
     [APP_ROUTES.SEARCH]: [],
-    [APP_ROUTES.GET_LIKE]: []
+    [APP_ROUTES.GET_LIKE]: [],
+    [APP_ROUTES.GET_COMMENT]: [],
+    [APP_ROUTES.GET_FOLLOWER]: []
   },
   results: {
     [APP_ROUTES.SEARCH]: {
@@ -41,7 +46,9 @@ export const initialState: State = {
       [CONTEXT_SEARCH.HASHTAG]: [],
       [CONTEXT_SEARCH.PLACE]: []
     },
-    [APP_ROUTES.GET_LIKE]: []
+    [APP_ROUTES.GET_LIKE]: [],
+    [APP_ROUTES.GET_COMMENT]: [],
+    [APP_ROUTES.GET_FOLLOWER]: []
   },
   count: {}
 };
@@ -60,6 +67,8 @@ export function reducer(
         }
       };
     case InstagramActionTypes.GetLikeAction:
+    case InstagramActionTypes.GetCommentAction:
+    case InstagramActionTypes.GetFollowerAction:
     case InstagramActionTypes.SearchAction:
       return {
         ...state,
@@ -70,7 +79,13 @@ export function reducer(
           ),
           [APP_ROUTES.GET_LIKE]: state.keywords[APP_ROUTES.GET_LIKE].filter(
             item => item !== action.keyword
-          )
+          ),
+          [APP_ROUTES.GET_COMMENT]: state.keywords[
+            APP_ROUTES.GET_COMMENT
+          ].filter(item => item !== action.keyword),
+          [APP_ROUTES.GET_FOLLOWER]: state.keywords[
+            APP_ROUTES.GET_FOLLOWER
+          ].filter(item => item !== action.keyword)
         }
       };
     case InstagramActionTypes.SearchSuccessAction:
@@ -101,6 +116,38 @@ export function reducer(
           [APP_ROUTES.GET_LIKE]: action.count
         }
       };
+    case InstagramActionTypes.GetCommentSuccessAction:
+      return {
+        ...state,
+        results: {
+          ...state.results,
+          [APP_ROUTES.GET_COMMENT]: [
+            ...state.results[APP_ROUTES.GET_COMMENT],
+            ...action.results
+          ]
+        },
+        count: {
+          ...state.count,
+          [APP_ROUTES.GET_COMMENT]: action.count
+        }
+      };
+
+    case InstagramActionTypes.GetFollowerSuccessAction:
+      return {
+        ...state,
+        results: {
+          ...state.results,
+          [APP_ROUTES.GET_FOLLOWER]: [
+            ...state.results[APP_ROUTES.GET_FOLLOWER],
+            ...action.results
+          ]
+        },
+        count: {
+          ...state.count,
+          [APP_ROUTES.GET_FOLLOWER]: action.count
+        }
+      };
+
     default:
       return state;
   }

@@ -15,7 +15,7 @@ export class InstagramService {
     });
   }
 
-  public getComment({ cookie, shortcode, after = null }) {
+  public getComment({ cookie, shortcode, after }) {
     return this.commonRequest({
       cookie,
       input: shortcode,
@@ -24,7 +24,7 @@ export class InstagramService {
     });
   }
 
-  public getFollower({ cookie, userId, after = null }) {
+  public getFollower({ cookie, userId, after }) {
     return this.commonRequest({
       cookie,
       input: userId,
@@ -33,7 +33,7 @@ export class InstagramService {
     });
   }
 
-  public getFollowing({ cookie, userId, after = null }) {
+  public getFollowing({ cookie, userId, after }) {
     return this.commonRequest({
       cookie,
       input: userId,

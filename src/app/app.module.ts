@@ -4,14 +4,6 @@ import { ClipboardModule } from "ngx-clipboard";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
-import { SearchComponent } from "./search/search.component";
-import { GetMediaComponent } from "./get-media/get-media.component";
-import { GetLikeComponent } from "./get-like/get-like.component";
-import { GetCommentComponent } from "./get-comment/get-comment.component";
-import { GetUserInfoComponent } from "./get-user-info/get-user-info.component";
-import { GetMediaInfoComponent } from "./get-media-info/get-media-info.component";
-import { GetFollowingComponent } from "./get-following/get-following.component";
-import { GetFollowerComponent } from "./get-follower/get-follower.component";
 import { NavbarComponent } from "./components/navbar/navbar.component";
 
 import { ModalModule } from "ngx-modal";
@@ -26,9 +18,7 @@ import { InputComponent } from "./components/input/input.component";
 import { OptionComponent } from "./components/option/option.component";
 import { ButtonsComponent } from "./components/buttons/buttons.component";
 import { ResultComponent } from "./components/result/result.component";
-import { GetMyStoriesComponent } from "./get-my-stories/get-my-stories.component";
 import { ContextMenuModule } from "ngx-contextmenu";
-import { GetHashtagInfoComponent } from "./get-hashtag-info/get-hashtag-info.component";
 import { metaReducers, reducers } from "./reducers/index";
 import { EffectsModule } from "@ngrx/effects";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
@@ -39,22 +29,12 @@ registerLocaleData(en);
 @NgModule({
   declarations: [
     AppComponent,
-    SearchComponent,
-    GetMediaComponent,
-    GetLikeComponent,
-    GetCommentComponent,
-    GetUserInfoComponent,
-    GetMediaInfoComponent,
-    GetFollowingComponent,
-    GetFollowerComponent,
     NavbarComponent,
     LayoutComponent,
     InputComponent,
     OptionComponent,
     ButtonsComponent,
     ResultComponent,
-    GetMyStoriesComponent,
-    GetHashtagInfoComponent
   ],
   imports: [
     BrowserModule,

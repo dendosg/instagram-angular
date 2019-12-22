@@ -31,9 +31,9 @@ import { getKeywordsSelector } from "app/reducers/instagram.reducer";
   styleUrls: ["./buttons.component.scss"]
 })
 export class ButtonsComponent implements OnInit {
-  @Input() public loading;
-  @Output() public submit = new EventEmitter();
-  @Output() public stop = new EventEmitter();
+  // @Input() public loading;
+  // @Output() public submit = new EventEmitter();
+  // @Output() public stop = new EventEmitter();
   public results: object[] = [];
   public currentRoute: APP_ROUTES;
   public optionValue;
@@ -70,7 +70,7 @@ export class ButtonsComponent implements OnInit {
 
   ngOnInit() {}
   public onStop() {
-    this.stop.emit();
+    // this.stop.emit();
   }
   public onSubmit() {
     switch (this.currentRoute) {

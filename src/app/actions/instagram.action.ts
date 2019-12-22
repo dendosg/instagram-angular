@@ -20,7 +20,11 @@ export enum InstagramActionTypes {
 
   GetFollowerAction = "[Instagram] Get Followers",
   GetFollowerSuccessAction = "[Instagram] Get Followers Success",
-  GetFollowerFailureAction = "[Instagram] Get Followers Failure"
+  GetFollowerFailureAction = "[Instagram] Get Followers Failure",
+
+  GetFollowingAction = "[Instagram] Get Following",
+  GetFollowingSuccessAction = "[Instagram] Get Following Success",
+  GetFollowingFailureAction = "[Instagram] Get Following Failure",
 }
 
 export class Search implements Action {
@@ -97,6 +101,24 @@ export class GetFollowerSuccess implements Action {
 export class GetFollowerFailure implements Action {
   public readonly type = InstagramActionTypes.GetFollowerFailureAction;
 }
+
+export class GetFollowing implements Action {
+  public readonly type = InstagramActionTypes.GetFollowingAction;
+  constructor(
+    public keyword: string,
+    public cookie: string,
+    public after?: string
+  ) {}
+}
+
+export class GetFollowingSuccess implements Action {
+  public readonly type = InstagramActionTypes.GetFollowingSuccessAction;
+  constructor(public results: UserModel[], public count: number) {}
+}
+
+export class GetFollowingFailure implements Action {
+  public readonly type = InstagramActionTypes.GetFollowingFailureAction;
+}
 export type InstagramActionsUnion =
   | Search
   | SearchSuccess
@@ -110,3 +132,6 @@ export type InstagramActionsUnion =
   | GetFollower
   | GetFollowerSuccess
   | GetFollowerFailure
+  | GetFollowing
+  | GetFollowingSuccess
+  | GetFollowingFailure

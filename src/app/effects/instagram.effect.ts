@@ -19,7 +19,10 @@ import {
   GetCommentSuccess,
   GetFollower,
   GetFollowerFailure,
-  GetFollowerSuccess
+  GetFollowerSuccess,
+  GetFollowing,
+  GetFollowingSuccess,
+  GetFollowingFailure
 } from "app/actions/instagram.action";
 import { InstagramService } from "app/_service/instagram.service";
 import { UserModel, UserFromApi } from "model/user.model";
@@ -181,6 +184,47 @@ export class InstagramEffects {
             }
           ),
           catchError(err => of(new GetFollowerFailure()))
+        )
+    )
+  );
+
+  @Effect() public getFollowing$: Observable<Action> = this.actions$.pipe(
+    ofType<GetFollowing>(InstagramActionTypes.GetFollowingAction),
+    mergeMap(action =>
+      this.instagramService
+        .getFollowing({
+          cookie: action.cookie,
+          userId: action.keyword,
+          after: action.after
+        })
+        .pipe(
+          switchMap(
+            ({
+              count,
+              data,
+              page_info
+            }: {
+              count: number;
+              data: UserFromApi[];
+              page_info: { has_next_page: boolean; end_cursor: string };
+            }) => {
+              const followers = data.map(f => new UserModel(f));
+              const tasks = [
+                new GetFollowingSuccess(followers, count),
+                ...(page_info.end_cursor
+                  ? [
+                      new GetFollowing(
+                        action.keyword,
+                        action.cookie,
+                        page_info.end_cursor
+                      )
+                    ]
+                  : [])
+              ];
+              return tasks;
+            }
+          ),
+          catchError(err => of(new GetFollowingFailure()))
         )
     )
   );

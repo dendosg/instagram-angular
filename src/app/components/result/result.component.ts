@@ -76,6 +76,7 @@ export class ResultComponent implements OnInit {
       case this.APP_ROUTES.GET_COMMENT:
         return ["id", "username", "user_id", "text", "commented at"];
       case this.APP_ROUTES.GET_FOLLOWER:
+      case this.APP_ROUTES.GET_FOLLOWING:
         return ["id", "username", "full_name", "is_verified"];
       default:
         break;

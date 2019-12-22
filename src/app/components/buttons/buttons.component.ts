@@ -16,7 +16,8 @@ import {
   Search,
   GetLike,
   GetComment,
-  GetFollower
+  GetFollower,
+  GetFollowing
 } from "app/actions/instagram.action";
 import { AccountModel } from "model/account.model";
 import { getKeywordsSelector } from "app/reducers/instagram.reducer";
@@ -100,6 +101,14 @@ export class ButtonsComponent implements OnInit {
           if (!this.keywords[0]) break;
           this.store.dispatch(
             new GetFollower(this.keywords[0], account.cookie)
+          );
+        }
+        break;
+      case APP_ROUTES.GET_FOLLOWING:
+        for (const account of this.accounts) {
+          if (!this.keywords[0]) break;
+          this.store.dispatch(
+            new GetFollowing(this.keywords[0], account.cookie)
           );
         }
         break;

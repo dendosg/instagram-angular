@@ -28,6 +28,7 @@ export interface State {
     [APP_ROUTES.GET_LIKE]: UserModel[];
     [APP_ROUTES.GET_COMMENT]: CommentModel[];
     [APP_ROUTES.GET_FOLLOWER]: UserModel[];
+    [APP_ROUTES.GET_FOLLOWING]: UserModel[];
   };
   count: {
     [key: string]: number;
@@ -38,7 +39,8 @@ export const initialState: State = {
     [APP_ROUTES.SEARCH]: [],
     [APP_ROUTES.GET_LIKE]: [],
     [APP_ROUTES.GET_COMMENT]: [],
-    [APP_ROUTES.GET_FOLLOWER]: []
+    [APP_ROUTES.GET_FOLLOWER]: [],
+    [APP_ROUTES.GET_FOLLOWING]: []
   },
   results: {
     [APP_ROUTES.SEARCH]: {
@@ -48,7 +50,8 @@ export const initialState: State = {
     },
     [APP_ROUTES.GET_LIKE]: [],
     [APP_ROUTES.GET_COMMENT]: [],
-    [APP_ROUTES.GET_FOLLOWER]: []
+    [APP_ROUTES.GET_FOLLOWER]: [],
+    [APP_ROUTES.GET_FOLLOWING]: []
   },
   count: {}
 };
@@ -69,6 +72,7 @@ export function reducer(
     case InstagramActionTypes.GetLikeAction:
     case InstagramActionTypes.GetCommentAction:
     case InstagramActionTypes.GetFollowerAction:
+    case InstagramActionTypes.GetFollowingAction:
     case InstagramActionTypes.SearchAction:
       return {
         ...state,
@@ -85,6 +89,9 @@ export function reducer(
           ].filter(item => item !== action.keyword),
           [APP_ROUTES.GET_FOLLOWER]: state.keywords[
             APP_ROUTES.GET_FOLLOWER
+          ].filter(item => item !== action.keyword),
+          [APP_ROUTES.GET_FOLLOWING]: state.keywords[
+            APP_ROUTES.GET_FOLLOWING
           ].filter(item => item !== action.keyword)
         }
       };
@@ -145,6 +152,22 @@ export function reducer(
         count: {
           ...state.count,
           [APP_ROUTES.GET_FOLLOWER]: action.count
+        }
+      };
+
+    case InstagramActionTypes.GetFollowingSuccessAction:
+      return {
+        ...state,
+        results: {
+          ...state.results,
+          [APP_ROUTES.GET_FOLLOWING]: [
+            ...state.results[APP_ROUTES.GET_FOLLOWING],
+            ...action.results
+          ]
+        },
+        count: {
+          ...state.count,
+          [APP_ROUTES.GET_FOLLOWING]: action.count
         }
       };
 

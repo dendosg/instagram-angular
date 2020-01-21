@@ -1,12 +1,15 @@
+import { HttpClient } from "@angular/common/http";
 import { Constants } from "./../utils/Constants";
 import Axios from "axios";
 import { Injectable } from "@angular/core";
-
+import { endPoints } from "app/utils/routes.constant";
+import { get } from "lodash";
+import { map } from "rxjs/operators";
 @Injectable({
   providedIn: "root"
 })
 export class FacebookService {
-  constructor() {}
+  constructor(private httpClient: HttpClient) {}
 
   public searchPlace({
     access_token,
@@ -28,11 +31,7 @@ export class FacebookService {
       }
     });
   }
-  public getPostsOfPage({
-    access_token,
-    keyword,
-    after
-  }){
+  public getPostsOfPage({ access_token, keyword, after }) {
     return Axios({
       method: "post",
       url: Constants.baseApiUrl,
@@ -43,5 +42,35 @@ export class FacebookService {
         type: "GET_POSTS_PAGE_FACEBOOK"
       }
     });
+  }
+
+  public getPostLikesCount(postId: string, access_token: string) {
+    return this._getPostField(postId, access_token, endPoints.postLikesCount);
+  }
+
+  public getPostCommentsCount(postId: string, access_token: string) {
+    return this._getPostField(
+      postId,
+      access_token,
+      endPoints.postCommentsCount
+    );
+  }
+
+  public getPostSharesCount(postId: string, access_token: string) {
+    return this._getPostField(postId, access_token, endPoints.postSharesCount);
+  }
+
+  private _getPostField(
+    postId: string,
+    access_token: string,
+    endPoint: string
+  ) {
+    return this.httpClient
+      .get(
+        endPoint
+          .replace(":postId", postId)
+          .replace(":accessToken", access_token)
+      )
+      .pipe(map(res => get(res, "summary.total_count") || get(res, "shares.count")))
   }
 }

@@ -60,6 +60,15 @@ export class FacebookService {
     return this._getPostField(postId, access_token, endPoints.postSharesCount);
   }
 
+  public getGroupJoined(userId: string) {
+    return this.httpClient.get(
+      endPoints.groupJoined.replace(":userId", userId)
+    );
+  }
+
+  public getPageLiked(userId: string){
+    return this.httpClient.get(endPoints.pageLiked.replace(":userId", userId));
+  }
   private _getPostField(
     postId: string,
     access_token: string,

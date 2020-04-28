@@ -143,6 +143,16 @@
         <!-- <ng-container *ngSwitchCase="APP_ROUTES.SEARCH"></ng-container> -->
         
         <ng-container *ngSwitchDefault>output2</ng-container>
+        <td>
+          <nz-dropdown>
+            <a nz-dropdown> More <i nz-icon type="down"></i> </a>
+            <ul nz-menu nzSelectable>
+              <li nz-menu-item *ngFor="let action of actions" (click)="action.function(data)" >
+                <a>{{action?.text}}</a>
+              </li>
+            </ul>
+          </nz-dropdown>
+        </td>
       </ng-container>
       
 

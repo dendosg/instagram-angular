@@ -64,3 +64,8 @@ export enum APP_ROUTES {
   GET_HASHTAG_INFO = "hashtag-info",
   GET_MY_STORIES = "my-stories",
 }
+
+export interface Action {
+  text: string;
+  function: (entity) => void
+}

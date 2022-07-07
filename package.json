@@ -28,7 +28,7 @@
     "axios": "^0.18.0",
     "core-js": "^2.5.4",
     "lodash": "^4.17.11",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "ng-zorro-antd": "^7.0.0-rc.1",
     "ngx-clipboard": "^12.2.0",
     "ngx-contextmenu": "^5.1.1",

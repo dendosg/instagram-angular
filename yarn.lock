@@ -312,6 +312,21 @@
     lodash "^4.17.10"
     to-fast-properties "^2.0.0"
 
+"@ngrx/effects@^8.6.0":
+  version "8.6.1"
+  resolved "https://registry.yarnpkg.com/@ngrx/effects/-/effects-8.6.1.tgz#6038a5e9cc3db27fdea4cfbcc6e2ae63721e8a26"
+  integrity sha512-nvokfJ+LXez3DuAVSWW4w/eMrjPoSpzyHSToIVbDTVIF4JZ3g8fKdi9aHYAeXy2MDR1BaV7zMTmM9w6J0TDZtw==
+
+"@ngrx/store-devtools@^8.6.0":
+  version "8.6.1"
+  resolved "https://registry.yarnpkg.com/@ngrx/store-devtools/-/store-devtools-8.6.1.tgz#6fea7ba2544a35f606ccaa3c3be5251fece65b71"
+  integrity sha512-rWW8FMKgb3paKmlhS8T/T3Sjm4w2WiQAOKU2cXy8D4ZrGTrFhaZDxHsn7eo+l3AN1EMXQh/w/eNLpevtCrO/wg==
+
+"@ngrx/store@^8.6.0":
+  version "8.6.1"
+  resolved "https://registry.yarnpkg.com/@ngrx/store/-/store-8.6.1.tgz#ee4c7d3b8bcc59cf042ae76e6743130408e9b2d8"
+  integrity sha512-bV7X0hNywd6N5YroWdZffIEvLKdHZo/l4tCK9FC/o5OezVyPRKZ6QVHz8e2jnLvqj55XzOJNR/tsYh4iuVi2pg==
+
 "@ngtools/webpack@6.2.8":
   version "6.2.8"
   resolved "https://registry.yarnpkg.com/@ngtools/webpack/-/webpack-6.2.8.tgz#0a20bfe0380268eaa31c711f7e7899a8ee868360"
@@ -1845,9 +1860,9 @@ css-selector-tokenizer@^0.7.0:
     regexpu-core "^1.0.0"
 
 css-what@2.1:
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/css-what/-/css-what-2.1.2.tgz#c0876d9d0480927d7d4920dcd72af3595649554d"
-  integrity sha512-wan8dMWQ0GUeF7DGEPVjhHemVW/vy6xUYmFzRY8RYqgA0JtXC9rJmbScBjqSu6dg9q0lwPQy6ZAmJVr3PPTvqQ==
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/css-what/-/css-what-2.1.3.tgz#a6d7604573365fe74686c3f311c56513d88285f2"
+  integrity sha512-a+EPoD+uZiNfh+5fxw2nO9QwFa6nJe2Or35fGY6Ipw1R3R4AGz1d1TEZrCegvw2YTmZ0jXirGYlzxxpYSHwpEg==
 
 cssauron@^1.4.0:
   version "1.4.0"
@@ -4668,6 +4683,14 @@ ng-zorro-antd@^7.0.0-rc.1:
     date-fns "^1.29.0"
     tslib "^1.9.0"
 
+ngx-clipboard@^12.2.0:
+  version "12.3.1"
+  resolved "https://registry.yarnpkg.com/ngx-clipboard/-/ngx-clipboard-12.3.1.tgz#565d73b946b10719242e532e748ad912cf8bc97a"
+  integrity sha512-qrUmkfYXEBQZQ4wNKno8yw5eOSxtdkzCPFFPil/XVVc93MNIKUme8aLbS3TEMB4PGsxopjbuTAzV7fptiSOIww==
+  dependencies:
+    ngx-window-token "^2.0.0"
+    tslib "^1.9.0"
+
 ngx-contextmenu@^5.1.1:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/ngx-contextmenu/-/ngx-contextmenu-5.1.1.tgz#c21c1b702df0d0327ddf297d1ff8d2abee32ee9f"
@@ -4679,6 +4702,13 @@ ngx-modal@^0.0.29:
   version "0.0.29"
   resolved "https://registry.yarnpkg.com/ngx-modal/-/ngx-modal-0.0.29.tgz#698aa252a79323a0ca47ad4ddee994d620ae6f15"
   integrity sha1-aYqiUqeTI6DKR61N3umU1iCubxU=
+
+ngx-window-token@^2.0.0:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/ngx-window-token/-/ngx-window-token-2.0.1.tgz#8f91221af4116aa9f49bb3f7a6f1111639884fba"
+  integrity sha512-rvqdqJEfnWXQFU5fyfYt06E10tR/UtFOYdF3QebfcOh5VIJhnTKiprX8e4B9OrX7WEVFm9BT8uV72xXcEgsaKA==
+  dependencies:
+    tslib "^1.9.0"
 
 nice-try@^1.0.4:
   version "1.0.5"
